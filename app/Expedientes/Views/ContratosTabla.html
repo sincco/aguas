@@ -47,9 +47,13 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
 				index++;
-				console.log(adjunto)
+				console.log(extension(adjunto).toLowerCase())
 				var url = BASE_URL + '_expedientes/' + element[0] + '/' + adjunto;
-				var imagen = '<div class="col-xs-4"><a href="' + url + '" download="' + element[0] + '_' + index + '"><img src="' + url + '" style="width:100%;"></a></div>';
+				if(extension(adjunto).toLowerCase() == 'pdf') {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+				} else {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:100%;"></a></div>';
+				}
 				$('#modal-adjuntos .row').html($('#modal-adjuntos .row').html() + imagen);
 			});
 			$( '#modal-adjuntos' ).modal( 'show' );
@@ -59,6 +63,10 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 	});
 });
+
+function extension(filename) {
+	return filename.split('.').pop();
+}
 </script>
 
 {% include 'footer.html' %}
