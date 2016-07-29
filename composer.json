@@ -1,0 +1,36 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:sincco/login.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:sincco/elastic-email.git"
+        }
+    ],
+    "require": {
+        "sincco/sfphp": "dev-master",
+        "sincco/tokenizer": "~1.0",
+        "sincco/login": "dev-master",
+        "sincco/elastic-email": "dev-master",
+        "fbourigault/composer-mkdir": "^2.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Fbourigault\\ComposerMkdir\\ScriptHandler::mkdirs"
+        ],
+        "post-update-cmd": [
+            "Fbourigault\\ComposerMkdir\\ScriptHandler::mkdirs"
+        ]
+    },
+    "extra": {
+        "fbourigault-composer-mkdir": [
+            "var/cache",
+            "var/session",
+            "var/log",
+            "etc/config",
+            "bkp"
+        ]
+    }
+}

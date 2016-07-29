@@ -1,0 +1,20 @@
+{% spaceless %}
+{% include 'header.html' %}
+{% include 'menuLogin.html' %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-3">
+			<img src="{{ constant('BASE_URL') }}{{ logo }}" width="100%">
+		</div>
+		<div class="col-xs-9">
+			<h1>{{constant('APP_NAME')}}
+			<p class="lead">Debes tener una cuenta para accesar al sistema</p>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">{{_self.getTemplateName() | replace( { '.html':'' } ) | lower }}.init();</script>
+
+{% include 'footer.html' %}
+{% endspaceless %}

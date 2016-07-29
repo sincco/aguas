@@ -1,0 +1,64 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Expedientes</h1>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Contrato</th><th data-sortable="true">Cliente</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for contrato in contratos %}
+				<tr>
+					<td>{{ contrato.contrato|e }}</td>
+					<td>{{ contrato.cliente|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="modal-adjuntos" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Archivos adjuntos</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:element[0]})
+	.done(function(data) {
+		$('#modal-adjuntos .row').html('');
+		if(data.respuesta > 0){
+			var index = 0;
+			data.adjuntos.forEach(function(adjunto){
+				index++;
+				console.log(adjunto)
+				var url = BASE_URL + '_expedientes/' + element[0] + '/' + adjunto;
+				var imagen = '<div class="col-xs-4"><a href="' + url + '" download="' + element[0] + '_' + index + '"><img src="' + url + '" style="width:100%;"></a></div>';
+				$('#modal-adjuntos .row').html($('#modal-adjuntos .row').html() + imagen);
+			});
+			$( '#modal-adjuntos' ).modal( 'show' );
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+});
+</script>
+
+{% include 'footer.html' %}

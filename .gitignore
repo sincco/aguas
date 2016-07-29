@@ -1,0 +1,8 @@
+etc/
+vendor/
+var/
+bkp/
+getapp.sh
+composer.lock
+html/img/logo_cliente*
+_expedientes/
