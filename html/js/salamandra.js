@@ -98,6 +98,11 @@ var login = new function() {
 		$("#usuario").keypress(function(event) {
 			if(event.which == 13) login.accesar();
 		});
+
+		$(".btn-success").click(function(event) {
+			login.accesar();
+		});
+
 	}
 
 	this.accesar = function() {
