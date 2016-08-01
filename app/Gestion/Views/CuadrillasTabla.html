@@ -1,0 +1,56 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Cuadrillas</h1>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Id</th><th data-sortable="true">Descripción</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for cuadrilla in cuadrillas %}
+				<tr>
+					<td>{{ cuadrilla.cuadrilla|e }}</td>
+					<td>{{ cuadrilla.descripcion|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:element[0]})
+	.done(function(data) {
+		$('#modal-adjuntos .row').html('');
+		if(data.respuesta > 0){
+			var index = 0;
+			data.adjuntos.forEach(function(adjunto){
+				index++;
+				console.log(extension(adjunto).toLowerCase())
+				var url = BASE_URL + '_expedientes/' + element[0] + '/' + adjunto;
+				if(extension(adjunto).toLowerCase() == 'pdf') {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+				} else {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:100%;"></a></div>';
+				}
+				$('#modal-adjuntos .row').html($('#modal-adjuntos .row').html() + imagen);
+			});
+			$( '#modal-adjuntos' ).modal( 'show' );
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+});
+
+function extension(filename) {
+	return filename.split('.').pop();
+}
+</script>
+
+{% include 'footer.html' %}
