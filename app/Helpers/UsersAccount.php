@@ -23,8 +23,8 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 		$db = Reader::get( 'bases' );
 		$db = $db[ 'default' ];
 		$db[ 'password' ] = trim( Crypt::decrypt( $db['password'] ) );
-		Login::setDatabase( $db );
-		return Login::createUser( $data );
+		Login::setDatabase($db);
+		return Login::createUser($data);
 	}
 	/**
 	 * Si un usuario no está loggeado se redirige a la pagina de inicio
