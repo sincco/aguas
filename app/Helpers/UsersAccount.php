@@ -75,8 +75,8 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 		return $response;
 	}
 
-	public function getUserData() {
-		return unserialize( $_SESSION[ 'sincco\login\controller'] );
+	public function getUserData($segment = 'sincco\login\controller') {
+		return unserialize($_SESSION[$segment]);
 	}
 
 	public function createTokenForApi() {

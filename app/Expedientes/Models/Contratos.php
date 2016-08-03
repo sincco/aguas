@@ -3,8 +3,26 @@
 class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
-		$query = 'SELECT * FROM expedientes;';
+		$query = 'SELECT * FROM contratos;';
 		return $this->connector->query( $query );
+	}
+
+	public function getCount() {
+		$query = 'SELECT COUNT(*) total FROM contratos;';
+		return $this->connector->query( $query );
+	}
+
+	public function getTable($data) {
+		if (!isset($data['sort'])) {
+			$data['sort'] = 'contrato';
+		}
+		$query = 'SELECT * FROM contratos ';
+		if (isset($data['search'])) {
+			$where = 'WHERE contrato like "%' . $data['search'] . '%" OR propietario like "%' . $data['search'] . '%" OR usuario like "%' . $data['search'] . '%" OR municipio like "%' . $data['search'] . '%" OR suministro like "%' . $data['search'] . '%" OR contrato like "%' . $data['search'] . '%" OR calle like "%' . $data['search'] . '%" ';
+			$query .= $where;
+		}
+		$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		return $this->connector->query($query);	
 	}
 
 	public function getById( $data ) {
@@ -17,11 +35,44 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getByCuadrilla($data) {
-		$query = 'SELECT asg.cuadrilla, asg.contrato
+		$query = 'SELECT asg.cuadrilla, con.*
 		FROM cuadrillasContratos asg
-		INNER JOIN contratos con USING contrato
+		INNER JOIN contratos con USING (contrato)
 		WHERE asg.cuadrilla = :cuadrilla;';
-		return $this->connector($query, ['cuadrilla'=>$data]);
+		return $this->connector->query($query, ['cuadrilla'=>$data]);
+	}
+
+	public function totalByCuadrilla($data) {
+		$query = 'SELECT COUNT(con.contrato) total
+		FROM cuadrillasContratos asg
+		INNER JOIN contratos con USING (contrato)
+		WHERE asg.cuadrilla = :cuadrilla;';
+		return $this->connector->query($query, ['cuadrilla'=>$data]);
+	}
+
+	public function getSinAsignar() {
+		$query = 'SELECT asg.cuadrilla, asg.contrato, con.propietario, con.municipio, con.colonia
+		FROM cuadrillasContratos asg
+		RIGHT JOIN contratos con USING (contrato);';
+		return $this->connector->query($query);
+	}
+
+	public function asignar($cuadrilla, $contratos) {
+	//Borrar las asignaciones previas
+		$values = [];
+		foreach ($contratos as $contrato) {
+			$values[] = "'" . $contrato['contrato'] . "'";
+		}
+		$query = 'DELETE FROM cuadrillasContratos WHERE contrato IN (' . implode(',', $values) . ');';
+		$this->connector->query($query);
+	//Crear nuevas asignaciones
+		$values = [];
+		foreach ($contratos as $contrato) {
+			$values[] = '(' . $cuadrilla . ", '" . $contrato['contrato'] . "')";
+		}
+		$query = 'INSERT INTO cuadrillasContratos VALUES ' . implode(',', $values) . ';';
+		return $this->connector->query($query);
+
 	}
 
 	public function update( $set, $where ) {

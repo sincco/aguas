@@ -19,6 +19,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
+		<input type="text" name="cuadrillaActual">
 	</div>
 </div>
 
@@ -37,7 +38,29 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true" onclick="guardar($('form').serializeJSON())"> <span>Guardar</span></i></button>
+				<button type="button" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true" onclick="buscarContratos()"> <span>Asignar más contratos</span></i></button>
+				<button type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true" onclick="imprimirFormatos()"> <span>Imprimir Formato</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-asignar" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asginar más contratos</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<table id="pendientes"></table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-sign-in" aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
 			</div>
 		</div>
 	</div>
@@ -46,89 +69,82 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	
-	var url = BASE_URL + 'expedientes/index/apiAsigandos/cuadrilla/' + element[0];
+	var url = BASE_URL + 'expedientes/index/apiasignados/cuadrilla/' + element[0];
+	$('[name=cuadrillaActual]').val(element[0]);
 	sincco.consumirAPI('GET',url)
 	.done(function(data) {
-		console.log(data);
+		$('#asignados').bootstrapTable('destroy');
+		$('#asignados').bootstrapTable({
+			data: data.tabla,
+			columns: [{
+				field: 'state',
+				title: '',
+				checkbox: true
+			},{
+		        field: 'contrato',
+		        title: 'Contrato',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		        field: 'propietario',
+		        title: 'Propietario',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		        field: 'municipio',
+		        title: 'Municipio',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		    	field: 'colonia',
+		        title: 'Colonia',
+		        align: 'right',
+		        sortable: true
+		    }],
+		});
 	});
-	return false;
-
-	$('#asignados').bootstrapTable({
-        method: 'get',
-        url: BASE_URL + 'expedientes/index/apiAsigandos/cuadrilla/' + element[0],
-        height: 400,
-        striped: true,
-        pagination: true,
-        pageSize: 50,
-        pageList: [10, 25, 50, 100, 200],
-        search: true,
-        showColumns: true,
-        showRefresh: true,
-        minimumCountColumns: 2,
-        columns: [{
-            field: 'state',
-            checkbox: true
-	        }, {
-	            field: 'id',
-	            title: 'Item ID',
-	            align: 'right',
-	            valign: 'bottom',
-	            sortable: true
-	        }, {
-	            field: 'name',
-	            title: 'Item Name',
-	            align: 'center',
-	            valign: 'middle',
-	            sortable: true,
-	            formatter: nameFormatter
-	        }, {
-	            field: 'price',
-	            title: 'Item Price',
-	            align: 'left',
-	            valign: 'top',
-	            sortable: true,
-	            formatter: priceFormatter,
-	            sorter: priceSorter
-	        }, {
-	            field: 'operate',
-	            title: 'Item Operate',
-	            align: 'center',
-	            valign: 'middle',
-	            formatter: operateFormatter,
-	            events: operateEvents
-	       	}
-	    ]
-    });
-
-	return false;
-
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:element[0]})
-	.done(function(data) {
-		$('#modal-adjuntos .row').html('');
-		if(data.respuesta > 0){
-			var index = 0;
-			data.adjuntos.forEach(function(adjunto){
-				index++;
-				console.log(extension(adjunto).toLowerCase())
-				var url = BASE_URL + '_expedientes/' + element[0] + '/' + adjunto;
-				if(extension(adjunto).toLowerCase() == 'pdf') {
-					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
-				} else {
-					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:100%;"></a></div>';
-				}
-				$('#modal-adjuntos .row').html($('#modal-adjuntos .row').html() + imagen);
-			});
-			$( '#modal-adjuntos' ).modal( 'show' );
-		}
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
-		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
-	});
+	$('#modal-contratos').modal('show');
 });
 
-function extension(filename) {
-	return filename.split('.').pop();
+function buscarContratos() {
+	var url = BASE_URL + 'expedientes/index/apisinasignar';
+	sincco.consumirAPI('GET',url)
+	.done(function(data) {
+		$('#pendientes').bootstrapTable('destroy');
+		$('#pendientes').bootstrapTable({
+			data: data.tabla,
+			columns: [{
+				field: 'state',
+				title: '',
+				checkbox: true
+			},{
+		        field: 'contrato',
+		        title: 'Contrato',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		        field: 'propietario',
+		        title: 'Propietario',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		        field: 'municipio',
+		        title: 'Municipio',
+		        align: 'right',
+		        sortable: true
+		    }, {
+		    	field: 'colonia',
+		        title: 'Colonia',
+		        align: 'right',
+		        sortable: true
+		    }],
+		});
+	});
+	$('#modal-asignar').modal('show');
+}
+
+function imprimirFormatos() {
+	console.log($('#asignados').bootstrapTable('getSelections'));
 }
 </script>
 

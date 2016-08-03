@@ -2,13 +2,21 @@
 
 use \Sincco\Sfphp\Response;
 
-class IndexController extends Sincco\Sfphp\Abstracts\Controller {
+class IndexController extends Sincco\Sfphp\Abstracts\Controller 
+{
 	public function index() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosTabla');
-		$view->contratos = $model->getAll();
+		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
+	}
+
+	public function apiData() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$count = $model->getCount();
+		$count = array_pop($count);
+		new Response('json', ['total'=>$count['total'], 'rows'=>$model->getTable($_GET)]);
 	}
 
 	public function apiAdjuntos() {
@@ -26,7 +34,26 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller {
 
 	public function apiAsignados() {
 		$cuadrilla = $this->getParams('cuadrilla');
-		new Response('json', ['tabla'=>$this->getModel('Expedientes\Contratos')->getByCuadrilla($cuadrilla)]);
+		$asignados = $this->getModel('Expedientes\Contratos')->getByCuadrilla($cuadrilla);
+		$count = $this->getModel('Expedientes\Contratos')->totalByCuadrilla($cuadrilla);
+		$count = array_pop($count);
+		new Response('json', ['total'=>$count['total'], 'rows'=>$asignados]);
+	}
+	
+	public function apiSinAsignar() {
+		$contratos = $this->getModel('Expedientes\Contratos')->getSinAsignar();
+		new Response('json', ['tabla'=>$contratos]);
+	}
+
+	public function apiAsignar() {
+		$cuadrilla = $this->getParams('cuadrilla');
+		$contratos = $this->getParams('contratos');
+		try {
+			$respuesta = $this->getModel('Expedientes\Contratos')->asignar($cuadrilla, $contratos);
+			new Response('json', ['respuesta'=>true]);
+		} catch (Exception $e) {
+			new Response('json', ['respuesta'=>false]);
+		}
 	}
 
 }

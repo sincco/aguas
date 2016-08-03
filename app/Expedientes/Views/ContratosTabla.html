@@ -4,20 +4,20 @@
 <div class="container">
 	<div class="row">
 		<h1>Expedientes</h1>
-		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar contratos</span></i></button>
+		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/expedientes/index/apiData" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
 			<thead>
 				<tr>
-					<th data-sortable="true">Contrato</th><th data-sortable="true">Cliente</th>
+					<th data-checkbox="true"></th>
+					<th data-sortable="true" data-field="contrato">Contrato</th>
+					<th data-sortable="true" data-field="propietario">Propietario</th>
+					<th data-sortable="true" data-field="usuario">Usuario</th>
+					<th data-sortable="true" data-field="municipio">Municipio</th>
+					<th data-sortable="true" data-field="via">Via</th>
+					<th data-sortable="true" data-field="calle">Calle</th>
+					<th data-sortable="true" data-field="colonia">Colonia</th>
 				</tr>
 			</thead>
-			<tbody>
-				{% for contrato in contratos %}
-				<tr>
-					<td>{{ contrato.contrato|e }}</td>
-					<td>{{ contrato.cliente|e }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
 		</table>
 	</div>
 </div>
@@ -30,9 +30,34 @@
 				<h4 id="modal-titulo" class="modal-title">Archivos adjuntos</h4>
 			</div>
 			<div class="modal-body">
+				<div class="row"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-cuadrillas" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la cuadrilla</h4>
+			</div>
+			<div class="modal-body">
 				<div class="row">
-					
+					<div class="col-xs-12">
+						<label>Cuadrilla 
+							<select class="form-control col-lg-8" name="cuadrilla">
+								{% for cuadrilla in cuadrillas %}
+								<option value="{{ cuadrilla.cuadrilla|e }}">{{ cuadrilla.descripcion|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
 			</div>
 		</div>
 	</div>
@@ -47,7 +72,6 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
 				index++;
-				console.log(extension(adjunto).toLowerCase())
 				var url = BASE_URL + '_expedientes/' + element[0] + '/' + adjunto;
 				if(extension(adjunto).toLowerCase() == 'pdf') {
 					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
@@ -59,7 +83,6 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 			$( '#modal-adjuntos' ).modal( 'show' );
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 	});
 });
@@ -67,6 +90,22 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 function extension(filename) {
 	return filename.split('.').pop();
 }
+
+function muestraCuadrillas() {
+	$('#modal-cuadrillas').modal('show');
+}
+
+function asignarContratos() {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), cuadrilla: $('[name=cuadrilla]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-cuadrillas').modal('hide');
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+}
+
 </script>
+
 
 {% include 'footer.html' %}

@@ -43,11 +43,16 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 		$db = $db['default'];
 		$db['password'] = trim( Crypt::decrypt( $db['password'] ) );
 		Login::setDatabase($db);
-		if( Login::login( Request::getParams( 'userData' ) ) )
+		if ( Login::login( Request::getParams( 'userData' ) ) ) {
+			$cuadrilla = $this->getModel('Catalogos\Usuarios')->getByUserName(Request::getParams('userData')['user']);
+			$cuadrilla = array_pop($cuadrilla);
+			$_SESSION['user\extra'] = serialize(['cuadrilla'=>$cuadrilla]);
 			$acceso = TRUE;
-		else
+		}
+		else {
 			$acceso = FALSE;
-		echo json_encode( array( 'acceso'=>$acceso ) );
+		}
+		echo json_encode(array('acceso'=>$acceso));
 	}
 
 	/**
