@@ -15,7 +15,10 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 
 	public function imprimir () {
 		$contratos = $this->getParams('contratos');
-		var_dump($contratos);
+		//var_dump($contratos);
+		$view = $this->newView('Gestion\FormatosImpresion');
+		$view->contrato = $contratos[0];
+		$view->render();
 	}
 
 	public function apiAdjuntos() {
