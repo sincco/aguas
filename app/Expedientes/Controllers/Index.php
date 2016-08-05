@@ -26,7 +26,6 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		array_shift($files);
 		$adjuntos = array();
 		foreach ($files as $adjunto) {
-
 			array_push($adjuntos, str_replace(' ', '%20', $adjunto));
 		}
 		new Response('json', [ 'respuesta'=>count($adjuntos), 'adjuntos'=>$adjuntos ]);

@@ -71,31 +71,9 @@
 <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
 
 <script type="text/javascript">
-
-$(function () {
-    'use strict';
-    // Change this to the location of your server-side upload handler:
-    var url = window.location.hostname === 'blueimp.github.io' ?
-                '//jquery-file-upload.appspot.com/' : 'server/php/';
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-            });
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
-            );
-        }
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-});
-
+function() {
+	$('.fileinput-button').hide();
+}
 
 function buscarContrato() {
 	loader.show();
@@ -107,6 +85,27 @@ function buscarContrato() {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
+
+			var url = BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val();
+			$('#fileupload').fileupload({
+			url: url,
+			dataType: 'json',
+			done: function (e, data) {
+			    $.each(data.result.files, function (index, file) {
+			        $('<p/>').text(file.name).appendTo('#files');
+			    });
+			},
+			progressall: function (e, data) {
+			    var progress = parseInt(data.loaded / data.total * 100, 10);
+			    $('#progress .progress-bar').css(
+			        'width',
+			        progress + '%'
+			    );
+			}
+			}).prop('disabled', !$.support.fileInput)
+			.parent().addClass($.support.fileInput ? undefined : 'disabled');
+			$('.fileinput-button').show();
+
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
