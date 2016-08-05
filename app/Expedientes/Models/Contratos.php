@@ -16,9 +16,9 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = 'SELECT * FROM contratos ';
+		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus FROM contratos con LEFT JOIN gestionContratos ges USING (contrato) LEFT JOIN estatusProceso pro USING (estatusId) ';
 		if (isset($data['search'])) {
-			$where = 'WHERE contrato like "%' . $data['search'] . '%" OR propietario like "%' . $data['search'] . '%" OR usuario like "%' . $data['search'] . '%" OR municipio like "%' . $data['search'] . '%" OR suministro like "%' . $data['search'] . '%" OR contrato like "%' . $data['search'] . '%" OR calle like "%' . $data['search'] . '%" ';
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
 			$query .= $where;
 		}
 		$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
