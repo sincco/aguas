@@ -25,13 +25,22 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);	
 	}
 
-	public function getById( $data ) {
-		return $this->connector->query( 'SELECT cot.cotizacion, cot.fecha, cot.razonSocial, cot.estatus,
-			det.producto, det.descripcion, det.unidad, det.cantidad, det.precio, det.cantidad * det.precio AS subtotal
-			FROM cotizaciones cot
-			INNER JOIN cotizacionesDetalle det USING( cotizacion )
-			WHERE cotizacion = :Cotizacion
-			ORDER BY det.descripcion', [ 'Cotizacion'=>$data ] );
+	public function getById($data) {
+		$query = 'SELECT * FROM contratos WHERE contrato IN (' . $data . ');';
+		return $this->connector->query( $query );
+	}
+
+	public function getByIds($data) {
+		$query = 'SELECT * FROM contratos WHERE contrato IN (' . $data . ');';
+		return $this->connector->query( $query );
+	}
+
+	public function getContratoAsignado($contrato, $cuadrilla) {
+		$query = 'SELECT asg.cuadrilla, con.*
+		FROM cuadrillasContratos asg
+		INNER JOIN contratos con USING (contrato)
+		WHERE asg.cuadrilla = :cuadrilla and asg.contrato = :contrato;';
+		return $this->connector->query($query, ['contrato'=>$contrato, 'cuadrilla'=>$cuadrilla]);
 	}
 
 	public function getByCuadrilla($data) {
@@ -65,6 +74,13 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		}
 		$query = 'DELETE FROM cuadrillasContratos WHERE contrato IN (' . implode(',', $values) . ');';
 		$this->connector->query($query);
+	//Crear estatus de asignación
+		$values = [];
+		foreach ($contratos as $contrato) {
+			$values[] = "('" . $contrato['contrato'] . "', 2,'Asignado a cuadrilla " . $cuadrilla . "', NOW())";
+		}
+		$query = 'INSERT INTO gestionContratos VALUES ' . implode(',', $values) . ';';
+		return $this->connector->query($query);
 	//Crear nuevas asignaciones
 		$values = [];
 		foreach ($contratos as $contrato) {

@@ -25,7 +25,12 @@
 <script type="text/javascript">
 
 function imprimir() {
-	$.redirect(BASE_URL + '/gestion/formatos/imprimir',{ contratos: $('#contratos').bootstrapTable('getSelections')}, 'POST', '_blank'); 
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/imprimir',{ contratos: ids}, 'POST', '_blank'); 
 }
 
 </script>

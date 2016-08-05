@@ -2,29 +2,18 @@
 
 use \Sincco\Sfphp\Response;
 
-class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
+class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
 		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
-		$view = $this->newView('Gestion\FormatosTabla');
+		$view = $this->newView('Gestion\Levantamiento');
 		$view->cuadrilla = $cuadrilla;
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
 
-	public function imprimir () {
-		$contratos = $this->getParams('contratos');
-		$ids = "'" . implode("','", $contratos) . "'";
-		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
-		$contratos = $this->getModel('Expedientes\Contratos')->getByIds($ids);
-		$view = $this->newView('Gestion\FormatosImpresion');
-		$view->supervisor = $userData['cuadrilla']['nombre'];
-		$view->contratos = $contratos;
-		$view->render();
-	}
-
-	public function apiAdjuntos() {
+	public function apiGuardar() {
 		$contrato = $this->getParams('contrato');
 		$files = scandir(PATH_ROOT . '/_expedientes/' . $contrato);
 		array_shift($files);

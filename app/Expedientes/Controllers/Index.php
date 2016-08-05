@@ -39,11 +39,6 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$count = array_pop($count);
 		new Response('json', ['total'=>$count['total'], 'rows'=>$asignados]);
 	}
-	
-	public function apiSinAsignar() {
-		$contratos = $this->getModel('Expedientes\Contratos')->getSinAsignar();
-		new Response('json', ['tabla'=>$contratos]);
-	}
 
 	public function apiAsignar() {
 		$cuadrilla = $this->getParams('cuadrilla');
@@ -54,6 +49,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		} catch (Exception $e) {
 			new Response('json', ['respuesta'=>false]);
 		}
+	}
+
+	public function apiGetContratoAsignado() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$count = $model->getCount();
+		$count = array_pop($count);
+		new Response('json', ['data'=>$model->getContratoAsignado($this->getParams('contrato'), $this->getParams('cuadrilla'))]);
 	}
 
 }
