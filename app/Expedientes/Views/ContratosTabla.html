@@ -28,10 +28,21 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 id="modal-titulo" class="modal-title">Archivos adjuntos</h4>
+				<h4 id="modal-titulo" class="modal-title">Detalle del contrato</h4>
 			</div>
 			<div class="modal-body">
-				<div class="row"></div>
+				<div class="row">
+					<div class="col-xs-6">
+						<h6>Historial</h6>
+						<div class="row">
+							<ul class="historial"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<h4>Archivos Adjuntos</h4>
+					<div class="row adjuntos"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -68,7 +79,7 @@
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:element.contrato})
 	.done(function(data) {
-		$('#modal-adjuntos .row').html('');
+		$('.ajuntos').html('');
 		if(data.respuesta > 0){
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
@@ -79,7 +90,7 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 				} else {
 					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:100%;"></a></div>';
 				}
-				$('#modal-adjuntos .row').html($('#modal-adjuntos .row').html() + imagen);
+				$('.adjuntos').html($('.adjuntos').html() + imagen);
 			});
 			$( '#modal-adjuntos' ).modal( 'show' );
 		}

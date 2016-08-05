@@ -22,7 +22,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$query .= $where;
 		}
 		$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
-		return $this->connector->query($query);	
+		return $this->connector->query($query);
 	}
 
 	public function getById($data) {
@@ -66,6 +66,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+	public function getHistorico($contrato) {
+		$query = 'SELECT ges.estatusId, ges.anexo, ges.fecha, pro.descripcion estatus FROM gestionContratos INNER JOIN estatusProceso pro USING (estatusId) WHERE contrato = :contrato ORDER BY ges.fecha;';
+		return $this->connector->query($query, ['contrato'=>$contrato]);
+	}
+
 	public function asignar($cuadrilla, $contratos) {
 	//Borrar las asignaciones previas
 		$values = [];
@@ -80,7 +85,6 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$values[] = "('" . $contrato['contrato'] . "', 2,'Asignado a cuadrilla " . $cuadrilla . "', NOW())";
 		}
 		$query = 'INSERT INTO gestionContratos VALUES ' . implode(',', $values) . ';';
-		return $this->connector->query($query);
 	//Crear nuevas asignaciones
 		$values = [];
 		foreach ($contratos as $contrato) {
