@@ -85,6 +85,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$values[] = "('" . $contrato['contrato'] . "', 2,'Asignado a cuadrilla " . $cuadrilla . "', NOW())";
 		}
 		$query = 'INSERT INTO gestionContratos VALUES ' . implode(',', $values) . ';';
+		$this->connector->query($query);
 	//Crear nuevas asignaciones
 		$values = [];
 		foreach ($contratos as $contrato) {
