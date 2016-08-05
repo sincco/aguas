@@ -15,6 +15,10 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 
 	public function apiUpload() {
 		$contrato = $this->getParams('contrato');
+		if(!is_dir(PATH_ROOT . '/_expedientes/' . $contrato)){
+			mkdir(PATH_ROOT . '/_expedientes/' . $contrato, 0777);
+			chmod(PATH_ROOT . '/_expedientes/' . $contrato, 0777);
+		}
 		foreach ($_FILES as $file) {
 			$tmp_name = $file["tmp_name"][0];
         	$name = $file["name"][0];
