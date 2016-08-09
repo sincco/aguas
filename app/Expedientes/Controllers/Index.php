@@ -57,4 +57,10 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['data'=>$model->getContratoAsignado($this->getParams('contrato'), $this->getParams('cuadrilla'))]);
 	}
 
+	public function apiSetEstatus() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$respuesta = $model->setEstatus($this->getParams('contrato'), $this->getParams('estatus'));
+		new Response('json', ['respuesta'=>$respuesta]);	
+	}
+
 }
