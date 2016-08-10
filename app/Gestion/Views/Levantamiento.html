@@ -45,6 +45,11 @@
 				<label>Direccion: <span data-field="direccion"></span></label>
 			</div>	
 		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label>GPS: <span data-field="gps"></span></label>
+			</div>	
+		</div>
 	</div>
 
 	<div class="row imagenes">
@@ -184,6 +189,19 @@ function cambiarEstatus(estatus) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 		loader.hide();
 	});
+}
+
+function tagUbicacion() {
+	if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        toastr.error('Este navegador no soporta la geolocalización.', 'Error');
+    }
+}
+
+function showPosition(position) {
+    $('[data-field=gps]').html("Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude); 
 }
 
 </script>
