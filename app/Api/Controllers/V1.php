@@ -49,8 +49,12 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 if (isset($_GET['pagination'])) {
                     $pagination = $_GET['pagination'];
                 }
-                $data = $contratos->getDataFiltered($_GET['filters'], $pagination);
-                $total = $contratos->getTotalDataFiltered($_GET['filters']);
+                $filters = [];
+                if (isset($_GET['filters'])) {
+                    $filters = $_GET['filters'];
+                }
+                $data = $contratos->getDataFiltered($filters, $pagination);
+                $total = $contratos->getTotalDataFiltered($filters);
                 new Response('json', ['data'=>$data, 'registros'=>$total, 'extra'=>'']);
                 break;
             default:
