@@ -73,7 +73,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getDataFiltered($where, $pagination = [0]) {
-		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato) LEFT JOIN estatusProceso pro USING (estatusId) ';
+		$query = 'SELECT con.*, IFNULL(ges.estatus,"Sin Asignar") estatus FROM contratos con LEFT JOIN (SELECT contrato, GROUP_CONCAT( CONCAT( fecha,  " :: ", descripcion ) ORDER BY fecha SEPARATOR  "|" ) estatus FROM gestionContratos INNER JOIN estatusProceso pro USING ( estatusId ) GROUP BY contrato) ges USING (contrato) ';
 		$condicion = [];
 		if (count($where)) {
 			foreach ( $where as $campo => $valor ) {
