@@ -71,6 +71,33 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato]);
 	}
 
+	public function getDataFiltered($where, $pagination = [1]) {
+		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato) LEFT JOIN estatusProceso pro USING (estatusId) ';
+		$condicion = [];
+		foreach ( $where as $campo => $valor ) {
+			$condicion[] = $campo . '=:' . $campo;
+		}
+		$condicion = implode( ' AND ', $condicion );
+		if (trim($condicion) != '') {
+			$query .= ' WHERE ' . $condicion;
+		}
+		$query .= ' LIMIT 1000 OFFSET ' . $pagination[0];
+		return $this->connector->query($query, $where);
+	}
+
+	public function getTotalDataFiltered($where) {
+		$query = 'SELECT COUNT(con.contrato) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato) LEFT JOIN estatusProceso pro USING (estatusId) ';
+		$condicion = [];
+		foreach ( $where as $campo => $valor ) {
+			$condicion[] = $campo . '=:' . $campo;
+		}
+		$condicion = implode( ' AND ', $condicion );
+		if(trim($condicion) != '') {
+			$query .= ' WHERE ' . $condicion;
+		}
+		return $this->connector->query($query, $where);
+	}
+
 	public function asignar($cuadrilla, $contratos) {
 	//Borrar las asignaciones previas
 		$values = [];
