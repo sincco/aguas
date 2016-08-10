@@ -205,7 +205,7 @@ function showPosition(position) {
 	loader.show();
     sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
 	.done(function(data) {
-    	$('[data-field=gps]').html(position.coords.latitude + ' , ' + position.coords.longitude); 
+    	$('[data-field=gps]').html(position.coords.longitude + ' , ' + position.coords.latitude); 
 		toastr.success('Ubicación actualizada.', 'Hecho');
 	    loader.hide();
 	}).fail(function(jqXHR, textStatus, errorThrown) {
