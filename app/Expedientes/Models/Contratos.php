@@ -77,7 +77,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		$condicion = [];
 		if (count($where)) {
 			foreach ( $where as $campo => $valor ) {
-				$condicion[] = $campo . '=:' . $campo;
+				if ( $campo == 'contrato' ) {
+					$condicion[] = 'con.' . $campo . '=:' . $campo;
+				} else {
+					$condicion[] = $campo . '=:' . $campo;
+				}
 			}
 		}
 		$condicion = implode( ' AND ', $condicion );
@@ -93,7 +97,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		$condicion = [];
 		if (count($where)) {
 			foreach ( $where as $campo => $valor ) {
-				$condicion[] = $campo . '=:' . $campo;
+				if ( $campo == 'contrato' ) {
+					$condicion[] = 'con.' . $campo . '=:' . $campo;
+				} else {
+					$condicion[] = $campo . '=:' . $campo;
+				}
 			}
 		}
 		$condicion = implode( ' AND ', $condicion );
