@@ -36,9 +36,10 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getContratoAsignado($contrato, $cuadrilla) {
-		$query = 'SELECT asg.cuadrilla, con.*
+		$query = 'SELECT asg.cuadrilla, con.*, IFNULL(ges.estatusId,0) estatusId
 		FROM cuadrillasContratos asg
 		INNER JOIN contratos con USING (contrato)
+		LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato)
 		WHERE asg.cuadrilla = :cuadrilla and asg.contrato = :contrato;';
 		return $this->connector->query($query, ['contrato'=>$contrato, 'cuadrilla'=>$cuadrilla]);
 	}
@@ -120,7 +121,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		}
 		$query = 'INSERT INTO cuadrillasContratos VALUES ' . implode(',', $values) . ';';
 		return $this->connector->query($query);
+	}
 
+	public function setEstatus($contrato, $estatus) {
+		$query = 'INSERT INTO gestionContratos VALUES (:contrato, :estatusId, "", NOW());';
+		return $this->connector->query($query, ['contrato'=>$contrato, 'estatusId'=>$estatus]);
 	}
 
 	public function update( $set, $where ) {

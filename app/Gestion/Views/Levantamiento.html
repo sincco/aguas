@@ -13,6 +13,11 @@
 					</span>
 				</div>
 			</div>
+			<div class="col-md-6 proceso">
+				<button type="button" class="btn btn-success"><i class="fa fa-play" aria-hidden="true" onclick="cambiarEstatus(3);"> <span>Iniciar</span></i></button>
+				<button type="button" class="btn btn-primary"><i class="fa fa-stop" aria-hidden="true" onclick="cambiarEstatus(5);"> <span>Terminar</span></i></button>
+				<button type="button" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true" onclick="cambiarEstatus(4);"> <span>No ejecutado</span></i></button>
+			</div>
 		</div>
 	</div>
 
@@ -41,7 +46,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row imagenes">
 		<h4>Cargar imágenes del levantamiento</h4>
 		<div class="row">
 			<span class="btn btn-success fileinput-button">
@@ -72,7 +77,8 @@
 
 <script type="text/javascript">
 $(function() {
-	$('.fileinput-button').hide();
+	$('.imagenes').hide();
+	$('.proceso').hide();
 });
 
 function buscarContrato() {
@@ -85,6 +91,30 @@ function buscarContrato() {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
+			$('.proceso .btn-success').show();
+			$('.proceso .btn-primary').show();
+			$('.proceso .btn-danger').show();
+			$('.imagenes').show();
+			if (data.data[0].estatusId < 2) {
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+				$('.imagenes').hide();
+			}
+			if (data.data[0].estatusId == 2) {
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+			}
+			if (data.data[0].estatusId == 3) {
+				$('.proceso .btn-success').hide();
+				$('.proceso .btn-danger').hide();
+			}
+			if (data.data[0].estatusId > 3) {
+				$('.proceso .btn-success').hide();
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+				$('.imagenes').show();
+			}
+			$('.proceso').show();
 
 			var url = BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val();
 			$('#fileupload').fileupload({
@@ -104,7 +134,7 @@ function buscarContrato() {
 			}
 			}).prop('disabled', !$.support.fileInput)
 			.parent().addClass($.support.fileInput ? undefined : 'disabled');
-			$('.fileinput-button').show();
+			$('.imagenes').show();
 
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);
@@ -117,6 +147,37 @@ function buscarContrato() {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
 		}
 		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function cambiarEstatus(estatus) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatus', {contrato:$('[name=contrato]').val(), estatus: estatus})
+	.done(function(data) {
+		if (estatus == 3) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').hide();
+			$('.proceso .btn-primary').show();
+			$('.imagenes').show();
+
+		}
+		if (estatus == 4) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').hide();
+			$('.proceso .btn-primary').hide();
+			$('.imagenes').hide();
+		}
+		if (estatus == 5) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').hide();
+			$('.proceso .btn-primary').hide();
+			$('.imagenes').hide();
+		}
+		if (data.respuesta) {
+			toastr.success('Estatus actualizado.', 'Hecho');
+		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 		loader.hide();
