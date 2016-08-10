@@ -41,7 +41,7 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
     }
 
     public function contratos() {
-        $pagination = [1];
+        $pagination = [0];
         $token = $this->validateToken();
         $contratos = $this->getModel('Expedientes\Contratos');
         switch (Request::get('method')) {
