@@ -16,37 +16,10 @@ class CuadrillasModel extends Sincco\Sfphp\Abstracts\Model {
 			ORDER BY det.descripcion', [ 'Cotizacion'=>$data ] );
 	}
 
-	public function insert( $data ) {
-		$query = 'INSERT INTO cotizaciones 
-			SET fecha=NOW(), cliente=:Cliente, 
-			razonSocial=:RazonSocial, email=:Email, 
-			estatus=:Estatus,userId=:UserId';
-		$id = $this->connector->query( $query, [
-			'Cliente'=>$data[ 'cliente' ],
-			'RazonSocial'=>$data[ 'razonSocial' ],
-			'Email'=>$data[ 'email' ],
-			'Estatus'=>$data[ 'estatus' ],
-			'UserId'=>$data[ 'vendedor' ]
-			] );
-		if( $id ) {
-			foreach ($data[ 'productos' ] as $producto) {
-				if( trim( $producto[ 0 ] ) == '' )
-					continue;
-				$query = 'INSERT INTO cotizacionesDetalle 
-				SET cotizacion=:Cotizacion, producto=:Producto, 
-				descripcion=:Descripcion, unidad=:Unidad,
-				cantidad=:Cantidad, precio=:Precio';
-				$detalle = $this->connector->query( $query, [
-					'Cotizacion'=>$id,
-					'Producto'=>$producto[ 0 ],
-					'Descripcion'=>$producto[ 1 ],
-					'Unidad'=>$producto[ 2 ],
-					'Cantidad'=>$producto[ 3 ],
-					'Precio'=>$producto[ 4 ]
-					]);
-			}
-			return $id;
-		}
+	public function insert($data) {
+		$query = 'INSERT INTO cuadrillas 
+			SET descripcion=:descripcion';
+		return $this->connector->query($query, $data);
 	}
 
 	public function update( $set, $where ) {
