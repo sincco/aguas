@@ -200,8 +200,17 @@ function tagUbicacion() {
 }
 
 function showPosition(position) {
-    $('[data-field=gps]').html("Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude); 
+	loader.show();
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
+	.done(function(data) {
+    	$('[data-field=gps]').html(position.coords.latitude + ' , ' + position.coords.longitude); 
+		toastr.success('Ubicación actualizada.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+
 }
 
 </script>

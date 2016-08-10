@@ -140,6 +140,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato, 'estatusId'=>$estatus]);
 	}
 
+	public function setGPS($contrato, $longitud, $latitud) {
+		$query = 'UPDATE contratos SET longitud = :longitud, latitud = :latitud WHERE contrato = :contrato);';
+		return $this->connector->query($query, ['contrato'=>$contrato, 'longitud'=>$longitud, 'latitud'=>$latitud]);
+	}
+
 	public function update( $set, $where ) {
 		$campos = [];
 		$condicion = [];
