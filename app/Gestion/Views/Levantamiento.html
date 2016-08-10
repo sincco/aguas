@@ -49,20 +49,22 @@
 	<div class="row imagenes">
 		<h4>Cargar imágenes del levantamiento</h4>
 		<div class="row">
-			<span class="btn btn-success fileinput-button">
-			<i class="glyphicon glyphicon-plus"></i>
-			<span>Select files...</span>
-			<!-- The file input field used as target for the file upload widget -->
-			<input id="fileupload" type="file" name="files[]" multiple>
-			</span>
-			<br>
-			<br>
-			<!-- The global progress bar -->
-			<div id="progress" class="progress">
-			<div class="progress-bar progress-bar-success"></div>
+			<div class="col-lg-4">
+				<span class="btn btn-success fileinput-button">
+				<input id="fileupload" type="file" name="files[]" multiple>
+				<span style="top: -25px; position: relative;">Seleccionar Fotos...
+				<!-- The file input field used as target for the file upload widget -->
+				</span>
+				</span>
+				<br>
+				<br>
+				<!-- The global progress bar -->
+				<div id="progress" class="progress">
+				<div class="progress-bar progress-bar-success"></div>
+				</div>
+				<!-- The container for the uploaded files -->
+				<div id="files" class="files"></div>
 			</div>
-			<!-- The container for the uploaded files -->
-			<div id="files" class="files"></div>
 		</div>
 	</div>
 </div>
@@ -132,8 +134,7 @@ function buscarContrato() {
 			        progress + '%'
 			    );
 			}
-			}).prop('disabled', !$.support.fileInput)
-			.parent().addClass($.support.fileInput ? undefined : 'disabled');
+			});
 			$('.imagenes').show();
 
 			$(data.data).each(function(){
