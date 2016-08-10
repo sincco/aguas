@@ -24,11 +24,15 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 $userData = ['email'=>$this->getParams('email'),'password'=>$this->getParams('password')];
                 $model = $this->getModel('Api\UsersApi');
                 $respuesta = $model->validateAccess($userData);
-                $password = Reader::get('app')['key'];
-                $minutesExpiration = 2880;
-                unset($userData['password']);
-                $token = Tokenizer::create( $userData, $password, $minutesExpiration );
-                new Response('json', ['token'=>$token, 'extra'=>'']);
+                if(count($respuesta)) {
+                    $password = Reader::get('app')['key'];
+                    $minutesExpiration = 2880;
+                    unset($userData['password']);
+                    $token = Tokenizer::create( $userData, $password, $minutesExpiration );
+                    new Response('json', ['token'=>$token, 'extra'=>'']);
+                } else {
+                    new Response('json', ['token'=>false, 'extra'=>'Usuario no válido']);
+                }
                 break;
             default:
                 new Response('json', ['token'=>false, 'extra'=>'Método ' . Request::get('method') . ' no soportado']);
