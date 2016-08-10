@@ -77,9 +77,9 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	$('.adjuntos').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:element.contrato})
 	.done(function(data) {
-		$('.ajuntos').html('');
 		if(data.respuesta > 0){
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
