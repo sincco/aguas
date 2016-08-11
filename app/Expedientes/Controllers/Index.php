@@ -66,7 +66,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function apiGPS() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$respuesta = $model->setGPS($this->getParams('contrato'), $this->getParams('longitud'), $this->getParams('latitud'));
-		new Response('json', ['respuesta'=>$respuesta]);		
+		new Response('json', ['respuesta'=>$respuesta]);
+	}
+
+	public function apiCampo() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
+		new Response('json', ['respuesta'=>$respuesta]);
 	}
 
 }

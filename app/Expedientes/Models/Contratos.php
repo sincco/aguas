@@ -145,6 +145,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato, 'longitud'=>$longitud, 'latitud'=>$latitud]);
 	}
 
+	public function setCampo($contrato, $campo, $valor) {
+		$query = 'UPDATE contratos SET ' . $campo . ' = :' . $campo . ' WHERE contrato = :contrato;';
+		return $this->connector->query($query, ['contrato'=>$contrato, $campo=>$valor]);
+	}
+
 	public function update( $set, $where ) {
 		$campos = [];
 		$condicion = [];

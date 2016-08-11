@@ -33,22 +33,35 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-6">
+			<div class="col-lg-4">
 				<label>Suministro: <span data-field="suministro"></span></label>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-4">
 				<label>numTomas: <span data-field="numTomas"></span></label>
+			</div>
+			<div class="col-lg-4">
+				<label>GPS: <span data-field="gps"></span></label>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-lg-12">
 				<label>Direccion: <span data-field="direccion"></span></label>
-			</div>	
+			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12">
-				<label>GPS: <span data-field="gps"></span></label>
-			</div>	
+			<h4>Medidor</h4>
+			<div class="col-lg-6">
+				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
+					</span></div></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
+					</span></div></label>
+			</div>
 		</div>
 	</div>
 
@@ -97,6 +110,8 @@ function buscarContrato() {
 	$('[data-field=numTomas]').html('');
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
+	$('[name=serieMedidor]').val('');
+	$('[name=telemetriaMedidor]').val('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
@@ -150,6 +165,8 @@ function buscarContrato() {
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
+				$('[name=serieMedidor]').val(this.serieMedidor);
+				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
 			})
 		} else {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
@@ -214,6 +231,18 @@ function showPosition(position) {
 
 }
 
+function guardarCampo(input) {
+	loader.show();
+	var elemento = $(input).parent().parent().children('input');
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
+	.done(function(data) {
+		toastr.success('Campo actualizado.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
 </script>
 
 {% include 'footer.html' %}
