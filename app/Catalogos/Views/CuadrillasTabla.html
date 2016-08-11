@@ -101,7 +101,7 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	.done(function(data) {
 		$('#asignados').bootstrapTable('destroy');
 		$('#asignados').bootstrapTable({
-			data: data.tabla,
+			data: data.rows,
 			columns: [{
 				field: 'state',
 				title: '',
