@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true" onclick="buscarContratos()"> <span>Asignar más contratos</span></i></button>
+				<button type="button" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true" onclick="window.location = BASE_URL + 'expedientes'"> <span>Asignar más contratos</span></i></button>
 				<button type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true" onclick="imprimirFormatos()"> <span>Imprimir Formato</span></i></button>
 			</div>
 		</div>
@@ -153,46 +153,15 @@ function guardarCuadrilla(form) {
 	})
 }
 
-function buscarContratos() {
-	var url = BASE_URL + 'expedientes/index/apisinasignar';
-	sincco.consumirAPI('GET',url)
-	.done(function(data) {
-		$('#pendientes').bootstrapTable('destroy');
-		$('#pendientes').bootstrapTable({
-			data: data.tabla,
-			columns: [{
-				field: 'state',
-				title: '',
-				checkbox: true
-			},{
-		        field: 'contrato',
-		        title: 'Contrato',
-		        align: 'right',
-		        sortable: true
-		    }, {
-		        field: 'propietario',
-		        title: 'Propietario',
-		        align: 'right',
-		        sortable: true
-		    }, {
-		        field: 'municipio',
-		        title: 'Municipio',
-		        align: 'right',
-		        sortable: true
-		    }, {
-		    	field: 'colonia',
-		        title: 'Colonia',
-		        align: 'right',
-		        sortable: true
-		    }],
-		});
-	});
-	$('#modal-asignar').modal('show');
+function imprimirFormatos() {
+	var contratos = $('#asignados').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/imprimir',{ contratos: ids}, 'POST', '_blank'); 
 }
 
-function imprimirFormatos() {
-	console.log($('#asignados').bootstrapTable('getSelections'));
-}
 </script>
 
 {% include 'footer.html' %}
