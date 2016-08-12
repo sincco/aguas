@@ -2,19 +2,21 @@
 {% include 'menu.html' %}
 
 <style type="text/css">
-div.upload {
-    width: 157px;
-    height: 57px;
-    background: url(https://lh6.googleusercontent.com/-dqTIJRTqEAQ/UJaofTQm3hI/AAAAAAAABHo/w7ruR1SOIsA/s157/upload.png);
+.fileUpload {
+    position: relative;
     overflow: hidden;
+    margin: 10px;
 }
-
-div.upload input {
-    display: block !important;
-    width: 157px !important;
-    height: 57px !important;
-    opacity: 0 !important;
-    overflow: hidden !important;
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 </style>
 
@@ -82,43 +84,85 @@ div.upload input {
 		</div>
 	</div>
 
-	<div class="row imagenes">
-		<h4>Cargar imágenes del levantamiento</h4>
-		<div class="row">
-			<div class="col-lg-3">
-				<div class="upload">
-					<input type="file" name="upload"/>
+	<form name="imagenes">
+		<div class="row imagenes">
+			<h4>Cargar imágenes del levantamiento</h4>
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Fachada predio</span></i>
+						<input type="file" class="upload" name="fachada-predio" />
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Cuadro Actual</span></i>
+						<input type="file" class="upload" name="cuadro-actual" />
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Cuadro nuevo</span></i>
+						<input type="file" class="upload" name="cuadro-nuevo" />
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Carátula medidor</span></i>
+						<input type="file" class="upload" name="caratula-medidor" />
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
+						<input type="file" class="upload" name="orden-trabajo" />
+					</div>
 				</div>
 			</div>
-			<!-- <div class="col-lg-4">
-				<span class="btn btn-success fileinput-button">
-				<input id="fileupload" type="file" name="files[]" multiple>
-				<span style="top: -25px; position: relative;">Seleccionar Fotos...
-				</span>
-				</span>
-				<br>
-				<br>
-				<div id="progress" class="progress">
-				<div class="progress-bar progress-bar-success"></div>
+			<div class="row">
+				<div class="col-lg-2">
+					<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Subir imagenes</span></i></button>
 				</div>
-				<div id="files" class="files"></div>
-			</div> -->
+			</div>
 		</div>
-	</div>
+	</form>
 </div>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-<script src="https://blueimp.github.io/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
-<!-- The basic File Upload plugin -->
-<script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
 
 <script type="text/javascript">
 $(function() {
 	$('.imagenes').hide();
 	$('.proceso').hide();
+
+	$('.upload').change(function(){
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-info');
+	});
+
+	$('#upload').click(function() {
+		loader.show();
+		var form_data = new FormData();
+		$('.upload').each(function() {
+			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		});
+		$.ajax({
+			url: BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val(),
+			dataType: 'text',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(response){
+				var api = JSON.parse(response);
+				if (api.respuesta) {
+					toastr.success('Imágenes guardadas.', 'Éxito');
+				} else {
+					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
+				}
+				loader.hide();
+			}
+		});
+	});
 });
 
 function buscarContrato() {
@@ -158,24 +202,6 @@ function buscarContrato() {
 				$('.imagenes').hide();
 			}
 			$('.proceso').show();
-
-			var url = BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val();
-			$('#fileupload').fileupload({
-			url: url,
-			dataType: 'json',
-			done: function (e, data) {
-			    $.each(data.result.files, function (index, file) {
-			        $('<p/>').text(file.name).appendTo('#files');
-			    });
-			},
-			progressall: function (e, data) {
-			    var progress = parseInt(data.loaded / data.total * 100, 10);
-			    $('#progress .progress-bar').css(
-			        'width',
-			        progress + '%'
-			    );
-			}
-			});
 
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);

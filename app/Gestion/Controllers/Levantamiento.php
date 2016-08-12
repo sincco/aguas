@@ -19,11 +19,19 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 			mkdir(PATH_ROOT . '/_expedientes/' . $contrato, 0777);
 			chmod(PATH_ROOT . '/_expedientes/' . $contrato, 0777);
 		}
-		foreach ($_FILES as $file) {
-			$tmp_name = $file["tmp_name"][0];
-        	$name = $file["name"][0];
-        	move_uploaded_file($tmp_name, PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
-        	chmod(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name, 0777);
+		$imagenes = array_keys($_FILES['file']['name']);
+		try{
+			foreach ($imagenes as $imagen) {
+				$tmp_name = $_FILES['file']['tmp_name'][$imagen];
+				$extension = explode('.', $_FILES['file']['name'][$imagen]);
+				$extension = array_pop($extension);
+				$name = $imagen . '.' . $extension;
+				move_uploaded_file($tmp_name, PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
+				chmod(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name, 0777);
+			}
+			new Response( 'json', [ 'respuesta'=>true ] );
+		} catch (Exception $e) {
+			new Response( 'json', [ 'respuesta'=>false ] );
 		}
 	}
 
