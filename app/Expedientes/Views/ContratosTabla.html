@@ -52,7 +52,7 @@
 								<label>numTomas: <span data-fields="numTomas"></span></label>
 							</div>
 							<div class="col-lg-4">
-								<label>GPS: <span data-fields="gps"></span></label>
+								<label>GPS: <span data-fields="gps"></span></label><button type="button" class="btn btn-warning"><i class="fa fa-map" aria-hidden="true" onclick=""> <span>Ubicar</span></i></button>
 							</div>
 						</div>
 						<div class="row">
@@ -190,9 +190,12 @@ function buscarContrato(contrato,cuadrilla) {
 				$('[data-fields=suministro]').html(this.suministro);
 				$('[data-fields=numTomas]').html(this.numTomas);
 				$('[data-fields=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
-				$('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
+				// $('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
+				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",15z');";
+				var newclick = new Function(js);
+				$(".btn-warning").attr('onclick', '').click(newclick);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
