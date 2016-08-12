@@ -20,7 +20,24 @@
 }
 </style>
 
-<script type="text/javascript" src="https://dwa012.github.io/html5-qrcode/javascripts/html5-qrcode.min.js"></script>
+
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/grid.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/version.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/detector.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/formatinf.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/errorlevel.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/bitmat.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/datablock.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/bmparser.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/datamask.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/rsdecoder.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/gf256poly.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/gf256.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/decoder.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/qrcode.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/findpat.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/alignpat.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/databr.js"></script>
 
 <div class="container">
 	<div class="row">
@@ -141,18 +158,27 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12">
-						<div  class="center" id="reader" style="width:300px;height:250px;"></div>
-						<h6 class="center">Result</h6>
-						<span id="read" class="center"></span>
-						<br>
+						<table class="tsel" border="0" width="100%">
+						<tr>
+						<td valign="top" align="center" width="50%">
+						<table class="tsel" border="0">
+						<tr>
+						<td><img class="selector" id="webcamimg" src="vid.png" onclick="setwebcam()" align="left" /></td>
+						<td><img class="selector" id="qrimg" src="cam.png" onclick="setimg()" align="right"/></td></tr>
+						<tr><td colspan="2" align="center">
+						<div id="outdiv">
+						</div></td></tr>
+						</table>
+						</td>
+						</tr>
+						<tr><td colspan="3" align="center">
+						<img src="down.png"/>
+						</td></tr>
+						<tr><td colspan="3" align="center">
+						<div id="result"></div>
+						</td></tr>
+						</table>
 
-						<h6 class="center">Read Error (Debug only)</h6>
-						<span class="center">Will constantly show a message, can be ignored</span>
-						<span id="read_error" class="center"></span>
-
-						<br>
-						<h6 class="center">Video Error</h6>
-						<span id="vid_error" class="center"></span>
 					</div>
 				</div>
 			</div>
@@ -173,15 +199,7 @@ $(function() {
 		$(this).parent().addClass('btn-info');
 	});
 
-	$('#reader').html5_qrcode(function(data){
-			$('#read').html(data);
-		},
-		function(error){
-			$('#read_error').html(error);
-		}, function(videoError){
-			$('#vid_error').html(videoError);
-		}
-	);
+	load();	
 
 	$('#upload').click(function() {
 		loader.show();
