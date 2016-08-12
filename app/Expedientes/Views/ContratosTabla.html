@@ -38,26 +38,26 @@
 						<h4>Datos del contrato</h4>
 						<div class="row">
 							<div class="col-lg-6">
-								<label>Propiertario: <span data-field="propietario"></span></label>
+								<label>Propiertario: <span data-fields="propietario"></span></label>
 							</div>
 							<div class="col-lg-6">
-								<label>Usuario: <span data-field="usuario"></span></label>
+								<label>Usuario: <span data-fields="usuario"></span></label>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-4">
-								<label>Suministro: <span data-field="suministro"></span></label>
+								<label>Suministro: <span data-fields="suministro"></span></label>
 							</div>
 							<div class="col-lg-4">
-								<label>numTomas: <span data-field="numTomas"></span></label>
+								<label>numTomas: <span data-fields="numTomas"></span></label>
 							</div>
 							<div class="col-lg-4">
-								<label>GPS: <span data-field="gps"></span></label>
+								<label>GPS: <span data-fields="gps"></span></label>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
-								<label>Direccion: <span data-field="direccion"></span></label>
+								<label>Direccion: <span data-fields="direccion"></span></label>
 							</div>
 						</div>
 						<div class="row">
@@ -65,10 +65,10 @@
 								<h4>Medidor</h4>
 								<div class="row">
 									<div class="col-lg-6">
-										<label>N/S: <span data-field="serieMedidor"></span></label>
+										<label>N/S: <span data-fields="serieMedidor"></span></label>
 									</div>
 									<div class="col-lg-6">
-										<label>Telemetría: <span data-field="telemetriaMedidor"></span></label>
+										<label>Telemetría: <span data-fields="telemetriaMedidor"></span></label>
 									</div>
 								</div>
 							</div>
@@ -173,26 +173,26 @@ function buscarAdjuntos(contrato) {
 
 function buscarContrato(contrato,cuadrilla) {
 	loader.show();
-	$('[data-field=propietario]').html('');
-	$('[data-field=usuario]').html('');
-	$('[data-field=suministro]').html('');
-	$('[data-field=numTomas]').html('');
-	$('[data-field=direccion]').html('');
-	$('[data-field=gps]').html('');
-	$('[data-field=serieMedidor]').html('');
-	$('[data-field=telemetriaMedidor]').html('');
+	$('[data-fields=propietario]').html('');
+	$('[data-fields=usuario]').html('');
+	$('[data-fields=suministro]').html('');
+	$('[data-fields=numTomas]').html('');
+	$('[data-fields=direccion]').html('');
+	$('[data-fields=gps]').html('');
+	$('[data-fields=serieMedidor]').html('');
+	$('[data-fields=telemetriaMedidor]').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:contrato, cuadrilla: cuadrilla})
 	.done(function(data) {
 		if (data.data.length) {
 			$(data.data).each(function(){
-				$('[data-field=propietario]').html(this.propietario);
-				$('[data-field=usuario]').html(this.usuario);
-				$('[data-field=suministro]').html(this.suministro);
-				$('[data-field=numTomas]').html(this.numTomas);
-				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
-				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
-				$('[data-field=serieMedidor]').html(this.serieMedidor);
-				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);
+				$('[data-fields=propietario]').html(this.propietario);
+				$('[data-fields=usuario]').html(this.usuario);
+				$('[data-fields=suministro]').html(this.suministro);
+				$('[data-fields=numTomas]').html(this.numTomas);
+				$('[data-fields=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
+				$('[data-fields=serieMedidor]').html(this.serieMedidor);
+				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
