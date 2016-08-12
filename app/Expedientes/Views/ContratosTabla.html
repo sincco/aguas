@@ -33,15 +33,17 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-6">
-						<h6>Historial</h6>
+						<h4>Historial</h4>
 						<div class="row">
 							<ul class="historial"></ul>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<h4>Archivos Adjuntos</h4>
-					<div class="row adjuntos"></div>
+					<div class="col-xs-12">
+						<h4>Imágenes</h4>
+						<div class="row adjuntos"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -86,9 +88,10 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 				index++;
 				var url = BASE_URL + '_expedientes/' + element.contrato + '/' + adjunto;
 				if(extension(adjunto).toLowerCase() == 'pdf') {
-					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
 				} else {
-					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:100%;"></a></div>';
+					var titulo = adjunto.substring(1,100).replace('-',' ');
+					var imagen = '<div class="col-xs-6 col-md-4"><div class="thumbnail"><img src="' + url + '" alt="' + adjunto + '"><div class="caption"><h5>' + titulo + '</h5><p><a href="' + url + '" target="_blank" class="btn btn-primary" role="button"><i class="fa fa-eye" aria-hidden="true"></i> Ver</a> <a href="' + url + '" download="' + element.contrato + '-' + titulo + '" class="btn btn-default" role="button"><i class="fa fa-download" aria-hidden="true"></i> Descargar</a></p></div></div></div>';
 				}
 				$('.adjuntos').html($('.adjuntos').html() + imagen);
 			});
