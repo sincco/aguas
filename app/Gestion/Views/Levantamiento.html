@@ -161,9 +161,8 @@ var arg = {
 		$('#modal-qr').modal('hide');
 	}
 };
-var decoder  = $('canvas').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.stop();
+var decoder  = $('canvas').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.play();
 decoder.buildSelectMenu('#qrCamera');
-decoder.play();
 $('#qrCamera').on('change', function(){
 	decoder.stop().play();
 });
