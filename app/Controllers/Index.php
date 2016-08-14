@@ -1,5 +1,6 @@
 <?php
 use \Sincco\Tools\Login;
+use \Sincco\Sfphp\Request;
 
 /**
  * Captura de petición al home

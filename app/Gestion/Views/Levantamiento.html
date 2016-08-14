@@ -1,26 +1,5 @@
 {% include 'header.html' %}
 {% include 'menu.html' %}
-
-<style type="text/css">
-.fileUpload {
-    position: relative;
-    overflow: hidden;
-    margin: 10px;
-}
-.fileUpload input.upload {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0;
-    filter: alpha(opacity=0);
-}
-</style>
-
-
 <script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/grid.js"></script>
 <script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/version.js"></script>
 <script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/detector.js"></script>
@@ -92,13 +71,14 @@
 			<div class="col-lg-6">
 				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span>QR</span></i></button>
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span>QR</span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span>QR</span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
@@ -166,8 +146,8 @@
 						<td valign="top" align="center" width="50%">
 						<table class="tsel" border="0">
 						<tr>
-						<td><img class="selector" id="webcamimg" src="vid.png" onclick="setwebcam()" align="left" /></td>
-						<td><img class="selector" id="qrimg" src="cam.png" onclick="setimg()" align="right"/></td></tr>
+						<td><img class="selector" id="webcamimg" src="vid.png" onclick="setwebcam()" align="left" style="display: none;"/></td>
+						<td><img class="selector" id="qrimg" src="cam.png" onclick="setimg()" align="right" style="display: none;"/></td></tr>
 						<tr><td colspan="2" align="center">
 						<div id="outdiv">
 						</div></td></tr>
@@ -175,19 +155,16 @@
 						</td>
 						</tr>
 						<tr><td colspan="3" align="center">
-						<img src="down.png"/>
+						<img src="down.png" style="display: none;"/>
 						</td></tr>
 						<tr><td colspan="3" align="center">
-						<div id="result"></div>
+						<input type="hidden" id="qrResult" data-destiny="">
 						</td></tr>
 						</table>
 						<canvas id="qr-canvas" width="800" height="600"></canvas>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
 			</div>
 		</div>
 	</div>
@@ -198,7 +175,7 @@ $(function() {
 	$('.imagenes').hide();
 	$('.proceso').hide();
 
-	$('.upload').change(function(){
+	$('.upload').change(function() {
 		$(this).parent().removeClass('btn-default');
 		$(this).parent().addClass('btn-info');
 	});

@@ -100,13 +100,9 @@ function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function read(a)
-{
-    var html="<br>";
-    if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
-        html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
-    html+="<b>"+htmlEntities(a)+"</b><br><br>";
-    document.getElementById("result").innerHTML=html;
+function read(a) {
+    $('[name=' + $("#qrResult").attr('data-destiny') + ']').val(a);
+    $('#modal-qr').modal('hide');
 }	
 
 function isCanvasSupported(){
@@ -185,7 +181,7 @@ function setwebcam()
 function setwebcam2(options)
 {
 	console.log(options);
-	document.getElementById("result").innerHTML="- scanning -";
+	$("#qrResult").val("");
     if(stype==1)
     {
         setTimeout(captureToCanvas, 500);    
@@ -222,7 +218,7 @@ function setwebcam2(options)
 
 function setimg()
 {
-	document.getElementById("result").innerHTML="";
+	$("#qrResult").val("");
     if(stype==2)
         return;
     document.getElementById("outdiv").innerHTML = imghtml;
