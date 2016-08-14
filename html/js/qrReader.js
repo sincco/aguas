@@ -102,6 +102,8 @@ function htmlEntities(str) {
 
 function read(a) {
     $('[name=' + $("#qrResult").attr('data-destiny') + ']').val(a);
+    var supportsVibrate = "vibrate" in navigator;
+    navigator.vibrate(1000);
     $('#modal-qr').modal('hide');
 }	
 
