@@ -1,23 +1,7 @@
 {% include 'header.html' %}
 {% include 'menu.html' %}
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/grid.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/version.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/detector.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/formatinf.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/errorlevel.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/bitmat.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/datablock.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/bmparser.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/datamask.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/rsdecoder.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/gf256poly.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/gf256.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/decoder.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/qrcode.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/findpat.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/alignpat.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qr/databr.js"></script>
-<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrReader.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/webcodecamjquery.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/qrcodelib.js"></script>
 
 <div class="container">
 	<div class="row">
@@ -71,16 +55,31 @@
 			<div class="col-lg-6">
 				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span>QR</span></i></button>
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span>QR</span></i></button>
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
+			</div>
+		</div>
+		<div class="row">
+			<h4>Materiales</h4>
+			<div class="col-xs-12 materiales">
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="input-group"><input type="text" name="material-1" class="form-control" aria-describedby="sizing-addon2" placeholder="Material">
+							<span class="input-group-btn">
+								<button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+								<button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button>
+							</span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -140,28 +139,9 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div id="mainbody">
-
-						<table class="tsel" border="0" width="100%">
-						<tr>
-						<td valign="top" align="center" width="50%">
-						<table class="tsel" border="0">
-						<tr>
-						<td><img class="selector" id="webcamimg" src="vid.png" onclick="setwebcam()" align="left" style="display: none;"/></td>
-						<td><img class="selector" id="qrimg" src="cam.png" onclick="setimg()" align="right" style="display: none;"/></td></tr>
-						<tr><td colspan="2" align="center">
-						<div id="outdiv">
-						</div></td></tr>
-						</table>
-						</td>
-						</tr>
-						<tr><td colspan="3" align="center">
-						<img src="down.png" style="display: none;"/>
-						</td></tr>
-						<tr><td colspan="3" align="center">
-						<input type="hidden" id="qrResult" data-destiny="">
-						</td></tr>
-						</table>
-						<canvas id="qr-canvas" width="800" height="600"></canvas>
+							<canvas id="qrVideo" class="center-block"></canvas>
+							<ul></ul>
+							<input type="hidden" id="qrResult" data-destiny="">
 						</div>
 					</div>
 				</div>
@@ -171,6 +151,18 @@
 </div>
 
 <script type="text/javascript">
+
+var arg = {
+	resultFunction: function(result) {
+		$('[name=' + $("#qrResult").attr('data-destiny') + ']').val(result.code);
+		var supportsVibrate = "vibrate" in navigator;
+		navigator.vibrate(250);
+		$('#modal-qr').modal('hide');
+	}
+};
+
+$("canvas").WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.play();
+
 $(function() {
 	$('.imagenes').hide();
 	$('.proceso').hide();
@@ -180,7 +172,7 @@ $(function() {
 		$(this).parent().addClass('btn-info');
 	});
 
-	load();	
+	// load();	
 
 	$('#upload').click(function() {
 		loader.show();
@@ -332,6 +324,11 @@ function guardarCampo(input) {
 		loader.hide();
 	});
 }
+
+function agregarMaterial() {
+		$('.materiales').append('<div class="row"><div class="col-xs-6"><div class="input-group"><input type="text" name="material-1" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
+}
+
 </script>
 
 {% include 'footer.html' %}
