@@ -139,6 +139,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div id="mainbody">
+							<select id="qrCamera" class="form-control center-block"></select>
 							<canvas id="qrVideo" class="center-block"></canvas>
 							<ul></ul>
 							<input type="hidden" id="qrResult" data-destiny="">
@@ -160,8 +161,12 @@ var arg = {
 		$('#modal-qr').modal('hide');
 	}
 };
-
-$("canvas").WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.play();
+var decoder  = $('canvas').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.play();
+decoder.buildSelectMenu('#qrCamera');
+decoder.play();
+$('#qrCamera').on('change', function(){
+	decoder.stop().play();
+});
 
 $(function() {
 	$('.imagenes').hide();
