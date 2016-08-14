@@ -163,7 +163,7 @@ var arg = {
 };
 var decoder  = $('canvas').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.stop();
 decoder.buildSelectMenu('#qrCamera');
-//decoder.play();
+decoder.play();
 $('#qrCamera').on('change', function(){
 	decoder.stop().play();
 });
