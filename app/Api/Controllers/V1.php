@@ -81,7 +81,6 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 } else {
                     new Response('json', [ 'data'=>false, 'extra'=>'El contrato no tiene imagenes asignadas.' ]);
                 }
-                //new Response('json', ['data'=>$data, 'registros'=>$total, 'extra'=>'']);
                 break;
             default:
                 new Response('json', ['data'=>false, 'extra'=>'Método ' . Request::get('method') . ' no soportado']);
