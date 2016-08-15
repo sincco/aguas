@@ -64,7 +64,7 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
     }
 
     public function imagenes() {
-        //$token = $this->validateToken();
+        $token = $this->validateToken();
         $contratos = $this->getModel('Expedientes\Contratos');
         switch (Request::get('method')) {
             case 'GET':

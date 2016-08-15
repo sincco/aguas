@@ -21,7 +21,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->render();
 	}
 
-	public function ugrade() {
+	public function upgrade() {
 		$respuesta = shell_exec('./aguas app update');
 		echo $respuesta;
 	}
