@@ -59,7 +59,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiSetEstatus() {
 		$model = $this->getModel('Expedientes\Contratos');
-		$respuesta = $model->setEstatus($this->getParams('contrato'), $this->getParams('estatus'));
+		$respuesta = $model->setEstatus($this->getParams('contrato'), $this->getParams('estatus'), $this->getParams('motivo'));
 		new Response('json', ['respuesta'=>$respuesta]);	
 	}
 
