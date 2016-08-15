@@ -11,6 +11,7 @@
 				<div class="input-group">
 					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
 					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','contrato'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
 					</span>
 				</div>
@@ -55,14 +56,14 @@
 			<div class="col-lg-6">
 				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
@@ -74,13 +75,14 @@
 					<div class="col-xs-6">
 						<div class="input-group"><input type="text" name="material-1" class="form-control" aria-describedby="sizing-addon2" placeholder="Material">
 							<span class="input-group-btn">
-								<button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+								<button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true" onclick="$('#qrResult').attr('data-destiny','material-1'); $('#modal-qr').modal('show');decoder.play();" > <span></span></i></button>
 								<button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button>
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
+			<button type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
 		</div>
 	</div>
 
@@ -132,7 +134,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="decoder.stop();">&times;</button>
 				<h4 id="modal-titulo" class="modal-title">Leer QR</h4>
 			</div>
 			<div class="modal-body">
@@ -159,9 +161,10 @@ var arg = {
 		var supportsVibrate = "vibrate" in navigator;
 		navigator.vibrate(250);
 		$('#modal-qr').modal('hide');
+		decoder.stop();
 	}
 };
-var decoder  = $('canvas').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery.play();
+var decoder  = $('#qrVideo').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
 decoder.buildSelectMenu('#qrCamera');
 $('#qrCamera').on('change', function(){
 	decoder.stop().play();
@@ -330,7 +333,8 @@ function guardarCampo(input) {
 }
 
 function agregarMaterial() {
-		$('.materiales').append('<div class="row"><div class="col-xs-6"><div class="input-group"><input type="text" name="material-1" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
+	var idxMaterial = $('[name^=material-]').length + 1;
+	$('.materiales').append('<div class="row"><div class="col-xs-6"><div class="input-group"><input type="text" name="material-' + idxMaterial + '" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(\'#qrResult\').attr(\'data-destiny\',\'material-' + idxMaterial + '\'); $(\'#modal-qr\').modal(\'show\');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
 }
 
 </script>
