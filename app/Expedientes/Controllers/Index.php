@@ -75,4 +75,10 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['respuesta'=>$respuesta]);
 	}
 
+	public function apiMateriales() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$respuesta = $model->setMateriales($this->getParams('contrato'), $this->getParams('materiales'));
+		new Response('json', ['respuesta'=>$respuesta]);
+	}
+
 }

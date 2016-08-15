@@ -150,6 +150,15 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato, $campo=>$valor]);
 	}
 
+	public function setMateriales($contrato, $materiales) {
+		$values = [];
+		foreach ($materiales as $key => $value) {
+			$values[] = "('" . $contrato . "','" . $value . "',NOW())";
+		}
+		$query = 'INSERT INTO contratosMateriales VALUES ' . implode(',', $values) . ';';
+		return $this->connector->query($query);
+	}
+
 	public function update( $set, $where ) {
 		$campos = [];
 		$condicion = [];

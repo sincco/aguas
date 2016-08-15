@@ -36,3 +36,5 @@ table { font-family: "Ubuntu", sans-serif;  font-size: 0.8em; }
 .fileUpload input.upload { position: absolute; top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0); }
 
 #qrVideo { width: 90%; height: 50%; }
+
+.camera { background-color: khaki; }

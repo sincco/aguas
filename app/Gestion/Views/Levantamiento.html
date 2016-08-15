@@ -11,7 +11,7 @@
 				<div class="input-group">
 					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','contrato'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','contrato'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
 					</span>
 				</div>
@@ -25,7 +25,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row rowContrato">
 		<h4>Datos del contrato</h4>
 		<div class="row">
 			<div class="col-lg-6">
@@ -56,38 +56,40 @@
 			<div class="col-lg-6">
 				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row rowMateriales">
 			<h4>Materiales</h4>
+			<form name="materiales">
 			<div class="col-xs-12 materiales">
 				<div class="row">
 					<div class="col-xs-6">
 						<div class="input-group"><input type="text" name="material-1" class="form-control" aria-describedby="sizing-addon2" placeholder="Material">
 							<span class="input-group-btn">
-								<button class="btn btn-default qr-material" type="button"><i class="fa fa-camera" aria-hidden="true" onclick="$('#qrResult').attr('data-destiny','material-1'); $('#modal-qr').modal('show');decoder.play();" > <span></span></i></button>
+								<button class="btn btn-default qr-material camera" type="button"><i class="fa fa-camera" aria-hidden="true" onclick="$('#qrResult').attr('data-destiny','material-1'); $('#modal-qr').modal('show');decoder.play();" > <span></span></i></button>
 								<button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button>
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<button type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</form>
+			<button type="button" class="btn btn-success" onclick="guardarMateriales()"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
 		</div>
 	</div>
 
 	<form name="imagenes">
-		<div class="row imagenes">
+		<div class="row rowImagenes">
 			<h4>Cargar imágenes del levantamiento</h4>
 			<div class="row">
 				<div class="col-lg-2">
@@ -118,6 +120,12 @@
 					<div class="fileUpload btn btn-default">
 						<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
 						<input type="file" class="upload" name="5orden-trabajo" />
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Medidor retirado</span></i>
+						<input type="file" class="upload" name="6medidor-retirado" />
 					</div>
 				</div>
 			</div>
@@ -171,15 +179,15 @@ $('#qrCamera').on('change', function(){
 });
 
 $(function() {
-	$('.imagenes').hide();
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.rowImagenes').hide();
 	$('.proceso').hide();
 
 	$('.upload').change(function() {
 		$(this).parent().removeClass('btn-default');
 		$(this).parent().addClass('btn-info');
 	});
-
-	// load();	
 
 	$('#upload').click(function() {
 		loader.show();
@@ -224,25 +232,32 @@ function buscarContrato() {
 			$('.proceso .btn-success').show();
 			$('.proceso .btn-primary').show();
 			$('.proceso .btn-danger').show();
-			$('.imagenes').show();
+			$('.rowImagenes').hide();
+			$('.rowContrato').hide();
+			$('.rowMateriales').hide();
 			if (data.data[0].estatusId < 2) {
 				$('.proceso .btn-primary').hide();
 				$('.proceso .btn-danger').hide();
-				$('.imagenes').hide();
 			}
 			if (data.data[0].estatusId == 2) {
 				$('.proceso .btn-primary').hide();
 				$('.proceso .btn-danger').hide();
+				$('.rowImagenes').show();
+				$('.rowContrato').show();
+				$('.rowMateriales').show();
 			}
 			if (data.data[0].estatusId == 3) {
 				$('.proceso .btn-success').hide();
 				$('.proceso .btn-danger').show();
+				$('.rowImagenes').show();
+				$('.rowContrato').show();
+				$('.rowMateriales').show();
 			}
 			if (data.data[0].estatusId > 3) {
 				$('.proceso .btn-success').hide();
 				$('.proceso .btn-primary').hide();
 				$('.proceso .btn-danger').hide();
-				$('.imagenes').hide();
+
 			}
 			$('.proceso').show();
 
@@ -273,20 +288,26 @@ function cambiarEstatus(estatus) {
 			$('.proceso .btn-success').hide();
 			$('.proceso .btn-danger').show();
 			$('.proceso .btn-primary').show();
-			$('.imagenes').show();
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$('.rowMateriales').show();
 
 		}
 		if (estatus == 4) {
 			$('.proceso .btn-success').hide();
 			$('.proceso .btn-danger').hide();
 			$('.proceso .btn-primary').hide();
-			$('.imagenes').hide();
+			$('.rowImagenes').hide();
+			$('.rowContrato').hide();
+			$('.rowMateriales').hide();
 		}
 		if (estatus == 5) {
 			$('.proceso .btn-success').hide();
 			$('.proceso .btn-danger').hide();
 			$('.proceso .btn-primary').hide();
-			$('.imagenes').hide();
+			$('.rowImagenes').hide();
+			$('.rowContrato').hide();
+			$('.rowMateriales').hide();
 		}
 		if (data.respuesta) {
 			toastr.success('Estatus actualizado.', 'Hecho');
@@ -334,7 +355,22 @@ function guardarCampo(input) {
 
 function agregarMaterial() {
 	var idxMaterial = $('[name^=material-]').length + 1;
-	$('.materiales').append('<div class="row"><div class="col-xs-6"><div class="input-group"><input type="text" name="material-' + idxMaterial + '" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(\'#qrResult\').attr(\'data-destiny\',\'material-' + idxMaterial + '\'); $(\'#modal-qr\').modal(\'show\');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
+	$('.materiales').append('<div class="row"><div class="col-xs-6"><div class="input-group"><input type="text" name="material-' + idxMaterial + '" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default camera" type="button" onclick="$(\'#qrResult\').attr(\'data-destiny\',\'material-' + idxMaterial + '\'); $(\'#modal-qr\').modal(\'show\');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
+}
+
+function guardarMateriales() {
+	$('form').serializeJSON()
+	loader.show()
+    sincco.consumirAPI('POST',BASE_URL + 'expedientes/index/apimateriales',{contrato:$('[name=contrato]').val(), materiales:$('[name=materiales]').serializeJSON()})
+    .done(function(data) {
+		loader.hide()
+		$('[name^=material-]').prop('disabled', true);
+		toastr.success('MAteriales guardados.', 'Éxito')
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+    	console.log(errorThrown);
+        toastr.error('Error al hacer la petición.', 'Intenta de nuevo')
+        loader.hide()
+    })
 }
 
 </script>
