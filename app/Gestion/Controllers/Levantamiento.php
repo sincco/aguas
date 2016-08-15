@@ -25,27 +25,21 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 				$tmp_name = $_FILES['file']['tmp_name'][$imagen];
 				$extension = explode('.', $_FILES['file']['name'][$imagen]);
 				$extension = array_pop($extension);
-				$name = $imagen . '.' . $extension;
-				move_uploaded_file($tmp_name, PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
+				$name = $imagen . '.png';
+				imagepng(imagecreatefromstring(file_get_contents($tmp_name)), PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
+				$imagen=imagecreatefrompng(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
+				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\nContrato " . $contrato . "\n" . $imagen;
+				$blanco = imagecolorallocate($imagen, 255, 255, 255);
+				$negro = imagecolorallocate($imagen, 0, 0, 0);
+				imagettftext($imagen, 10, 0, 21, 11, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 10, 0, 20, 10, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagepng($imagen,PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
 				chmod(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name, 0777);
-				$imagetobewatermark=imagecreatefrompng(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
-				$watermarktext="Muggu";
-				$fontsize="15";
-				$white = imagecolorallocate($imagetobewatermark, 255, 255, 255);
-				imagettftext($imagetobewatermark, $fontsize, 0, 20, 10, $white, 'ARIAL', $watermarktext);
 			}
 			new Response( 'json', [ 'respuesta'=>true ] );
 		} catch (Exception $e) {
 			new Response( 'json', [ 'respuesta'=>false ] );
 		}
-
-/*
-$imagetobewatermark=imagecreatefrompng("images/muggu.png");
-$watermarktext="Muggu";
-$font="../font/century gothic.ttf";
-$fontsize="15";
-$white = imagecolorallocate($imagetobewatermark, 255, 255, 255);
-*/
 	}
 
 	public function apiGuardar() {
