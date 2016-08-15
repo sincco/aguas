@@ -21,4 +21,9 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller {
 		} else
 			Request::redirect( 'dashboard' );
 	}
+
+	public function ugrade() {
+		$respuesta = shell_exec('./aguas app update');
+		echo $respuesta;
+	}
 }
