@@ -63,4 +63,30 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
         }
     }
 
+    public function imagenes() {
+        //$token = $this->validateToken();
+        $contratos = $this->getModel('Expedientes\Contratos');
+        switch (Request::get('method')) {
+            case 'GET':
+                $contrato = $this->getParams('contrato');
+                if (is_dir(PATH_ROOT . '/_expedientes/')) {
+                    $files = scandir(PATH_ROOT . '/_expedientes/' . $contrato);
+                    array_shift($files);
+                    array_shift($files);
+                    $adjuntos = array();
+                    foreach ($files as $adjunto) {
+                        array_push($adjuntos, str_replace(' ', '%20', $adjunto));
+                    }
+                    new Response('json', [ 'data'=>$adjuntos, 'extra'=>BASE_URL . '_expedientes/' . $contrato .'/' ]);
+                } else {
+                    new Response('json', [ 'data'=>false, 'extra'=>'El contrato no tiene imagenes asignadas.' ]);
+                }
+                //new Response('json', ['data'=>$data, 'registros'=>$total, 'extra'=>'']);
+                break;
+            default:
+                new Response('json', ['data'=>false, 'extra'=>'Método ' . Request::get('method') . ' no soportado']);
+                break;
+        }
+    }
+
 }
