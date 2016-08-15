@@ -21,14 +21,14 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 		$imagenes = array_keys($_FILES['file']['name']);
 		try{
-			foreach ($imagenes as $imagen) {
-				$tmp_name = $_FILES['file']['tmp_name'][$imagen];
-				$extension = explode('.', $_FILES['file']['name'][$imagen]);
+			foreach ($imagenes as $_imagen) {
+				$tmp_name = $_FILES['file']['tmp_name'][$_imagen];
+				$extension = explode('.', $_FILES['file']['name'][$_imagen]);
 				$extension = array_pop($extension);
-				$name = $imagen . '.png';
+				$name = $_imagen . '.png';
 				imagepng(imagecreatefromstring(file_get_contents($tmp_name)), PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
 				$imagen=imagecreatefrompng(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
-				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\nContrato " . $contrato . "\n" . $imagen;
+				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\nContrato " . $contrato . "\n" . $_imagen;
 				$blanco = imagecolorallocate($imagen, 255, 255, 255);
 				$negro = imagecolorallocate($imagen, 0, 0, 0);
 				imagettftext($imagen, 10, 0, 21, 11, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
