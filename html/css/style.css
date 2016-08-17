@@ -41,4 +41,4 @@ table { font-family: "Ubuntu", sans-serif;  font-size: 0.8em; }
 
 .historial li { font-size: 0.8em; }
 .historial li .fecha { font-weight: bold; }
-.historial li .descripcion { text-transform: uppercase; }
+.historial li .descripcion { text-transform: uppercase; text-decoration: underline; }
