@@ -164,10 +164,19 @@ function buscarAdjuntos(contrato) {
 				}
 				$('.adjuntos').html($('.adjuntos').html() + imagen);
 			});
-			// $( '#modal-adjuntos' ).modal( 'show' );
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al obtener las imágenes.', 'Intenta de nuevo');
+		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
+	});
+}
+
+function buscarHistorial(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratohistorial', {contrato:contrato})
+	.done(function(data) {
+		var html = $('.historial').html();
+		$(data.data).each(function(){
+			html += '<li>' + $this.fecha + ' ' + $this.descripcion + ' ' + $this.anexo + ' '  + '</li>'
+		});
 	});
 }
 

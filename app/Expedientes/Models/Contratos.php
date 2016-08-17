@@ -44,6 +44,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato, 'cuadrilla'=>$cuadrilla]);
 	}
 
+	public function getContratoHistorial($contrato) {
+		$query = 'SELECT ges.fecha, ges.estatusId, pro.descripcion, ges.anexo FROM gestionContratos gest INNER JOIN estatusProceso pro USING (estatusId) WHERE contrato = :contrato;';
+		return $this->connector->query($query, ['contrato'=>$contrato]);
+	}
+
 	public function getByCuadrilla($data) {
 		$query = 'SELECT asg.cuadrilla, con.*
 		FROM cuadrillasContratos asg
