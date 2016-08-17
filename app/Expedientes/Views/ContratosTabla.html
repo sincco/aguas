@@ -176,7 +176,7 @@ function buscarHistorial(contrato) {
 	.done(function(data) {
 		$('.historial').html('');
 		$(data.data).each(function(){
-			$('.historial').html($('.historial').html() + '<li>' + $this.fecha + ' ' + $this.descripcion + ' ' + $this.anexo + ' '  + '</li>');
+			$('.historial').html($('.historial').html() + '<li>' + this.fecha + ' ' + this.descripcion + ' ' + this.anexo + ' '  + '</li>');
 		});
 	});
 }
