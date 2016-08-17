@@ -31,8 +31,8 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\nContrato " . $contrato . "\n" . $_imagen;
 				$blanco = imagecolorallocate($imagen, 255, 255, 255);
 				$negro = imagecolorallocate($imagen, 0, 0, 0);
-				imagettftext($imagen, 10, 0, 21, 11, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
-				imagettftext($imagen, 10, 0, 20, 10, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 30, 0, 21, 11, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 30, 0, 20, 10, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
 				imagepng($imagen,PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
 				chmod(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name, 0777);
 			}
