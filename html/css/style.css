@@ -39,6 +39,6 @@ table { font-family: "Ubuntu", sans-serif;  font-size: 0.8em; }
 
 .camera { background-color: khaki; }
 
-.historial ul li { font-size: 0.8em; }
-.historial ul li .fecha { font-weight: bold; }
-.historial ul li .descripcion { text-transform: uppercase; }
+.historial li { font-size: 0.8em; }
+.historial li .fecha { font-weight: bold; }
+.historial li .descripcion { text-transform: uppercase; }
