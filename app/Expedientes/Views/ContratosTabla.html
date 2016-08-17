@@ -81,7 +81,7 @@
 						<h4>Historial</h4>
 						<div class="row">
 							<div class="col-xs-12">
-								<ul class="historial"></ul>
+								<ul class="historial list-group"></ul>
 							</div>
 						</div>
 					</div>
@@ -178,7 +178,7 @@ function buscarHistorial(contrato) {
 	.done(function(data) {
 		$('.historial').html('');
 		$(data.data).each(function(){
-			$('.historial').html($('.historial').html() + '<li><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span> <span class="anexo">' + this.anexo + '</span>'  + '</li>');
+			$('.historial').html($('.historial').html() + '<li class="list-group-item"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span> <span class="anexo">' + this.anexo + '</span>'  + '</li>');
 		});
 	});
 }
