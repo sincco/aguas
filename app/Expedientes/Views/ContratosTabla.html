@@ -164,7 +164,7 @@ function buscarAdjuntos(contrato) {
 				}
 				$('.adjuntos').html($('.adjuntos').html() + imagen);
 			});
-			$( '#modal-adjuntos' ).modal( 'show' );
+			// $( '#modal-adjuntos' ).modal( 'show' );
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al obtener las imágenes.', 'Intenta de nuevo');
@@ -197,6 +197,7 @@ function buscarContrato(contrato,cuadrilla) {
 				var newclick = new Function(js);
 				$(".btn-warning").attr('onclick', '').click(newclick);
 			})
+			$( '#modal-adjuntos' ).modal( 'show' );
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
 		}
