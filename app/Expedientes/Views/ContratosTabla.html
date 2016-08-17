@@ -210,7 +210,7 @@ function buscarContrato(contrato,cuadrilla) {
 				// $('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
-				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",15z');";
+				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",18z');";
 				//var newclick = new Function(js);
 				$(".btn-warning").attr('onclick', js);//.click(newclick);
 			})
