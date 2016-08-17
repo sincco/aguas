@@ -174,11 +174,10 @@ function buscarAdjuntos(contrato) {
 function buscarHistorial(contrato) {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratohistorial', {contrato:contrato})
 	.done(function(data) {
-		var html = $('.historial').html();
+		$('.historial').html('');
 		$(data.data).each(function(){
-			html += '<li>' + $this.fecha + ' ' + $this.descripcion + ' ' + $this.anexo + ' '  + '</li>'
+			$('.historial').html($('.historial').html() + '<li>' + $this.fecha + ' ' + $this.descripcion + ' ' + $this.anexo + ' '  + '</li>');
 		});
-		$('.historial').html(html);
 	});
 }
 
