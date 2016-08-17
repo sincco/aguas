@@ -183,7 +183,7 @@ function buscarHistorial(contrato) {
 			if (this.estatusId == 3) { clase = 'list-group-item-info'; }
 			if (this.estatusId == 4) { clase = 'list-group-item-danger'; }
 			if (this.estatusId == 5) { clase = 'list-group-item-success'; }
-			$('.historial').html($('.historial').html() + '<li class="' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span> <span class="anexo">' + this.anexo + '</span>'  + '</li>');
+			$('.historial').html($('.historial').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span> <span class="anexo">' + this.anexo + '</span>'  + '</li>');
 		});
 	});
 }
