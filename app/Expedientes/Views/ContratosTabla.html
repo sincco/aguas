@@ -211,8 +211,8 @@ function buscarContrato(contrato,cuadrilla) {
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
 				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",15z');";
-				var newclick = new Function(js);
-				$(".btn-warning").attr('onclick', '').click(newclick);
+				//var newclick = new Function(js);
+				$(".btn-warning").attr('onclick', js);//.click(newclick);
 			})
 			$( '#modal-adjuntos' ).modal( 'show' );
 		} else {
