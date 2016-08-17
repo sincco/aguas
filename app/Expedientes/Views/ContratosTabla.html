@@ -207,12 +207,10 @@ function buscarContrato(contrato,cuadrilla) {
 				$('[data-fields=suministro]').html(this.suministro);
 				$('[data-fields=numTomas]').html(this.numTomas);
 				$('[data-fields=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
-				// $('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
-				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",18z');";
-				//var newclick = new Function(js);
-				$(".btn-warning").attr('onclick', js);//.click(newclick);
+				var js = "window.open('https://maps.google.com/maps?q=" + this.latitud + "," + this.longitud + "');";
+				$(".btn-warning").attr('onclick', js);
 			})
 			$( '#modal-adjuntos' ).modal( 'show' );
 		} else {
