@@ -179,10 +179,10 @@ function buscarHistorial(contrato) {
 		$('.historial').html('');
 		$(data.data).each(function(){
 			var clase = 'list-group-item';
-			if (this.estatusId == 2) { clase = 'list-group-item-information'; }
-			if (this.estatusId == 3) { clase = 'list-group-item-primary'; }
-			if (this.estatusId == 4) { clase = 'list-group-item-danger'; }
-			if (this.estatusId == 5) { clase = 'list-group-item-success'; }
+			if (this.estatusId == 2) { clase = 'list-group-item-warning'; }
+			if (this.estatusId == 3) { clase = 'list-group-item-info'; }
+			if (this.estatusId == 4) { clase = 'list-group-item-success'; }
+			if (this.estatusId == 5) { clase = 'list-group-item-danger'; }
 			$('.historial').html($('.historial').html() + '<li class="' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span> <span class="anexo">' + this.anexo + '</span>'  + '</li>');
 		});
 	});
