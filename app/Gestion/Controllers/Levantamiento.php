@@ -9,6 +9,7 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
 		$view = $this->newView('Gestion\Levantamiento');
 		$view->cuadrilla = $cuadrilla;
+		$view->cobros = $this->getModel('Catalogos\Cobros')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
