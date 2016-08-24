@@ -33,8 +33,8 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiAsignados() {
 		$cuadrilla = $this->getParams('cuadrilla');
-		$asignados = $this->getModel('Expedientes\Contratos')->getByCuadrilla($cuadrilla);
-		$count = $this->getModel('Expedientes\Contratos')->totalByCuadrilla($cuadrilla);
+		$asignados = $this->getModel('Expedientes\Contratos')->getByCuadrilla($cuadrilla,$_GET);
+		$count = $this->getModel('Expedientes\Contratos')->totalByCuadrilla($cuadrilla,$_GET);
 		$count = array_pop($count);
 		new Response('json', ['total'=>$count['total'], 'rows'=>$asignados]);
 	}
