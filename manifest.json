@@ -1,5 +1,11 @@
 
 {
 "name":"ADP - Gestion",
-"display":"standalone"
+"display":"standalone",
+"icons": [{
+	"src": "/favicon.ico",
+	"sizes": "16x16",
+	"type": "image/png",
+	"density": "0.75"
+	}]
 }
