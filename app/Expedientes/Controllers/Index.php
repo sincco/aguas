@@ -14,9 +14,8 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiData() {
 		$model = $this->getModel('Expedientes\Contratos');
-		$count = $model->getCount();
-		$count = array_pop($count);
-		new Response('json', ['total'=>$count['total'], 'rows'=>$model->getTable($_GET)]);
+		$data = $model->getTable($_GET);
+		new Response('json', ['total'=>count($data), 'rows'=>$data]);
 	}
 
 	public function apiAdjuntos() {
@@ -33,10 +32,9 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiAsignados() {
 		$cuadrilla = $this->getParams('cuadrilla');
-		$asignados = $this->getModel('Expedientes\Contratos')->getByCuadrilla($cuadrilla);
-		$count = $this->getModel('Expedientes\Contratos')->totalByCuadrilla($cuadrilla);
-		$count = array_pop($count);
-		new Response('json', ['total'=>$count['total'], 'rows'=>$asignados]);
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTable($_GET, $cuadrilla);
+		new Response('json', ['total'=>count($data), 'rows'=>$data]);
 	}
 
 	public function apiAsignar() {
