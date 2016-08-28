@@ -38,3 +38,7 @@ table { font-family: "Ubuntu", sans-serif;  font-size: 0.8em; }
 #qrVideo { width: 90%; height: 50%; }
 
 .camera { background-color: khaki; }
+
+.historial li { font-size: 0.8em; }
+.historial li .fecha { font-weight: bold; }
+.historial li .descripcion { text-transform: uppercase; text-decoration: underline; }

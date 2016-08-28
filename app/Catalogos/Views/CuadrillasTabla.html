@@ -5,7 +5,7 @@
 	<div class="row">
 		<h1>Cuadrillas</h1>
 		<button type="button" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true" onclick="nuevaCuadrilla()"> <span>Nueva</span></i></button>
-		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+		<table id='cuadrilla' data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
 			<thead>
 				<tr>
 					<th data-sortable="true">Id</th><th data-sortable="true">Descripción</th>
@@ -89,43 +89,10 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	// $('#asignados').attr('data-url','{{constant('BASE_URL')}}/expedientes/index/apiData/cuadrilla/' + element[0]);
-	$('#asignados').bootstrapTable('refresh', { url: '{{constant('BASE_URL')}}/expedientes/index/apiAsignados/cuadrilla/' + element[0] });
-	// var url = BASE_URL + 'expedientes/index/apiasignados/cuadrilla/' + element[0];
-	// $('[name=cuadrillaActual]').val(element[0]);
-	// sincco.consumirAPI('GET',url)
-	// .done(function(data) {
-	// 	$('#asignados').bootstrapTable('destroy');
-	// 	$('#asignados').bootstrapTable({
-	// 		data: data.rows,
-	// 		columns: [{
-	// 			field: 'state',
-	// 			title: '',
-	// 			checkbox: true
-	// 		},{
-	// 	        field: 'contrato',
-	// 	        title: 'Contrato',
-	// 	        align: 'right',
-	// 	        sortable: true
-	// 	    }, {
-	// 	        field: 'propietario',
-	// 	        title: 'Propietario',
-	// 	        align: 'right',
-	// 	        sortable: true
-	// 	    }, {
-	// 	        field: 'municipio',
-	// 	        title: 'Municipio',
-	// 	        align: 'right',
-	// 	        sortable: true
-	// 	    }, {
-	// 	    	field: 'colonia',
-	// 	        title: 'Colonia',
-	// 	        align: 'right',
-	// 	        sortable: true
-	// 	    }],
-	// 	});
-	// });
-	$('#modal-contratos').modal('show');
+	if($(this).attr('id') == 'cuadrilla') {
+		$('#asignados').bootstrapTable('refresh', { url: '{{constant('BASE_URL')}}/expedientes/index/apiAsignados/cuadrilla/' + element[0] });
+		$('#modal-contratos').modal('show');
+	}
 });
 
 function nuevaCuadrilla() {

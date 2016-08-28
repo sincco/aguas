@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="col-md-6 proceso">
-				<button type="button" class="btn btn-success"><i class="fa fa-play" aria-hidden="true" onclick="cambiarEstatus(3,'');"> <span>Iniciar</span></i></button>
+				<button type="button" class="btn btn-success"><i class="fa fa-play" aria-hidden="true" onclick="cambiarEstatus(3,'');$('#modal-tipocobro').modal('show');"> <span>Iniciar</span></i></button>
 				<button type="button" class="btn btn-primary"><i class="fa fa-stop" aria-hidden="true" onclick="cambiarEstatus(5,'');"> <span>Terminar</span></i></button>
 				<button type="button" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true" onclick="$('#modal-noejecutado').modal('show');"> <span>No ejecutado</span></i></button>
 				<button type="button" class="btn btn-info"><i class="fa fa-map-pin " aria-hidden="true" onclick="tagUbicacion()"> <span>Marcar GPS</span></i></button>
@@ -185,7 +185,37 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="upload" type="button" class="btn btn-success" onclick="cambiarEstatus(5, $('[name=motivo]').val());$('#modal-noejecutado').modal('hide');"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+				<button id="upload" type="button" class="btn btn-success" onclick="cambiarEstatus(4, $('[name=motivo]').val());$('#modal-noejecutado').modal('hide');"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-tipocobro" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Tipo de operación</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div id="mainbody">
+							<div class="input-group">
+								<select name="cobro" class="form-control center-block cobro">
+									{% for cobro in cobros %}
+									<option value="{{cobro.cobro}}">{{cobro.descripcion}}</option>
+									{% endfor %}
+								</select>
+								<span class="input-group-btn">
+									<button class="btn btn-success" type="button" onclick="guardarCampo(this);$('#modal-tipocobro').modal('hide');"><i class="fa fa-cloud" aria-hidden="true" title="Guardar"></i> Guardar</button>
+								</span>
+						</div>
+							
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -306,7 +336,7 @@ function buscarContrato() {
 		}
 		loader.hide();
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
 		loader.hide();
 	});
 }
@@ -372,7 +402,7 @@ function showPosition(position) {
 
 function guardarCampo(input) {
 	loader.show();
-	var elemento = $(input).parent().parent().children('input');
+	var elemento = $(input).parent().parent().children(':input');
     sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
 	.done(function(data) {
 		toastr.success('Campo actualizado.', 'Hecho');

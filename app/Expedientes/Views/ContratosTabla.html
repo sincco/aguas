@@ -80,7 +80,9 @@
 					<div class="col-xs-6">
 						<h4>Historial</h4>
 						<div class="row">
-							<ul class="historial"></ul>
+							<div class="col-xs-12">
+								<ul class="list-group historial"></ul>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -127,6 +129,7 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	$('.modal-title span').html(element.contrato + ' - ' + element.estatus);
 	$('.adjuntos').html('');
 	buscarContrato(element.contrato, element.cuadrilla);
+	buscarHistorial(element.contrato);
 	buscarAdjuntos(element.contrato);
 });
 
@@ -164,10 +167,24 @@ function buscarAdjuntos(contrato) {
 				}
 				$('.adjuntos').html($('.adjuntos').html() + imagen);
 			});
-			$( '#modal-adjuntos' ).modal( 'show' );
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al obtener las imágenes.', 'Intenta de nuevo');
+		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
+	});
+}
+
+function buscarHistorial(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratohistorial', {contrato:contrato})
+	.done(function(data) {
+		$('.historial').html('');
+		$(data.data).each(function(){
+			var clase = 'list-group-item';
+			if (this.estatusId == 2) { clase = 'list-group-item-warning'; }
+			if (this.estatusId == 3) { clase = 'list-group-item-info'; }
+			if (this.estatusId == 4) { clase = 'list-group-item-danger'; }
+			if (this.estatusId == 5) { clase = 'list-group-item-success'; }
+			$('.historial').html($('.historial').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span><br><span class="anexo">' + this.anexo + '</span>'  + '</li>');
+		});
 	});
 }
 
@@ -190,13 +207,12 @@ function buscarContrato(contrato,cuadrilla) {
 				$('[data-fields=suministro]').html(this.suministro);
 				$('[data-fields=numTomas]').html(this.numTomas);
 				$('[data-fields=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
-				// $('[data-fields=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
-				var js = "window.open('https://www.google.com/maps/preview/@" + this.latitud + "," + this.longitud + ",15z');";
-				var newclick = new Function(js);
-				$(".btn-warning").attr('onclick', '').click(newclick);
+				var js = "window.open('https://maps.google.com/maps?q=" + this.latitud + "," + this.longitud + "');";
+				$(".btn-warning").attr('onclick', js);
 			})
+			$( '#modal-adjuntos' ).modal( 'show' );
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
 		}
