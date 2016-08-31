@@ -45,6 +45,29 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+
+	public function getCountTerminados($data) {
+		$query = 'SELECT count(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId=5) LEFT JOIN cuadrillasContratos cua USING(contrato) ';
+		if (isset($data['search'])) {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
+			$query .= $where;
+		}
+		return $this->connector->query($query);
+	}
+
+	public function getTableTerminados($data) {
+		if (!isset($data['sort'])) {
+			$data['sort'] = 'contrato';
+		}
+		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, IFNULL(cua.cuadrilla," ") cuadrilla FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId=5) LEFT JOIN cuadrillasContratos cua USING(contrato) ';
+		if (isset($data['search'])) {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
+			$query .= $where;
+		}
+		$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		return $this->connector->query($query);
+	}
+
 	public function getById($data) {
 		$query = 'SELECT * FROM contratos WHERE contrato IN (' . $data . ');';
 		return $this->connector->query( $query );
@@ -52,6 +75,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getByIds($data) {
 		$query = 'SELECT * FROM contratos WHERE contrato IN (' . $data . ');';
+		return $this->connector->query( $query );
+	}
+
+	public function getReporteTerminados($data) {
+		$query = 'SELECT con.*, IFNULL(ges.estatus,"Sin Asignar") estatus FROM contratos con INNER JOIN (SELECT contrato, GROUP_CONCAT( CONCAT( fecha,  " :: ", descripcion ) ORDER BY fecha SEPARATOR  "|" ) estatus FROM gestionContratos INNER JOIN estatusProceso pro USING ( estatusId ) GROUP BY contrato) ges USING (contrato) WHERE con.contrato IN (' . $data . ');';
 		return $this->connector->query( $query );
 	}
 

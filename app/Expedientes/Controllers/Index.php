@@ -12,10 +12,24 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+	public function terminados() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$view = $this->newView('Expedientes\TerminadosTabla');
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->render();
+	}
+
 	public function apiData() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET);
 		$count = $model->getCount($_GET);
+		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
+	}
+
+	public function apiDataTerminados() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTableTerminados($_GET);
+		$count = $model->getCountTerminados($_GET);
 		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
 	}
 
