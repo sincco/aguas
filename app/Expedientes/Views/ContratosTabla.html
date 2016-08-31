@@ -18,6 +18,7 @@
 					<th data-sortable="true" data-field="colonia">Colonia</th>
 					<th data-sortable="true" data-field="estatus">Estatus</th>
 					<th data-sortable="true" data-field="cuadrilla">Cuadrilla</th>
+					<th data-field="contrato" data-formatter="buttonDetail"></th>
 				</tr>
 			</thead>
 		</table>
@@ -124,6 +125,21 @@
 	</div>
 </div>
 
+<div id="modal-detalle" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Detalle de contrato</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" id="detalle">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	$('.modal-title span').html(element.contrato + ' - ' + element.estatus);
@@ -222,6 +238,37 @@ function buscarContrato(contrato,cuadrilla) {
 		loader.hide();
 	});
 }
+
+function buttonDetail(value) {
+	return '<button type="button" class="btn btn-info btn-xs" onclick="muestraContrato(' + value + ')"><i class="fa fa-eye " aria-hidden="true"> <span>Ver</span></i></button>';
+}
+
+function muestraContrato(contrato) {
+	loader.show();
+	$('#detalle').html('');
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apidata?order=asc&limit=20&offset=0&search=' + contrato)
+	.done(function(data) {
+		var html = '';
+		var datos = Object.keys(data.rows[0]).map(function(k) { return data.rows[0][k] });
+		for(var index in data.rows[0])
+			html += '<div class="col-lg-3"><strong>' + toTitleCase(index.replaceAll('_',' ')) + '</strong> <span>' +  data.rows[0][index] + '</span></div>';
+		$('#detalle').html('<ul>' + html + '</ul>');
+		$('#modal-detalle').modal('show');
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer obtener los datos del contrato.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function toTitleCase(str) {
+	return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 </script>
 

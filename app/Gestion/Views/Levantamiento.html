@@ -36,13 +36,16 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<label>Suministro: <span data-field="suministro"></span></label>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<label>numTomas: <span data-field="numTomas"></span></label>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-3">
+				<label>Giro: <span data-field="giro"></span></label>
+			</div>
+			<div class="col-lg-3">
 				<label>GPS: <span data-field="gps"></span></label>
 			</div>
 		</div>
@@ -53,14 +56,17 @@
 		</div>
 		<div class="row">
 			<h4>Medidor</h4>
-			<div class="col-lg-6">
+			<div class="col-lg-4">
+				<label>Marca: <span data-field="marca_act"></span></label>
+			</div>
+			<div class="col-lg-4">
 				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
 						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-4">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
 						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
@@ -174,7 +180,7 @@
 						<div id="mainbody">
 							<select name="motivo" class="form-control center-block">
 								<option value="DESHABITADO">DESHABITADO</option>
-								<option value="NO SE UBICA TOMA">NO SE UBICA TOMA</option>
+								<option value="TOMA NO LOCALIZADA">TOMA NO LOCALIZADA</option>
 								<option value="NO SE UBICA PREDIO">NO SE UBICA PREDIO</option>
 								<option value="NO DIERON ACCESO">NO DIERON ACCESO</option>
 								<option value="NO ATIENDEN">NO ATIENDEN</option>
@@ -185,7 +191,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="upload" type="button" class="btn btn-success" onclick="cambiarEstatus(4, $('[name=motivo]').val());$('#modal-noejecutado').modal('hide');"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+				<button id="upload" type="button" class="btn btn-success" onclick="if($('[name=motivo]').val()=='TOMA NO LOCALIZADA'){ asignarContratos([{contrato: $('[name=contrato]').val()}], 6); } cambiarEstatus(4, $('[name=motivo]').val());$('#modal-noejecutado').modal('hide');"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
 			</div>
 		</div>
 	</div>
@@ -284,6 +290,8 @@ function buscarContrato() {
 	$('[data-field=numTomas]').html('');
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
+	$('[data-field=giro]').html('');
+	$('[data-field=marca_act]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=telemetriaMedidor]').val('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
@@ -327,6 +335,8 @@ function buscarContrato() {
 				$('[data-field=suministro]').html(this.suministro);
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-field=giro]').html(this.giro);
+				$('[data-field=marca_act]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
@@ -431,6 +441,15 @@ function guardarMateriales() {
         toastr.error('Error al hacer la petición.', 'Intenta de nuevo')
         loader.hide()
     })
+}
+
+function asignarContratos(contrato, cuadrilla) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: contrato, cuadrilla: cuadrilla})
+	.done(function(data) {
+		toastr.success('Asignado a la cuadrilla de seguimiento.', 'Éxito');
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+	});
 }
 
 </script>
