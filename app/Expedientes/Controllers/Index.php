@@ -19,6 +19,15 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+	public function procesados() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTableProcesados($_GET);
+		$view = $this->newView('Expedientes\ProcesadosTabla');
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->contratos = $data;
+		$view->render();
+	}
+
 	public function apiData() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET);

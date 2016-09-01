@@ -68,6 +68,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+	public function getTableProcesados($data) {
+		$query = 'SELECT con.*, ges.estatusId, ges.fecha, ges.anexo, pro.descripcion estatus FROM contratos con INNER JOIN gestionContratos ges ON con.contrato = ges.contrato INNER JOIN ( SELECT contrato, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato ) est ON ges.contrato = est.contrato AND ges.fecha = est.fecha INNER JOIN estatusProceso pro USING(estatusId) ';
+		return $this->connector->query($query);
+	}
+
 	public function getById($data) {
 		$query = 'SELECT * FROM contratos WHERE contrato IN (' . $data . ');';
 		return $this->connector->query( $query );

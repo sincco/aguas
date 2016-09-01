@@ -1,0 +1,69 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Expedientes Procesados</h1>
+		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Contrato</th>
+					<th data-sortable="true">Estatus</th>
+					<th data-sortable="true">Propietario</th>
+					<th data-sortable="true">Usuario</th>
+					<th data-sortable="true">Suministro</th>
+					<th data-sortable="true">Tomas</th>
+					<th data-sortable="true">Giro</th>
+					<th data-sortable="true">Utilizacion</th>
+					<th data-sortable="true">Tarifa</th>
+					<th data-sortable="true">Municipio</th>
+					<th data-sortable="true">Via</th>
+					<th data-sortable="true">Calle</th>
+					<th data-sortable="true">Colonia</th>
+					<th data-sortable="true">No Serie</th>
+					<th data-sortable="true">Telemetria</th>
+					<th data-sortable="true">GPS</th>
+					<th data-sortable="true">Anexo</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for contrato in contratos %}
+				<tr>
+					<td>{{contrato.contrato}}</td>
+					<td>{{contrato.estatus}}</td>
+					<td>{{contrato.propietario}}</td>
+					<td>{{contrato.usuario}}</td>
+					<td>{{contrato.suministro}}</td>
+					<td>{{contrato.numTomas}}</td>
+					<td>{{contrato.giro}}</td>
+					<td>{{contrato.utilizacion}}</td>
+					<td>{{contrato.tarifa}}</td>
+					<td>{{contrato.municipio}}</td>
+					<td>{{contrato.via}}</td>
+					<td>{{contrato.calle}}</td>
+					<td>{{contrato.colonia}}</td>
+					<td>{{contrato.serieMedidor}}</td>
+					<td>{{contrato.telemetriaMedidor}}</td>
+					<td>{{contrato.longitud}} , {{contrato.latitud}}</td>
+					<td>{{contrato.anexo}}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+function imprimir() {
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/terminados',{ contratos: ids}, 'POST', '_blank'); 
+}
+
+</script>
+
+{% include 'footer.html' %}
