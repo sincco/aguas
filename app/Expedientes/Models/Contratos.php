@@ -41,7 +41,9 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
 			}
 		}
-		$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		if (isset($data['limit'])) {
+			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		}
 		return $this->connector->query($query);
 	}
 
