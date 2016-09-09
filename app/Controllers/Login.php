@@ -15,15 +15,15 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function index() {
-		if(! Login::isLogged() ) {
-			$view = $this->newView( 'Login' );
-			if( file_exists( PATH_ROOT.'/html/img/logo_cliente.jpg' ) )
+		if(! Login::isLogged()) {
+			$view = $this->newView('Login');
+			if(file_exists(PATH_ROOT.'/html/img/logo_cliente.jpg'))
 				$view->logo = 'html/img/logo_cliente.jpg';
 			else
 				$view->logo = 'html/img/logo.jpg';
 			$view->render();
 		} else
-			Request::redirect( 'dashboard' );
+			Request::redirect('dashboard');
 	}
 
 	/**
@@ -31,7 +31,7 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function salir() {
-		$this->helper( 'UsersAccount' )->logout();
+		$this->helper('UsersAccount')->logout();
 	}
 
 	/**
@@ -39,11 +39,11 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function apiLogin() {
-		$db = Reader::get( 'bases' );
+		$db = Reader::get('bases');
 		$db = $db['default'];
-		$db['password'] = trim( Crypt::decrypt( $db['password'] ) );
+		$db['password'] = trim(Crypt::decrypt($db['password']));
 		Login::setDatabase($db);
-		if ( Login::login( Request::getParams( 'userData' ) ) ) {
+		if (Login::login(Request::getParams('userData'))) {
 			$cuadrilla = $this->getModel('Catalogos\Usuarios')->getByUserName(Request::getParams('userData')['user']);
 			$cuadrilla = array_pop($cuadrilla);
 			$_SESSION['user\extra'] = serialize(['cuadrilla'=>$cuadrilla]);
@@ -60,10 +60,10 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function apiRegisterUser() {
-		$db = Reader::get( 'bases' );
+		$db = Reader::get('bases');
 		$db = $db['default'];
-		$db['password'] = trim( Crypt::decrypt( $db['password'] ) );
-		Login::setDatabase( $db );
-		var_dump( Login::createUser( array( 'user'=>'ivan', 'email'=>'ivan', 'password'=>'eco123' ) ) );
+		$db['password'] = trim(Crypt::decrypt($db['password']));
+		Login::setDatabase($db);
+		var_dump(Login::createUser(array('user'=>'ivan', 'email'=>'ivan', 'password'=>'eco123')));
 	}
 }

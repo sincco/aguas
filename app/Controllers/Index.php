@@ -11,14 +11,15 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function index() {
-		if(! Login::isLogged() ) {
-			$view = $this->newView( 'Login' );
-			if( file_exists( PATH_ROOT.'/html/img/logo_cliente.jpg' ) )
+		if(!Login::isLogged()) {
+			$view = $this->newView('Login');
+			if(file_exists(PATH_ROOT.'/html/img/logo_cliente.jpg'))
 				$view->logo = 'html/img/logo_cliente.jpg';
 			else
 				$view->logo = 'html/img/logo.jpg';
 			$view->render();
 		} else
-			Request::redirect( 'dashboard' );
+			Request::redirect('dashboard');
 	}
+
 }
