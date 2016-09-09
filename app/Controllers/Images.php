@@ -14,7 +14,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			array_shift($files);
 			array_shift($files);
 			foreach ($files as $file) {
-				if (strpos($file, '_thumbnail') === FALSE) {
+				if (strpos($file, '_thumbnails') === FALSE) {
 					$fileOld = PATH_ROOT . '/_expedientes/' . $dir . '/' . $file;
 					$fileNew = PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/' . $file;
 					if (!is_dir(PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/')) {
