@@ -30,7 +30,7 @@ $class->execute($argv);
 
 final class Main extends \stdClass {
 	/**
-	 * Main function ( launcher )
+	 * Main function (launcher)
 	 * @param  array $argv
 	 * @return none
 	 */
@@ -39,8 +39,8 @@ final class Main extends \stdClass {
 		$arguments = $argv;
 
 		// It's a petition for an URL registered on system
-		if( count( $arguments ) == 1 AND strtolower( trim( $arguments[ 0 ] ) ) != 'help' ){
-			new Cli( '/' . $arguments[ 0 ] );
+		if(count($arguments) == 1 AND strtolower(trim($arguments[0])) != 'help'){
+			new Cli('/' . $arguments[0]);
 			return;
 		}
 
@@ -51,25 +51,25 @@ final class Main extends \stdClass {
 
 		// Check if its an function registered on this script
 		// if not launc the cli interface of framework
-		if( is_callable( array($this,$command . '_' . $action) ) )
-			call_user_func_array( array($this,$command . '_' . $action), $params );
+		if(is_callable(array($this,$command . '_' . $action)))
+			call_user_func_array(array($this,$command . '_' . $action), $params);
 		else
 			echo 'No existe el comando solicitado';
 	}
 
 	function help_() {
 		echo 'Comandos disponibles' . PHP_EOL;
-		$commands = get_class_methods( $this );
+		$commands = get_class_methods($this);
 		foreach ($commands as $command) {
-			$command = explode( '_', $command );
-			if( count( $command ) > 1 ){
-				echo '     ' . implode( ' ', $command ) ;
-				$ref = new ReflectionMethod($this,implode( '_', $command ));
+			$command = explode('_', $command);
+			if(count($command) > 1){
+				echo '     ' . implode(' ', $command) ;
+				$ref = new ReflectionMethod($this,implode('_', $command));
 				$params = [];
 				foreach ($ref->getParameters() as $key => $value) {
 				 	$params[] = $value->name;
 				 } //$ref->getParameters());
-				echo ' [' . implode('] [', $params ) . ']' . PHP_EOL;
+				echo ' [' . implode('] [', $params) . ']' . PHP_EOL;
 			}
 		}
 	}
@@ -84,15 +84,15 @@ final class Main extends \stdClass {
 	 * @param  string $url
 	 * @return none
 	 */
-	function app_init( $cia, $url, $force = '' ) {
+	function app_init($cia, $url, $force = '') {
 		$_SERVER['SERVER_NAME'] = NULL;
 		$_SERVER['REQUEST_URI'] = NULL;
 		$config = Reader::get();
-		if( count( $config ) ) {
-			if( strtolower( trim( $force ) ) == 'force')
+		if(count($config)) {
+			if(strtolower(trim($force)) == 'force')
 				$this->cache_clean();
 			else
-				die( 'Ya existe una configuración, si desea reiniciar la APP especifique la opción "force"'.PHP_EOL);
+				die('Ya existe una configuración, si desea reiniciar la APP especifique la opción "force"'.PHP_EOL);
 		}
 		echo 'Reiniciando configuración de aplicación...' . PHP_EOL;
 		$_llave_encripcion = strtoupper(md5(microtime().rand()));
@@ -118,7 +118,7 @@ final class Main extends \stdClass {
 				'showerrors' => 1,
 			],
 		];
-		Writer::write( $_config, 'config', 'etc/config/config.xml');
+		Writer::write($_config, 'config', 'etc/config/config.xml');
 		chmod("./etc/config/config.xml", 0775);
 		$this->cache_clean();
 		echo 'Archivo de configuración inicializado' . PHP_EOL;
@@ -134,15 +134,15 @@ final class Main extends \stdClass {
 	 * @param  string $password 
 	 * @return none           
 	 */
-	function app_db( $id, $type, $host, $user, $dbname, $password ){
+	function app_db($id, $type, $host, $user, $dbname, $password){
 		echo 'Registrando base de datos...' . PHP_EOL;
 		$config = Reader::get();
-		$config[ 'bases' ][ $id ][ 'type' ] = $type;
-		$config[ 'bases' ][ $id ][ 'host' ] = $host;
-		$config[ 'bases' ][ $id ][ 'user' ] = $user;
-		$config[ 'bases' ][ $id ][ 'dbname' ] = $dbname;
-		$config[ 'bases' ][ $id ][ 'password' ] = Crypt::encrypt( $password );
-		Writer::write( $config, 'config', 'etc/config/config.xml');
+		$config['bases'][$id]['type'] = $type;
+		$config['bases'][$id]['host'] = $host;
+		$config['bases'][$id]['user'] = $user;
+		$config['bases'][$id]['dbname'] = $dbname;
+		$config['bases'][$id]['password'] = Crypt::encrypt($password);
+		Writer::write($config, 'config', 'etc/config/config.xml');
 		chmod("./etc/config/config.xml", 0775);
 		$this->cache_clean();
 		echo 'OK' . PHP_EOL;
@@ -154,8 +154,8 @@ final class Main extends \stdClass {
 	 */
 	function app_update() {
 		echo 'Aplicando actualizaciones...' . PHP_EOL;
-		exec( 'git pull origin master' );
-		exec( 'composer update' );
+		exec('git pull origin master');
+		exec('composer update');
 		$this->cache_clean();
 		echo 'Terminado' . PHP_EOL;
 	}
@@ -169,50 +169,50 @@ final class Main extends \stdClass {
 	 * @param  string $dbId
 	 * @return none      
 	 */
-	function db_backup( $dbId ) {
-		if( trim( $dbId ) == '' )
+	function db_backup($dbId) {
+		if(trim($dbId) == '')
 			$dbId = 'default';
-		$data = Reader::get( 'bases' );
-		$data = $data[ $dbId ];
-		$data[ 'password' ] = trim( Crypt::decrypt( $data['password'] ) );
-		$db = new DataManager( $data );
+		$data = Reader::get('bases');
+		$data = $data[$dbId];
+		$data['password'] = trim(Crypt::decrypt($data['password']));
+		$db = new DataManager($data);
 		
 		echo 'Respaldando información...' . PHP_EOL;
 
-		if( $data['type'] == 'firebird' ) {
-			$data[ 'dbname' ] = $dbId;
-			$query = 'select rdb$relation_name AS Tables_in_' . $data[ 'dbname' ] .
+		if($data['type'] == 'firebird') {
+			$data['dbname'] = $dbId;
+			$query = 'select rdb$relation_name AS Tables_in_' . $data['dbname'] .
 				' from rdb$relations where rdb$view_blr is null and (rdb$system_flag is null or rdb$system_flag = 0);';
 		} else {
 			$query = 'SHOW TABLES';
 		}
-		$tables = $db->query( $query );
+		$tables = $db->query($query);
 
 		$fileData = NULL;
 
 		foreach($tables as $table) {
-			if( $data['type'] == 'firebird' )
-				$table = $table[ 'TABLES_IN_' . strtoupper( $data[ 'dbname' ] ) ];
+			if($data['type'] == 'firebird')
+				$table = $table['TABLES_IN_' . strtoupper($data['dbname'])];
 			else
-				$table = $table[ 'Tables_in_' . $data[ 'dbname' ] ];
+				$table = $table['Tables_in_' . $data['dbname']];
 
 			$tableData = $db->query('SELECT * FROM '.$table);
 			
-			if( $data['type'] != 'firebird' ) {
+			if($data['type'] != 'firebird') {
 				$fileData.= "-- ----------------------------------------------\n" .
 					"DROP TABLE IF EXISTS `" . $table . "`;";
-				$create = $db->query( 'SHOW CREATE TABLE ' . $table );
-				$fileData.= "\n\n" . str_replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS ', $create[ 0 ][ 'Create Table' ] ) . ";\n\n";
+				$create = $db->query('SHOW CREATE TABLE ' . $table);
+				$fileData.= "\n\n" . str_replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS ', $create[0]['Create Table']) . ";\n\n";
 			} else {
 				$fileData.= "-- ----------------------------------------------\n";
 			}
 
-			if( count( $tableData ) > 0 ) {
+			if(count($tableData) > 0) {
 				$fileData .= 'INSERT INTO `' . $table . '` (' .
-					implode( ',', array_keys( $tableData[ 0 ] ) ) . ") VALUES \n";
+					implode(',', array_keys($tableData[0])) . ") VALUES \n";
 				$dump = NULL;
-				foreach( $tableData as $register ) {
-					$dump[] = "('" . implode( "','", array_values( $register ) ) . "')";
+				foreach($tableData as $register) {
+					$dump[] = "('" . implode("','", array_values($register)) . "')";
 				}
 				$fileData .= implode(",\n", $dump) . ';';
 				
@@ -233,21 +233,21 @@ final class Main extends \stdClass {
 	 * @param  string $file 
 	 * @return none       
 	 */
-	function db_restore( $dbId, $file ) {
+	function db_restore($dbId, $file) {
 		echo 'Recuperando base de datos...' . PHP_EOL;
-		$dbData = Reader::get( 'bases' );
-		$dbData = $dbData[ $dbId ];
-		$dbData[ 'password' ] = trim( Crypt::decrypt( $dbData['password'] ) );
-		$db = new DataManager( $dbData );
+		$dbData = Reader::get('bases');
+		$dbData = $dbData[$dbId];
+		$dbData['password'] = trim(Crypt::decrypt($dbData['password']));
+		$db = new DataManager($dbData);
 
-		$lines = file( $file );
+		$lines = file($file);
 		$query = '';
-		foreach ( $lines as $line ) {
-			if ( substr( $line, 0, 2 ) == '--' || $line == '' )
+		foreach ($lines as $line) {
+			if (substr($line, 0, 2) == '--' || $line == '')
 			continue;
 			$query .= $line;
-			if ( substr( trim( $line ), -1, 1 ) == ';' ) {
-				$db->query( $query );
+			if (substr(trim($line), -1, 1) == ';') {
+				$db->query($query);
 				$query = '';
 			}
 		}
@@ -260,25 +260,25 @@ final class Main extends \stdClass {
 	 * @return none
 	 */
 	function db_update() {
-		$data = Reader::get( 'bases' );
-		$data = $data[ 'default' ];
-		$data[ 'password' ] = trim( Crypt::decrypt( $data['password'] ) );
-		$db = new DataManager( $data );
+		$data = Reader::get('bases');
+		$data = $data['default'];
+		$data['password'] = trim(Crypt::decrypt($data['password']));
+		$db = new DataManager($data);
 		echo 'Buscando actualizaciones disponibles...' . PHP_EOL;
-		foreach ( glob( '*.upd.sql' ) as $update ) {
+		foreach (glob('*.upd.sql') as $update) {
 			echo '--' . $update . PHP_EOL;
-			$lines = file( $update );
+			$lines = file($update);
 			$query = '';
-			foreach ( $lines as $line ) {
-				if ( substr( $line, 0, 2 ) == '--' || $line == '' )
+			foreach ($lines as $line) {
+				if (substr($line, 0, 2) == '--' || $line == '')
 				continue;
 				$query .= $line;
-				if ( substr( trim( $line ), -1, 1 ) == ';' ) {
-					$db->query( $query );
+				if (substr(trim($line), -1, 1) == ';') {
+					$db->query($query);
 					$query = '';
 				}
 			}
-			rename( $update, './bkp/' . $update );
+			rename($update, './bkp/' . $update);
 		}
 		echo 'Actualizaciones aplicadas' . PHP_EOL;
 	}
@@ -308,8 +308,8 @@ final class Main extends \stdClass {
 	function cache_off() {
 		echo 'Apagando cache...' . PHP_EOL;
 		$config = Reader::get();
-		$config[ 'dev' ][ 'cache' ] = 0;
-		Writer::write( $config, 'config', 'etc/config/config.xml');
+		$config['dev']['cache'] = 0;
+		Writer::write($config, 'config', 'etc/config/config.xml');
 		chmod("./etc/config/config.xml", 0775);
 		$this->cache_clean();
 		echo 'OK' . PHP_EOL;
@@ -318,40 +318,40 @@ final class Main extends \stdClass {
 	function cache_on() {
 		echo 'Encendiendo cache...' . PHP_EOL;
 		$config = Reader::get();
-		$config[ 'dev' ][ 'cache' ] = 1;
-		Writer::write( $config, 'config', 'etc/config/config.xml');
+		$config['dev']['cache'] = 1;
+		Writer::write($config, 'config', 'etc/config/config.xml');
 		chmod("./etc/config/config.xml", 0775);
 		$this->cache_clean();
 		echo 'OK' . PHP_EOL;
 	}
 
-	function app_user( $name, $email, $password ) {
-		include_once( PATH_ROOT . '/app/Helpers/UsersAccount.php' );
-		include_once( PATH_ROOT . '/app/Models/Usuarios.php' );
+	function app_user($name, $email, $password) {
+		include_once(PATH_ROOT . '/app/Helpers/UsersAccount.php');
+		include_once(PATH_ROOT . '/app/Models/Usuarios.php');
 		$class = 'UsersAccountHelper';
-		$helper = Singleton::get( $class );
+		$helper = Singleton::get($class);
 		$mdlUsuarios = Singleton::get('UsuariosModel');
-		$data = array( 'user'=>$name,'email'=>$email,'password'=>$password );
-		$userId = $helper->createUser( $data );
+		$data = array('user'=>$name,'email'=>$email,'password'=>$password);
+		$userId = $helper->createUser($data);
 		
-		$data = Reader::get( 'bases' );
-		$data = $data[ 'default' ];
-		$data[ 'password' ] = trim( Crypt::decrypt( $data['password'] ) );
-		$db = new DataManager( $data );
-		$data = $db->query( 'SELECT MAX(userId) userId FROM __usersControl' );
-		$userId = array_pop( $data );
-		$userId = $userId[ 'userId' ];
+		$data = Reader::get('bases');
+		$data = $data['default'];
+		$data['password'] = trim(Crypt::decrypt($data['password']));
+		$db = new DataManager($data);
+		$data = $db->query('SELECT MAX(userId) userId FROM __usersControl');
+		$userId = array_pop($data);
+		$userId = $userId['userId'];
 		echo 'Usuario creado ' . $userId . PHP_EOL;
 	}
 
-	function extra_elasticemail( $username, $api_key, $from, $test=0 ) {
+	function extra_elasticemail($username, $api_key, $from, $test=0) {
 		echo 'Registrando elastic email...' . PHP_EOL;
 		$config = Reader::get();
-		$config[ 'elasticemail' ][ 'username' ] = $username;
-		$config[ 'elasticemail' ][ 'api_key' ] = $api_key;
-		$config[ 'elasticemail' ][ 'from' ] = $from;
-		$config[ 'elasticemail' ][ 'test' ] = $test;
-		Writer::write( $config, 'config', 'etc/config/config.xml');
+		$config['elasticemail']['username'] = $username;
+		$config['elasticemail']['api_key'] = $api_key;
+		$config['elasticemail']['from'] = $from;
+		$config['elasticemail']['test'] = $test;
+		Writer::write($config, 'config', 'etc/config/config.xml');
 		chmod("./etc/config/config.xml", 0775);
 		$this->cache_clean();
 		echo 'OK' . PHP_EOL;
