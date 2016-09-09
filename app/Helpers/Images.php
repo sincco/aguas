@@ -36,9 +36,9 @@ final class ImagesHelper extends \stdClass{
 				unlink($targetFile);
 			}
 			$image_save_func($tmp, $targetFile);
-		} catch (\PDOException $err) {
+		} catch (\Exception $err) {
             $errorInfo = sprintf( '%s: %s in %s on line %s.',
-                'Database Error',
+                'Error',
                 $err,
                 $err->getFile(),
                 $err->getLine()
