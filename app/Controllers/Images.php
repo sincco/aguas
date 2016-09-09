@@ -10,6 +10,9 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 		array_shift($directories);
 		$adjuntos = [];
 		foreach ($directories as $dir) {
+			if (!is_dir(PATH_ROOT . '/_expedientes/' .str_replace(' ', '%20', $dir))) {
+				continue;
+			}
 			$files = scandir(PATH_ROOT . '/_expedientes/' .str_replace(' ', '%20', $dir));
 			array_shift($files);
 			array_shift($files);
