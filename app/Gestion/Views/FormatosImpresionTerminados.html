@@ -95,6 +95,15 @@
 				<div class="col-xs-4">
 					<div class="thumbnail"><img width="300px" src="{{constant('BASE_URL')}}_expedientes/{{contrato.contrato}}/6medidor-retirado.png" alt='medidor retirado'><div class="caption"><h5>Medidor Retirado</h5></div></div>
 				</div>
+				{% set estatus = contrato.estatus|split('supervisión') %}
+				{% if estatus|length > 1 %}
+				<div class="col-xs-4">
+					<div class="thumbnail"><img width="300px" src="{{constant('BASE_URL')}}_expedientes/{{contrato.contrato}}/7cuadro-problemas.png" alt='cuadro con problemas'><div class="caption"><h5>Supervisión - Cuadro con problemas</h5></div></div>
+				</div>
+				<div class="col-xs-4">
+					<div class="thumbnail"><img width="300px" src="{{constant('BASE_URL')}}_expedientes/{{contrato.contrato}}/8cuadro-corregido.png" alt='cuadro corregido'><div class="caption"><h5>Supervisión - Cuadro corregido</h5></div></div>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
