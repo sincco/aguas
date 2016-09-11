@@ -2,13 +2,12 @@
 
 use \Sincco\Sfphp\Response;
 
-class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
+class SupervisionController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
 		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
-		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
-		$view = $this->newView('Gestion\Levantamiento');
-		$view->cuadrilla = $cuadrilla;
+		$view = $this->newView('Gestion\Supervision');
+		$view->cuadrilla = $userData['cuadrilla']['cuadrilla'];
 		$view->cobros = $this->getModel('Catalogos\Cobros')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
@@ -32,8 +31,8 @@ class LevantamientoController extends Sincco\Sfphp\Abstracts\Controller {
 				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\nContrato " . $contrato . "\n" . $_imagen;
 				$blanco = imagecolorallocate($imagen, 255, 255, 255);
 				$negro = imagecolorallocate($imagen, 0, 0, 0);
-				imagettftext($imagen, 30, 0, 21, 30, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
-				imagettftext($imagen, 30, 0, 20, 29, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 30, 0, 21, 11, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 30, 0, 20, 10, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
 				imagepng($imagen,PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name);
 				chmod(PATH_ROOT . '/_expedientes/' . $contrato . '/' . $name, 0777);
 			}

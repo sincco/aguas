@@ -42,6 +42,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
 	}
 
+	public function apiGetContratoTerminado() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTableTerminados(['search'=>$this->getParams('contrato')]);
+		$count = $model->getCountTerminados(['search'=>$this->getParams('contrato')]);
+		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
+	}
+
 	public function apiAdjuntos() {
 		$contrato = $this->getParams('contrato');
 		$files = scandir(PATH_ROOT . '/_expedientes/' . $contrato);
