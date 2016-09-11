@@ -193,7 +193,10 @@ function buscarContrato() {
 				$('.proceso .btn-success').show();
 				$('.rowImagenes').show();
 				$('.rowContrato').show();
-				$('.rowMateriales').show();
+			}
+			if (data.rows[0].estatusId == 6) {
+				$('.proceso .btn-success').hide();
+				$('.rowContrato').show();
 			}
 			$('.proceso').show();
 
