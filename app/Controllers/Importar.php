@@ -15,7 +15,9 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 		} else {
 			$modelo = $this->getModel('Aguas');
 			$contratos = $modelo->execute('SELECT GROUP_CONCAT(contrato) contratos FROM contratos');
-			$stid = oci_parse($conn, "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE NIS NOT IN (" . $contratos[0]['contratos'] . ")");
+			$query = "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE NIS NOT IN (" . $contratos[0]['contratos'] . ")";
+			var_dump($query);
+			$stid = oci_parse($conn, );
 			oci_execute($stid);
 			while ($padron = oci_fetch_assoc($stid)) {
 				echo "Procesando " . $padron["NIS"] . "<br>\n";
