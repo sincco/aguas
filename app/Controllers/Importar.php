@@ -7,7 +7,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 	 * Validar si el usuario está loggeado para accesar al dashboard
 	 * @return none
 	 */
-	public function index() {
+	public function contratos() {
 		$conn = oci_connect('ITRON_US','itron_us','187.217.120.218/SGCPPRO');
 		if (!$conn) {
 			$e = oci_error();
