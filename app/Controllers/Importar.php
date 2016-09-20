@@ -14,7 +14,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 		} else {
 			$stid = oci_parse($conn, "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE ROWNUM <= 5");
-			$contratos = oci_num_rows($stid);
+			$contratos = count(oci_fetch_all($stid));
 			$contrato = 1;
 			oci_execute($stid);
 			while ($padron = oci_fetch_assoc($stid)) {
