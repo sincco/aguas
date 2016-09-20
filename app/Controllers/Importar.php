@@ -28,3 +28,4 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 }
+#ALTER TABLE `contratos` ADD PRIMARY KEY(`contrato`);
