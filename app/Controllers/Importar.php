@@ -20,7 +20,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 				echo "Procesando " . $padron["NIS"] . "<br>\n";
 				$query = "INSERT INTO contratos (contrato, altaContrato, propietario, usuario, suministro, numTomas, giro, utilizacion, tarifa, servicios, nivelTarifario, asociacion, cveCatastral, municipio, colonia, via, calle, numOficial, longitud, latitud, serieMedidor, telemetriaMedidor, interior, interior2, marca_act, num_apa, aparato, tip_medicion, f_inst, anos_disp_med, mayores_5_anos, f_retiro_disp_med, cobro, mod_med_ins, tipo_material, caudal_max, num_dig_medidor, f_fabricacion, diametro_toma, lectura_inicial)
 				VALUES ('" . $padron["NIS"] . "','" . $padron["ALTACONTRATO"] . "','" . $padron["PROPIETARIO"] . "','" . $padron["USUARIO"] . "','" . $padron["SUMINISTRO"] . "','" . $padron["NUMTOMAS"] . "','" . $padron["GIRO"] . "','" . $padron["UTILIZACION"] . "','" . $padron["TARIFA"] . "','" . $padron["SERVICIOS"] . "','" . $padron["NIVELTARIFARIO"] . "','" . $padron["ASOCIACION"] . "','" . $padron["CVECATASTRAL"] . "','" . $padron["MUNICIPIO"] . "','" . $padron["COLONIA"] . "','" . $padron["VIA"] . "','" . $padron["CALLE"] . "','" . $padron["NUMOFICIAL"] . "','','','','','" . $padron["INTERIOR_1"] . "','" . $padron["INTERIOR_2"] . "','" . $padron["MARCA_ACT"] . "','" . $padron["NUM_APA"] . "','" . $padron["APARATO"] . "','" . $padron["TIP_MEDICION"] . "','" . $padron["F_INST"] . "','" . $padron["ANOS_DISP_MED"] . "','" . $padron["MAYORES_5_ANOS"] . "','" . $padron["F_RETIRO_DISP_MED"] . "','','','','',0,NULL,'',0);";
-				var_dump($modelo->execute($query));
+				var_dump($modelo->direct($query));
 			}
 			oci_free_statement($stid);
 			oci_close($conn);
