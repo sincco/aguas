@@ -12,6 +12,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+	public function noejecutados() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$view = $this->newView('Expedientes\NoEjecutadosTabla');
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->render();
+	}
+
 	public function terminados() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\TerminadosTabla');
@@ -40,6 +47,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTableTerminados($_GET);
 		$count = $model->getCountTerminados($_GET);
+		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
+	}
+
+	public function apiDataNoEjecutados() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTableNoEjecutados($_GET);
+		$count = $model->getCountNoEjecutados($_GET);
 		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
 	}
 
