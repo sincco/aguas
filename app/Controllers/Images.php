@@ -29,4 +29,8 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			}
 		}
 	}
+
+	public function upload() {
+		var_dump($_GET);
+	}
 }

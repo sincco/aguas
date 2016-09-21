@@ -244,6 +244,7 @@ $('#qrCamera').on('change', function(){
 	decoder.stop().play();
 });
 
+
 $(function() {
 	$('.rowImagenes').hide();
 	$('.rowContrato').hide();
@@ -253,9 +254,12 @@ $(function() {
 	$('.upload').change(function() {
 		$(this).parent().removeClass('btn-default');
 		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this);
 	});
 
 	$('#upload').click(function() {
+		uploadControl.upload();
+		return;
 		loader.show();
 		var form_data = new FormData();
 		$('.upload').each(function() {
@@ -451,6 +455,44 @@ function asignarContratos(contrato, cuadrilla) {
 		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
 	});
 }
+
+
+
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'images/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, event) {
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	console.log(progress);
+	//$('[data-uniqueId=' + file.uniqueIdentifier + ']').find('.meter').css('width', progress + '%');
+	//$('[data-uniqueId=' + file.uniqueIdentifier + ']').find('.meter').html('&nbsp;' + progress + '%');
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	console.log(file.uniqueIdentifier);
+	//$('[data-uniqueId=' + file.uniqueIdentifier + ']').find('.progress').addClass('success');
+});
+
+uploadControl.on('uploadStart', function () {
+	console.log('CARGANDO...');
+	//$('.alert-box').text('Uploading....');
+});
+
+uploadControl.on('complete', function () {
+	console.log('completo...')
+	//$('.alert-box').text('Done Uploading');
+});
 
 </script>
 
