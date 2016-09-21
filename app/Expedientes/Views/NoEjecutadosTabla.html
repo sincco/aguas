@@ -35,7 +35,7 @@ function imprimir() {
 	$(contratos).each(function(){
 		ids.push(this.contrato);
 	})
-	$.redirect(BASE_URL + 'gestion/formatos/terminados',{ contratos: ids}, 'POST', '_blank'); 
+	$.redirect(BASE_URL + 'gestion/formatos/noejecutados',{ contratos: ids}, 'POST', '_blank'); 
 }
 
 </script>

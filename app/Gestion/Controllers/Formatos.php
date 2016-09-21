@@ -33,6 +33,15 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->render();
 	}
 
+	public function noejecutados () {
+		$contratos = $this->getParams('contratos');
+		$ids = "'" . implode("','", $contratos) . "'";
+		$contratos = $this->getModel('Expedientes\Contratos')->getReporteTerminados($ids);
+		$view = $this->newView('Gestion\FormatosImpresionNoEjecutados');
+		$view->contratos = $contratos;
+		$view->render();
+	}
+
 	public function apiAdjuntos() {
 		$contrato = $this->getParams('contrato');
 		$files = scandir(PATH_ROOT . '/_expedientes/' . $contrato);
