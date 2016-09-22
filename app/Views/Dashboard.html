@@ -62,17 +62,31 @@
 	</div>
 
 	<div class="row">
-		<div class="col-xs-3">
+		<div class="col-xs-4">
 			<h4>Cuadrilla 1</h4>
 			<div id="gestionadosC1" class="chart"></div>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-4">
 			<h4>Cuadrilla 2</h4>
 			<div id="gestionadosC2" class="chart"></div>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-4">
 			<h4>Cuadrilla 3</h4>
 			<div id="gestionadosC3" class="chart"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4>Cuadrilla 4</h4>
+			<div id="gestionadosC4" class="chart"></div>
+		</div>
+		<div class="col-xs-4">
+			<h4>Cuadrilla 8</h4>
+			<div id="gestionadosC8" class="chart"></div>
+		</div>
+		<div class="col-xs-4">
+			<h4>Cuadrilla 9</h4>
+			<div id="gestionadosC9" class="chart"></div>
 		</div>
 	</div>
 
@@ -88,6 +102,9 @@ google.charts.setOnLoadCallback(dibujaGestionados);
 google.charts.setOnLoadCallback(dibujaGestionadosC1);
 google.charts.setOnLoadCallback(dibujaGestionadosC2);
 google.charts.setOnLoadCallback(dibujaGestionadosC3);
+google.charts.setOnLoadCallback(dibujaGestionadosC4);
+google.charts.setOnLoadCallback(dibujaGestionadosC8);
+google.charts.setOnLoadCallback(dibujaGestionadosC9);
 
 function dibujaCompletados() {
   var data = google.visualization.arrayToDataTable([
@@ -160,6 +177,45 @@ function dibujaGestionadosC2() {
 }
 
 function dibujaGestionadosC3() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla3 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC3'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC4() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla3 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC3'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC8() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla3 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC3'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC9() {
 	var data = google.visualization.arrayToDataTable([
 	  ['Task', 'Hours per Day'],
 	  {% for gestion in gestionesCuadrilla3 %}
