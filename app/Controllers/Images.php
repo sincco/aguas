@@ -131,7 +131,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 				chmod(PATH_IMG . $expediente . '/' . $fileName, 0777);
 				//$size = getimagesize(PATH_IMG . $expediente . '/' . $fileName . '.tmp');
 				//$this->helper('Images')->resize(PATH_IMG . $expediente . '/' . $fileName . '.tmp', PATH_IMG . $expediente . '/' . $fileName, $size[0] / 2, $size[1] / 2);
-				unlink(PATH_IMG . $expediente . '/' . $fileName);
+				// unlink(PATH_IMG . $expediente . '/' . $fileName);
 			} else {
 				var_dump('no se pudo escribir el archivo final',PATH_IMG . $expediente . '/' . $fileName);
 				return false;
