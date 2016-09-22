@@ -122,16 +122,16 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 				mkdir(PATH_IMG . $expediente, 0775, true);
 			}
 			// Directorio final
-			if (($fp = fopen(PATH_IMG . $expediente . '/' . $fileName . '.tmp', 'w')) !== false) {
+			if (($fp = fopen(PATH_IMG . $expediente . '/' . $fileName, 'w')) !== false) {
 				for ($i=1; $i<=$total_files; $i++) {
 					fwrite($fp, file_get_contents($temp_dir.'/'.$fileName.'.part'.$i));
 					//var_dump('escribiendo parte '.$i);
 				}
 				fclose($fp);
-				chmod(PATH_IMG . $expediente . '/' . $fileName . '.tmp', 0777);
-				$size = getimagesize(PATH_IMG . $expediente . '/' . $fileName . '.tmp');
-				$this->helper('Images')->resize(PATH_IMG . $expediente . '/' . $fileName . '.tmp', PATH_IMG . $expediente . '/' . $fileName, $size[0] / 2, $size[1] / 2);
-				unlink(PATH_IMG . $expediente . '/' . $fileName . '.tmp');
+				chmod(PATH_IMG . $expediente . '/' . $fileName, 0777);
+				//$size = getimagesize(PATH_IMG . $expediente . '/' . $fileName . '.tmp');
+				//$this->helper('Images')->resize(PATH_IMG . $expediente . '/' . $fileName . '.tmp', PATH_IMG . $expediente . '/' . $fileName, $size[0] / 2, $size[1] / 2);
+				unlink(PATH_IMG . $expediente . '/' . $fileName);
 			} else {
 				var_dump('no se pudo escribir el archivo final',PATH_IMG . $expediente . '/' . $fileName);
 				return false;
