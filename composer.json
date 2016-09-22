@@ -30,7 +30,8 @@
             "var/session",
             "var/log",
             "etc/config",
-            "bkp"
+            "bkp",
+            "var/tmp"
         ]
     }
 }

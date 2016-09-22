@@ -18,4 +18,9 @@ class DashboardModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query,$params);
 	}
 
+	public function gestionesCuadrilla($params = []) {
+		$query = "SELECT est.descripcion, COUNT(con.contrato) contratos FROM contratos con INNER JOIN cuadrillasContratos cua USING (contrato) INNER JOIN (SELECT contrato, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ope USING (contrato) INNER JOIN gestionContratos ges ON (ges.contrato = ope.contrato AND ges.fecha = ope.fecha) INNER JOIN estatusProceso est USING(estatusId) WHERE DATE(ges.fecha) BETWEEN :desde AND :hasta AND cua.cuadrilla = :cuadrilla GROUP BY ges.estatusId;";
+		return $this->connector->query($query,$params);
+	}
+
 }

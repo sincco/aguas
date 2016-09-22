@@ -61,6 +61,21 @@
 		</div>
 	</div>
 
+	<div class="row">
+		<div class="col-xs-3">
+			<h4>Cuadrilla 1</h4>
+			<div id="gestionadosC1" class="chart"></div>
+		</div>
+		<div class="col-xs-3">
+			<h4>Cuadrilla 2</h4>
+			<div id="gestionadosC2" class="chart"></div>
+		</div>
+		<div class="col-xs-3">
+			<h4>Cuadrilla 3</h4>
+			<div id="gestionadosC3" class="chart"></div>
+		</div>
+	</div>
+
 </div>
 
 
@@ -70,6 +85,9 @@
 google.charts.load("current", {packages:['corechart']});
 google.charts.setOnLoadCallback(dibujaCompletados);
 google.charts.setOnLoadCallback(dibujaGestionados);
+google.charts.setOnLoadCallback(dibujaGestionadosC1);
+google.charts.setOnLoadCallback(dibujaGestionadosC2);
+google.charts.setOnLoadCallback(dibujaGestionadosC3);
 
 function dibujaCompletados() {
   var data = google.visualization.arrayToDataTable([
@@ -112,6 +130,45 @@ function dibujaGestionados() {
 	var options = {
 	};
 	var chart = new google.visualization.PieChart(document.getElementById('gestionados'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC1() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla1 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC1'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC2() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla2 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC2'));
+	chart.draw(data, options);
+}
+
+function dibujaGestionadosC3() {
+	var data = google.visualization.arrayToDataTable([
+	  ['Task', 'Hours per Day'],
+	  {% for gestion in gestionesCuadrilla3 %}
+	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
+	  {% endfor %}
+	]);
+	var options = {
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('gestionadosC3'));
 	chart.draw(data, options);
 }
 </script>

@@ -30,6 +30,20 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 
 		$view->completados = $this->getModel('Dashboard')->completadosCuadrillas($params);
 		$view->gestiones = $this->getModel('Dashboard')->gestiones($params);
+
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>1];
+		$view->gestionesCuadrilla1 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>2];
+		$view->gestionesCuadrilla2 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>3];
+		$view->gestionesCuadrilla3 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>4];
+		$view->gestionesCuadrilla4 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>8];
+		$view->gestionesCuadrilla8 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>9];
+		$view->gestionesCuadrilla9 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}

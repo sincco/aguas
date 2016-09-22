@@ -15,3 +15,5 @@ define('PATH_CACHE', PATH_ROOT . '/var/cache');
 define('PATH_LOGS', PATH_ROOT . '/var/log');
 define('PATH_CONFIG', PATH_ROOT . '/etc/config');
 define('PATH_SESSION', PATH_ROOT . '/var/session');
+define('PATH_TMP', PATH_ROOT . '/var/tmp');
+define('PATH_IMG', PATH_ROOT . '/_expedientes/');
