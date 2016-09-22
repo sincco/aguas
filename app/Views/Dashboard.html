@@ -62,6 +62,10 @@
 	</div>
 
 	<div class="row">
+		<h3>Gestiones por cuadrillas</h3>
+	</div>
+
+	<div class="row">
 		<div class="col-xs-4">
 			<h4>Cuadrilla 1</h4>
 			<div id="gestionadosC1" class="chart"></div>
@@ -192,7 +196,7 @@ function dibujaGestionadosC3() {
 function dibujaGestionadosC4() {
 	var data = google.visualization.arrayToDataTable([
 	  ['Task', 'Hours per Day'],
-	  {% for gestion in gestionesCuadrilla3 %}
+	  {% for gestion in gestionesCuadrilla4 %}
 	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
 	  {% endfor %}
 	]);
@@ -205,7 +209,7 @@ function dibujaGestionadosC4() {
 function dibujaGestionadosC8() {
 	var data = google.visualization.arrayToDataTable([
 	  ['Task', 'Hours per Day'],
-	  {% for gestion in gestionesCuadrilla3 %}
+	  {% for gestion in gestionesCuadrilla8 %}
 	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
 	  {% endfor %}
 	]);
@@ -218,7 +222,7 @@ function dibujaGestionadosC8() {
 function dibujaGestionadosC9() {
 	var data = google.visualization.arrayToDataTable([
 	  ['Task', 'Hours per Day'],
-	  {% for gestion in gestionesCuadrilla3 %}
+	  {% for gestion in gestionesCuadrilla9 %}
 	  ['{{gestion.descripcion}}', {{gestion.contratos}}],
 	  {% endfor %}
 	]);
