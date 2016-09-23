@@ -73,7 +73,12 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getCountNoEjecutados($data) {
-		$query = 'SELECT count(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) LEFT JOIN cuadrillasContratos cua USING(contrato) ';
+		$query = 'SELECT count(con.*) total
+			FROM contratos con 
+			LEFT JOIN gestionContratos ges ON (con.contrato = ges.contrato AND ges.estatusId IN (4)) 
+			INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) 
+			LEFT JOIN cuadrillasContratos cua ON(con.contrato = cua.contrato) 
+			LEFT JOIN cobros cob USING(cobro) ';
 		if (isset($data['search'])) {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
 			$query .= $where;
@@ -85,7 +90,12 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, DATE_FORMAT(ges.fecha,"%Y-%m-%d") fecha, IFNULL(cua.cuadrilla," ") cuadrilla, cob.descripcion cobro, cob.precio FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
+		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, DATE_FORMAT(ges.fecha,"%Y-%m-%d") fecha, IFNULL(cua.cuadrilla," ") cuadrilla, cob.descripcion cobro, cob.precio, ges.anexo 
+			FROM contratos con 
+			LEFT JOIN gestionContratos ges ON (con.contrato = ges.contrato AND ges.estatusId IN (4)) 
+			INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) 
+			LEFT JOIN cuadrillasContratos cua ON(con.contrato = cua.contrato) 
+			LEFT JOIN cobros cob USING(cobro) ';
 		if (isset($data['search'])) {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
 			$query .= $where;
