@@ -73,7 +73,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getCountNoEjecutados($data) {
-		$query = 'SELECT count(con.*) total
+		$query = 'SELECT count(*) total
 			FROM contratos con 
 			LEFT JOIN gestionContratos ges ON (con.contrato = ges.contrato AND ges.estatusId IN (4)) 
 			INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) 
