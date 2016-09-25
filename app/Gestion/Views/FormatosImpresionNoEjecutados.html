@@ -47,15 +47,10 @@
 	</div>
 
 	<div class="row">
-		<h4>Historial</h4>
+		<h4>Motivo</h4>
 		<div class="row">
 			<div class="col-xs-12">
-				<ul class="list-group">
-				{% set historial = contrato.estatus|split('|') %}
-				{% for accion in historial %}
-					<li class="list-group-item">{{ accion|e }}{{ anexo|e }}</li>
-				{% endfor %}
-				</ul>
+				<p>{{ accion|e }}{{ anexo|e }}</p>
 			</div>
 		</div>
 	</div>
