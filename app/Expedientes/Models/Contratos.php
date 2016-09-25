@@ -126,6 +126,17 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query );
 	}
 
+	public function getReporteNoEjecutados($data) {
+		$query = 'SELECT con.*, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, DATE_FORMAT(ges.fecha,"%Y-%m-%d") fecha, IFNULL(cua.cuadrilla," ") cuadrilla, cob.descripcion cobro, cob.precio, ges.anexo 
+			FROM contratos con 
+			LEFT JOIN gestionContratos ges ON (con.contrato = ges.contrato AND ges.estatusId IN (4)) 
+			INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (4)) 
+			LEFT JOIN cuadrillasContratos cua ON(con.contrato = cua.contrato) 
+			LEFT JOIN cobros cob USING(cobro)  WHERE con.contrato IN (' . $data . ');';
+		return $this->connector->query( $query );
+	}
+
+
 	public function getContratoAsignado($contrato, $cuadrilla) {
 		$query = 'SELECT asg.cuadrilla, con.*, IFNULL(ges.estatusId,0) estatusId
 		FROM cuadrillasContratos asg
