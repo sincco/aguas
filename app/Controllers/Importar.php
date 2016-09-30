@@ -17,6 +17,9 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			$stid = oci_parse($conn, "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, to_char(F_INST, 'yyyy-mm-dd') F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED, REGION, ESTRATO, BANDERA FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE ROWNUM <=99 ORDER BY NIS ASC");
 			oci_execute($stid);
 			while ($padron = oci_fetch_assoc($stid)) {
+				if (trim($padron["F_RETIRO_DISP_MED"]) = '') {
+					$padron["F_RETIRO_DISP_MED"] = '1900-01-01';
+				}
 				echo "<br>------Procesando " . $padron["NIS"] . "<br>\n";
 				var_dump($padron);
 				$query = "INSERT INTO contratos (contrato, altaContrato, propietario, usuario, suministro, numTomas, giro, utilizacion, tarifa, servicios, nivelTarifario, asociacion, cveCatastral, municipio, colonia, via, calle, numOficial, longitud, latitud, serieMedidor, telemetriaMedidor, interior, interior2, marca_act, num_apa, aparato, tip_medicion, f_inst, anos_disp_med, mayores_5_anos, f_retiro_disp_med, cobro, mod_med_ins, tipo_material, caudal_max, num_dig_medidor, f_fabricacion, diametro_toma, lectura_inicial, region, estrato, bandera)
