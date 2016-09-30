@@ -24,7 +24,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 				ON DUPLICATE KEY UPDATE interior2='" . str_replace("'", '', $padron["INTERIOR_2"]) . "',region='" . str_replace("'", '', $padron["REGION"]) . "',estrato='" . str_replace("'", '', $padron["ESTRATO"]) . "',bandera=" . str_replace("'", '', $padron["BANDERA"]) . ";";
 				//file_put_contents("/var/www/html/import_data.sql", $query . "\n", FILE_APPEND);
 				//$modelo->execute($query);
-				echo $query . "<br>\n";
+				echo "<br>\n" . $query . "<br>\n";
 			}
 			oci_free_statement($stid);
 			oci_close($conn);
