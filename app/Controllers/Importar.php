@@ -17,7 +17,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			$stid = oci_parse($conn, "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, to_char(F_INST, 'yyyy-mm-dd') F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED, REGION, ESTRATO, BANDERA FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE ROWNUM <=99 ORDER BY NIS ASC");
 			oci_execute($stid);
 			while ($padron = oci_fetch_assoc($stid)) {
-				if (trim($padron["F_RETIRO_DISP_MED"]) = '') {
+				if (trim($padron["F_RETIRO_DISP_MED"]) == '') {
 					$padron["F_RETIRO_DISP_MED"] = '1900-01-01';
 				}
 				echo "<br>------Procesando " . $padron["NIS"] . "<br>\n";
