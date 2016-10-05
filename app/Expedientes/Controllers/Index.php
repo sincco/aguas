@@ -5,7 +5,7 @@ use \Sincco\Sfphp\Response;
 class IndexController extends Sincco\Sfphp\Abstracts\Controller 
 {
 	public function index() {
-		ini_set('memory_limit', '128M');
+		ini_set('memory_limit', '256M');
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosTabla');
 		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
