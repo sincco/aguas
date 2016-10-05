@@ -5,7 +5,7 @@
 	<div class="row">
 		<h1>Expedientes</h1>
 		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar contratos</span></i></button>
-		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/expedientes/index/apiData" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
 			<thead>
 				<tr>
 					<th data-checkbox="true"></th>
@@ -21,22 +21,6 @@
 					<th data-field="contrato" data-formatter="buttonDetail"></th>
 				</tr>
 			</thead>
-			<tbody>
-				{% for contrato in contratos %}
-				<tr>
-					<td>{{ contrato.contrato|e }}</td>
-					<td>{{ contrato.propietario|e }}</td>
-					<td>{{ contrato.usuario|e }}</td>
-					<td>{{ contrato.municipio|e }}</td>
-					<td>{{ contrato.via|e }}</td>
-					<td>{{ contrato.calle|e }}</td>
-					<td>{{ contrato.colonia|e }}</td>
-					<td>{{ contrato.estatus|e }}</td>
-					<td>{{ contrato.cuadrilla|e }}</td>
-					<td></td>
-				</tr>
-				{% endfor %}
-			</tbody>
 		</table>
 	</div>
 </div>
