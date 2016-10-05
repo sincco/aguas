@@ -14,7 +14,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$data['search']='';
 		}
 		if (trim($data['search']) != '') {
-			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR tmp.descripcion like "%' . $data['search'] . '%" ';
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
 			$query .= $where;
 			if ($cuadrilla > 0) {
 				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
@@ -37,7 +37,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$data['search']='';
 		}
 		if (trim($data['search']) != '') {
-			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR tmp.descripcion like "%' . $data['search'] . '%" ';
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
 			$query .= $where;
 			if ($cuadrilla > 0) {
 				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
