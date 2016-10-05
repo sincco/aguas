@@ -9,6 +9,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view = $this->newView('Expedientes\ContratosTabla');
 		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->contratos = $model->getTable($_GET);
 		$view->render();
 	}
 
