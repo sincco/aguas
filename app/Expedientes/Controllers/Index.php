@@ -7,6 +7,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function index() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosTabla');
+		$view = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
