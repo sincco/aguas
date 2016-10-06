@@ -7,7 +7,13 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function index() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosTabla');
-		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->render();
+	}
+
+	public function urgentes() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$view = $this->newView('Expedientes\ContratosUrgentesTabla');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
@@ -35,12 +41,21 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+#----------------
+#----------- API
+#----------------
 	public function apiData() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET);
 		$count = $model->getCount($_GET);
 		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
-		//new Response('json', ['total'=>$count, 'rows'=>$data]);
+	}
+
+	public function apiDataUrgentes() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTableUrgentes($_GET);
+		$count = $model->getCountUrgentes($_GET);
+		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
 	}
 
 	public function apiDataTerminados() {

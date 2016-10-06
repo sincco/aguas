@@ -1,0 +1,282 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Expedientes urgentes de gestionar</h1>
+		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar contratos</span></i></button>
+		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="300" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/expedientes/index/apiDataUrgentes" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th>
+					<th data-sortable="true" data-field="contrato">Contrato</th>
+					<th data-sortable="true" data-field="propietario">Propietario</th>
+					<th data-sortable="true" data-field="usuario">Usuario</th>
+					<th data-sortable="true" data-field="municipio">Municipio</th>
+					<th data-sortable="true" data-field="via">Via</th>
+					<th data-sortable="true" data-field="calle">Calle</th>
+					<th data-sortable="true" data-field="numOficial">Número</th>
+					<th data-sortable="true" data-field="colonia">Colonia</th>
+					<th data-sortable="true" data-field="gps">GPS</th>
+					<th data-sortable="true" data-field="diametro_toma">Diametro</th>
+					<th data-sortable="true" data-field="serieMedidor">Medidor</th>
+					<th data-sortable="true" data-field="telemetriaMedidor">Telemetría</th>
+					<th data-sortable="true" data-field="cuadrilla">Cuadrilla</th>
+					<th data-sortable="true" data-field="estatus">Estatus</th>
+					<th data-sortable="true" data-field="anexo">Observaciones</th>
+					<th data-field="contrato" data-formatter="buttonDetail"></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<div id="modal-adjuntos" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="modal-titulo" class="modal-title">Contrato <span></span></h3>
+			</div>
+			<div class="modal-body">
+
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Datos del contrato</h4>
+						<div class="row">
+							<div class="col-lg-6">
+								<label>Propiertario: <span data-fields="propietario"></span></label>
+							</div>
+							<div class="col-lg-6">
+								<label>Usuario: <span data-fields="usuario"></span></label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<label>Suministro: <span data-fields="suministro"></span></label>
+							</div>
+							<div class="col-lg-4">
+								<label>numTomas: <span data-fields="numTomas"></span></label>
+							</div>
+							<div class="col-lg-4">
+								<label>GPS: <span data-fields="gps"></span></label><button type="button" class="btn btn-warning"><i class="fa fa-map" aria-hidden="true" onclick=""> <span>Ubicar</span></i></button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<label>Direccion: <span data-fields="direccion"></span></label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<h4>Medidor</h4>
+								<div class="row">
+									<div class="col-lg-6">
+										<label>N/S: <span data-fields="serieMedidor"></span></label>
+									</div>
+									<div class="col-lg-6">
+										<label>Telemetría: <span data-fields="telemetriaMedidor"></span></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-6">
+						<h4>Historial</h4>
+						<div class="row">
+							<div class="col-xs-12">
+								<ul class="list-group historial"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Imágenes</h4>
+						<div class="row adjuntos"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-cuadrillas" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la cuadrilla</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>Cuadrilla 
+							<select class="form-control col-lg-8" name="cuadrilla">
+								{% for cuadrilla in cuadrillas %}
+								<option value="{{ cuadrilla.cuadrilla|e }}">{{ cuadrilla.descripcion|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-detalle" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Detalle de contrato</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" id="detalle">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	$('.modal-title span').html(element.contrato + ' - ' + element.estatus);
+	$('.adjuntos').html('');
+	buscarContrato(element.contrato, element.cuadrilla);
+	buscarHistorial(element.contrato);
+	buscarAdjuntos(element.contrato);
+});
+
+function extension(filename) {
+	return filename.split('.').pop();
+}
+
+function muestraCuadrillas() {
+	$('#modal-cuadrillas').modal('show');
+}
+
+function asignarContratos() {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), cuadrilla: $('[name=cuadrilla]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-cuadrillas').modal('hide');
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+}
+
+function buscarAdjuntos(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:contrato})
+	.done(function(data) {
+		if(data.respuesta > 0){
+			var index = 0;
+			data.adjuntos.forEach(function(adjunto){
+				index++;
+				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
+				if(extension(adjunto).toLowerCase() == 'pdf') {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+				} else {
+					var titulo = adjunto.substring(1,100).replace('-',' ');
+					var imagen = '<div class="col-xs-12 col-md-4"><div class="thumbnail"><img src="' + url + '" alt="' + adjunto + '"><div class="caption"><h5 style="text-transform: capitalize;">' + titulo.replace('.jpg','').replace('.gif','').replace('.png','').replace('.jpeg','') + '</h5><p><a href="' + url + '" target="_blank" class="btn btn-primary" role="button"><i class="fa fa-eye" aria-hidden="true"></i> Ver</a> <a href="' + url + '" download="' + contrato + '-' + titulo + '" class="btn btn-default" role="button"><i class="fa fa-download" aria-hidden="true"></i> Descargar</a></p></div></div></div>';
+				}
+				$('.adjuntos').html($('.adjuntos').html() + imagen);
+			});
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
+	});
+}
+
+function buscarHistorial(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratohistorial', {contrato:contrato})
+	.done(function(data) {
+		$('.historial').html('');
+		$(data.data).each(function(){
+			var clase = 'list-group-item';
+			if (this.estatusId == 2) { clase = 'list-group-item-warning'; }
+			if (this.estatusId == 3) { clase = 'list-group-item-info'; }
+			if (this.estatusId == 4) { clase = 'list-group-item-danger'; }
+			if (this.estatusId == 5) { clase = 'list-group-item-success'; }
+			$('.historial').html($('.historial').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span><br><span class="anexo">' + this.anexo + '</span>'  + '</li>');
+		});
+	});
+}
+
+function buscarContrato(contrato,cuadrilla) {
+	loader.show();
+	$('[data-fields=propietario]').html('');
+	$('[data-fields=usuario]').html('');
+	$('[data-fields=suministro]').html('');
+	$('[data-fields=numTomas]').html('');
+	$('[data-fields=direccion]').html('');
+	$('[data-fields=gps]').html('');
+	$('[data-fields=serieMedidor]').html('');
+	$('[data-fields=telemetriaMedidor]').html('');
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:contrato, cuadrilla: cuadrilla})
+	.done(function(data) {
+		if (data.data.length) {
+			$(data.data).each(function(){
+				$('[data-fields=propietario]').html(this.propietario);
+				$('[data-fields=usuario]').html(this.usuario);
+				$('[data-fields=suministro]').html(this.suministro);
+				$('[data-fields=numTomas]').html(this.numTomas);
+				$('[data-fields=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-fields=serieMedidor]').html(this.serieMedidor);
+				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
+				var js = "window.open('https://maps.google.com/maps?q=" + this.latitud + "," + this.longitud + "');";
+				$(".btn-warning").attr('onclick', js);
+			})
+			$( '#modal-adjuntos' ).modal( 'show' );
+		} else {
+			toastr.error('El contrato no existe.', 'Intenta de nuevo');
+		}
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer obtener los datos del contrato.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function buttonDetail(value) {
+	return '<button type="button" class="btn btn-info btn-xs" onclick="muestraContrato(' + value + ')"><i class="fa fa-eye " aria-hidden="true"> <span>Ver</span></i></button>';
+}
+
+function muestraContrato(contrato) {
+	loader.show();
+	$('#detalle').html('');
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apidata?order=asc&limit=20&offset=0&search=' + contrato)
+	.done(function(data) {
+		var html = '';
+		var datos = Object.keys(data.rows[0]).map(function(k) { return data.rows[0][k] });
+		for(var index in data.rows[0])
+			html += '<div class="col-lg-3"><strong>' + toTitleCase(index.replaceAll('_',' ')) + '</strong> <span>' +  data.rows[0][index] + '</span></div>';
+		$('#detalle').html('<ul>' + html + '</ul>');
+		$('#modal-detalle').modal('show');
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer obtener los datos del contrato.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function toTitleCase(str) {
+	return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+</script>
+
+
+{% include 'footer.html' %}

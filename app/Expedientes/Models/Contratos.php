@@ -53,6 +53,52 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+	public function getCountUrgentes($data, $cuadrilla = 0) {
+		$modCuadrilla = '';
+		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) ';
+		if (!isset($data['search'])) {
+			$data['search']='';
+		}
+		if (trim($data['search']) != '') {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
+			$query .= $where;
+			if ($cuadrilla > 0) {
+				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
+			}
+		} else {
+			if ($cuadrilla > 0) {
+				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
+			}
+		}
+		return $this->connector->query($query);
+	}
+
+	public function getTableUrgentes($data, $cuadrilla = 0) {
+		$modCuadrilla = '';
+		if (!isset($data['sort'])) {
+			$data['sort'] = 'contrato';
+		}
+		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.anexo, tmp.cuadrilla FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) ';
+		if (!isset($data['search'])) {
+			$data['search']='';
+		}
+		if (trim($data['search']) != '') {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
+			$query .= $where;
+			if ($cuadrilla > 0) {
+				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
+			}
+		} else {
+			if ($cuadrilla > 0) {
+				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
+			}
+		}
+		if (isset($data['limit'])) {
+			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		}
+		return $this->connector->query($query);
+	}
+
 
 	public function getCountTerminados($data) {
 		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (5,6)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
