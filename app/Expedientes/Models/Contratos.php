@@ -17,11 +17,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
 			$query .= $where;
 			if ($cuadrilla > 0) {
-				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
+				$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
 			}
 		} else {
 			if ($cuadrilla > 0) {
-				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
+				$query .= ' WHERE tmp.cuadrilla = ' . $cuadrilla . ' ';
 			}
 		}
 		return $this->connector->query($query);
@@ -40,11 +40,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR IFNULL(tmp.descripcion,"Sin Asignar") like "%' . $data['search'] . '%" ';
 			$query .= $where;
 			if ($cuadrilla > 0) {
-				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
+				$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
 			}
 		} else {
 			if ($cuadrilla > 0) {
-				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
+				$query .= ' WHERE tmp.cuadrilla = ' . $cuadrilla . ' ';
 			}
 		}
 		if (isset($data['limit'])) {
