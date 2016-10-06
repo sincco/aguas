@@ -3,7 +3,7 @@
 
 <div class="container">
 	<div class="row">
-		<h1>Expedientes <i class="fa fa-question-circle" aria-hidden="true" onclick="ayuda();"></i></h1>
+		<h1>Expedientes <i class="fa fa-question-circle text-info" aria-hidden="true" onclick="ayuda();" style="cursor: help;"></i></h1>
 		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar contratos</span></i></button>
 		<button type="button" class="btn btn-info"><i class="fa fa-print" aria-hidden="true" onclick="imprimir()"> <span>Imprimir formatos</span></i></button>
 		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="300" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/expedientes/index/apiData" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
@@ -164,7 +164,7 @@
 			</div>
 			<div class="modal-body">
 				<h4 class="text-info">Expedientes Terminados</h4>
-				<p>Escribe <strong>Terminado</strong> en el espacio de búsqueda y da enter, después puedes ordenar por la <strong>Fecha de Operación</strong> para encontrar los NIS que se antendieron recientemente, ya que los selecciones, podrás hacer clic en <strong>Impirmir Formatos</strong> para generar el PDF del expediente.</p><hr>
+				<p>Escribe <strong>Terminado</strong> en el espacio de búsqueda y da enter, después puedes ordenar por la <strong>Fecha de Operación</strong> para encontrar los NIS que se antendieron recientemente, ya que los selecciones, podrás hacer clic en <strong>Imprimir Formatos</strong> para generar el PDF del expediente.</p><hr>
 				<h4 class="text-info">Expedientes por Asignar</h4>
 				<p>Escribe <strong>Sin Asignar</strong> en el espacio de búsqueda y da enter, luego, podrás seleccionar aquellos que quieras asignar a una cuadrilla y dar clic en <strong>Asignar Contratos</strong>.</p><hr>
 				<h4 class="text-info">No Ejecutados</h4>
