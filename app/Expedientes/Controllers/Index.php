@@ -113,8 +113,8 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiGetContratoAsignado() {
 		$model = $this->getModel('Expedientes\Contratos');
-		$count = $model->getCount($_GET, $this->getParams('cuadrilla'));
-		$count = array_pop($count);
+		//$count = $model->getCount($_GET, $this->getParams('cuadrilla'));
+		//$count = array_pop($count);
 		new Response('json', ['data'=>$model->getContratoAsignado($this->getParams('contrato'), $this->getParams('cuadrilla'))]);
 	}
 

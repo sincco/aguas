@@ -190,11 +190,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 
 	public function getContratoAsignado($contrato, $cuadrilla) {
-		$query = 'SELECT asg.cuadrilla, con.*, IFNULL(ges.estatusId,0) estatusId
-		FROM cuadrillasContratos asg
-		INNER JOIN contratos con USING (contrato)
-		LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato)
-		WHERE asg.cuadrilla = :cuadrilla and asg.contrato = :contrato;';
+		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.anexo, tmp.cuadrilla, DATE(tmp.fecha) fechaEstatus, cob.descripcion cobro, cob.precio FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) LEFT JOIN cobros cob USING(cobro) WHERE tmp.contrato=:contrato AND tmp.cuadrilla=:cuadrilla;';
 		return $this->connector->query($query, ['contrato'=>$contrato, 'cuadrilla'=>$cuadrilla]);
 	}
 
