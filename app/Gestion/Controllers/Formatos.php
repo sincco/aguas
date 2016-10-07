@@ -29,10 +29,10 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 		$ids = "'" . implode("','", $contratos) . "'";
 		$fotos = [];
 		foreach ($contratos as $contrato) {
-			$files = scandir(PATH_IMG . $contrato);
+			$files = scandir(PATH_IMG . $contrato, SCANDIR_SORT_ASCENDING);
 			foreach ($files as $file) {
 				if (strlen(trim($file)) > 2) {
-					$fotos[$contrato][] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $contrato . '/' . $file)), 'foto'=>$file];
+					$fotos[$contrato][] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $contrato . '/' . $file)), 'foto'=>$file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', $file))))];
 				}
 			}
 		}
