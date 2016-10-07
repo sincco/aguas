@@ -77,7 +77,7 @@
 			<div class="row">
 				{% for foto in fotos[contrato.contrato] %}
 				<div class="col-xs-4">
-					<div class="thumbnail"><img width="300px" src="{{constant('BASE_URL')}}_expedientes/{{contrato.contrato}}/{{foto.foto}}" alt='{{foto.foto}}'><div class="caption"><h5>{{foto.nombre}} {{foto.fecha}}</h5></div></div>
+					<div class="thumbnail"><img width="300px" height="300px" src="{{constant('BASE_URL')}}_expedientes/{{contrato.contrato}}/{{foto.foto}}" alt='{{foto.foto}}'><div class="caption"><h5>{{foto.nombre}} {{foto.fecha}}</h5></div></div>
 				</div>	
 				{% endfor %}
 			</div>
