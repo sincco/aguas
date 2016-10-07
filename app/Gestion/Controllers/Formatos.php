@@ -27,13 +27,16 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	public function terminados () {
 		$contratos = $this->getParams('contratos');
 		$ids = "'" . implode("','", $contratos) . "'";
+		$fotos = [];
 		foreach ($contratos as $contrato) {
 			$files = scandir(PATH_IMG . $contrato);
 			foreach ($files as $file) {
-				var_dump($file);
+				if (strlen(trim($file)) > 2) {
+					$fotos[$contrato][] = $file;
+				}
 			}
 		}
-		die();
+		var_dump($fotos);
 		$contratos = $this->getModel('Expedientes\Contratos')->getReporteTerminados($ids);
 		$view = $this->newView('Gestion\FormatosImpresionTerminados');
 		$view->contratos = $contratos;
