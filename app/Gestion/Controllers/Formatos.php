@@ -32,7 +32,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 			$files = scandir(PATH_IMG . $contrato);
 			foreach ($files as $file) {
 				if (strlen(trim($file)) > 2) {
-					$fotos[$contrato][] = $file;
+					$fotos[$contrato][] = ['fecha'=>filemtime(PATH_IMG . $contrato . '/' . $file), 'foto'=>$file];
 				}
 			}
 		}
