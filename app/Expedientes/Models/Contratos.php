@@ -300,7 +300,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function setEstatus($contrato, $estatus, $motivo = '') {
-		$query = 'INSERT INTO gestionContratos VALUES (:contrato, :estatusId, :motivo, NOW());';
+		$query = 'INSERT INTO gestionContratos (contrato,estatusId,anexo,fecha) VALUES (:contrato, :estatusId, :motivo, NOW());';
 		return $this->connector->query($query, ['contrato'=>$contrato, 'estatusId'=>$estatus, 'motivo'=>$motivo]);
 	}
 
