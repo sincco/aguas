@@ -36,10 +36,10 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 				}
 			}
 		}
-		var_dump($fotos);
 		$contratos = $this->getModel('Expedientes\Contratos')->getReporteTerminados($ids);
 		$view = $this->newView('Gestion\FormatosImpresionTerminados');
 		$view->contratos = $contratos;
+		$view->fotos = $fotos;
 		$view->render();
 	}
 
