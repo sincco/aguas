@@ -35,5 +35,24 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 	}
 
+	/**
+	 * Validar si el usuario está loggeado para accesar al dashboard
+	 * @return none
+	 */
+	public function origen() {
+		$conn = oci_connect('ITRON_US','itron_us','187.217.120.218/SGCPPRO');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		} else {
+			$modelo = $this->getModel('Aguas');
+			$stid = oci_parse($conn, "SELECT NIS, to_char(ALTACONTRATO, 'yyyy-mm-dd') ALTACONTRATO, PROPIETARIO, USUARIO, SUMINISTRO, NUMTOMAS, GIRO, UTILIZACION, TARIFA, SERVICIOS, NIVELTARIFARIO, ASOCIACION, CVECATASTRAL, MUNICIPIO, COLONIA, VIA, CALLE, NUMOFICIAL, INTERIOR_1, INTERIOR_2, MARCA_ACT, NUM_APA, APARATO, TIP_MEDICION, to_char(F_INST, 'yyyy-mm-dd') F_INST, ANOS_DISP_MED, MAYORES_5_ANOS, to_char(F_RETIRO_DISP_MED, 'yyyy-mm-dd') F_RETIRO_DISP_MED, REGION, ESTRATO, BANDERA FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE BANDERA='3' ORDER BY NIS ASC");
+			oci_execute($stid);
+			while ($padron = oci_fetch_assoc($stid)) {
+				var_dump($padron); echo "<br/><br/>\n";
+			}
+			oci_free_statement($stid);
+			oci_close($conn);
+		}
+	}
 }
-#ALTER TABLE `contratos` ADD PRIMARY KEY(`contrato`);
