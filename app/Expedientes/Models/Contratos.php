@@ -245,20 +245,16 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$query .= ' WHERE ' . $condicion;
 		}
 		$query .= ' LIMIT 1000 OFFSET ' . $pagination[0];
-		var_dump($query);
+		//var_dump($query);
 		return $this->connector->query($query, $where);
 	}
 
 	public function getTotalDataFiltered($where) {
-		$query = 'SELECT COUNT(con.contrato) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos GROUP BY contrato) ges USING (contrato) LEFT JOIN estatusProceso pro USING (estatusId) ';
+		$query = 'SELECT COUNT(*) FROM (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus, (SELECT COUNT(id) FROM gestionContratos WHERE estatusId=4 and contrato=con.contrato) visitas FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp';
 		$condicion = [];
 		if (count($where)) {
 			foreach ( $where as $campo => $valor ) {
-				if ( $campo == 'contrato' ) {
-					$condicion[] = 'con.' . $campo . '=:' . $campo;
-				} else {
-					$condicion[] = $campo . '=:' . $campo;
-				}
+				$condicion[] = $campo . '=:' . $campo;
 			}
 		}
 		$condicion = implode( ' AND ', $condicion );
