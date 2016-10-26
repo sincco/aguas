@@ -245,6 +245,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$query .= ' WHERE ' . $condicion;
 		}
 		$query .= ' LIMIT 1000 OFFSET ' . $pagination[0];
+		var_dump($query);
 		return $this->connector->query($query, $where);
 	}
 
