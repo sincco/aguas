@@ -95,8 +95,6 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function apiAdjuntosVentas() {
 		$contrato = $this->getParams('contrato');
 		$files = glob(PATH_ROOT . '/_expedientes/' . $contrato . '/venta*');
-		array_shift($files);
-		array_shift($files);
 		$adjuntos = array();
 		foreach ($files as $adjunto) {
 			array_push($adjuntos, str_replace(' ', '%20', $adjunto));
