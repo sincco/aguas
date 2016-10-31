@@ -148,7 +148,8 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	$('.modal-title span').html(element.contrato + ' - ' + element.estatus);
+	console.log(element);
+	$('.modal-title span').html(element.contrato);
 	$('.adjuntos').html('');
 	buscarContrato(element.contrato, element.cuadrilla);
 	buscarAdjuntos(element.contrato);
