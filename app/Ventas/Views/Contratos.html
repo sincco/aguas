@@ -148,7 +148,6 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	$('#modal-adjuntos').modal('show');
 	$('.modal-title span').html(element[1]);
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
@@ -268,6 +267,7 @@ function buscarAdjuntos(contrato) {
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
 	});
+	$('#modal-adjuntos').modal('show');
 }
 
 function extension(filename) {
