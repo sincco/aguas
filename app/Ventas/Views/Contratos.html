@@ -148,7 +148,6 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	console.log(element);
 	$('.modal-title span').html(element[1]);
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
@@ -255,9 +254,9 @@ function buscarAdjuntos(contrato) {
 		if(data.respuesta > 0){
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
-				//console.log(adjunto);
 				index++;
 				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
+				console.log(adjunto);
 				if(extension(adjunto).toLowerCase() == 'pdf') {
 					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
 				} else {
