@@ -152,6 +152,7 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
 	buscarAdjuntos(element[1]);
+	$('#modal-adjuntos').modal('show');
 });
 
 var uploadControl = new Resumable({
@@ -256,7 +257,6 @@ function buscarAdjuntos(contrato) {
 			data.adjuntos.forEach(function(adjunto){
 				index++;
 				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
-				console.log(adjunto);
 				if(extension(adjunto).toLowerCase() == 'pdf') {
 					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
 				} else {
