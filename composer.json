@@ -7,6 +7,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:sincco/elastic-email.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:PHPOffice/PhpSpreadsheet.git"
         }
     ],
     "require": {
@@ -14,7 +18,8 @@
         "sincco/tokenizer": "~1.0",
         "sincco/login": "dev-master",
         "sincco/elastic-email": "dev-master",
-        "fbourigault/composer-mkdir": "^2.0"
+        "fbourigault/composer-mkdir": "^2.0",
+        "phpoffice/phpspreadsheet": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

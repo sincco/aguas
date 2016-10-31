@@ -1,0 +1,155 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Contratos Asignados</h1>
+		<button type="button" class="btn btn-info"><i class="fa fa-upload" aria-hidden="true" onclick="$('#modal-carga').modal('show');"> <span>Cargar</span></i></button>
+		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="$('#modal-vendedores').modal('show');"> <span>Asignar contratos</span></i></button>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th><th data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Venta</th><th data-sortable="true">Vendedor</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for contrato in contratos %}
+				<tr>
+					<td></td>
+					<td>{{ contrato.contrato|e }}</td>
+					<td>{{ contrato.altaContrato|e }}</td>
+					<td>{{ contrato.propietario|e }}</td>
+					<td>{{ contrato.suministro|e }}</td>
+					<td>{{ contrato.tarifa|e }}</td>
+					<td>{{ contrato.direccion|e }}</td>
+					<td>{{ contrato.colonia|e }}</td>
+					<td>{{ contrato.municipio|e }}</td>
+					<td>{{ contrato.fechaAsignacion|e }}</td>
+					<td>{{ contrato.estatus|e }}</td>
+					<td>{{ contrato.nombre|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="modal-carga" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Carga de layout</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+  						<div class="fileUpload btn btn-default">
+							<label>Archivo</label><input type="file" class="upload" name="carga-contratos-{{ "now"|date("Ymd") }}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-vendedores" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la vendedor</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>vendedor 
+							<select class="form-control col-lg-8" name="vendedor">
+								{% for vendedor in vendedores %}
+								<option value="{{ vendedor.vendedorId|e }}">{{ vendedor.nombre|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	$('#modal-carga').modal('show');
+});
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'files/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	console.log(progress);
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	console.log(file.uniqueIdentifier);
+});
+
+uploadControl.on('uploadStart', function () {
+	console.log('CARGANDO...');
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	console.log('completo...')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/contratos/procesararchivo')
+	.done(function(data) {
+		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al procesar el archivo.', 'Intenta de nuevo');
+	})
+	loader.hide();
+});
+
+$('#upload').click(function() {
+	uploadControl.upload();
+});
+
+$('.upload').change(function() {
+	$(this).parent().removeClass('btn-default');
+	$(this).parent().addClass('btn-info');
+	uploadControl.addFile(this.files[0], this.name);
+});
+
+function asignarContratos() {
+	sincco.consumirAPI('POST', BASE_URL + 'ventas/contratos/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), vendedor: $('[name=vendedor]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-vendedores').modal('hide');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+}
+
+</script>
+
+{% include 'footer.html' %}
