@@ -228,8 +228,8 @@ function buscarContrato(contrato) {
 	$('[data-fields=telemetriaMedidor]').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'ventas/visita/apigetcontrato', {contrato:contrato})
 	.done(function(data) {
-		if (data.data.length) {
-			$(data.data).each(function(){
+		if (data.total) {
+			$(data.rows).each(function(){
 				$('[data-fields=propietario]').html(this.propietario);
 				$('[data-fields=usuario]').html(this.usuario);
 				$('[data-fields=suministro]').html(this.suministro);
@@ -255,6 +255,7 @@ function buscarAdjuntos(contrato) {
 		if(data.respuesta > 0){
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
+				console.log(adjunto);
 				index++;
 				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
 				if(extension(adjunto).toLowerCase() == 'pdf') {
