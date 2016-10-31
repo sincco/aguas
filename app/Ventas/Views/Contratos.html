@@ -148,11 +148,11 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	$('#modal-adjuntos').modal('show');
 	$('.modal-title span').html(element[1]);
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
 	buscarAdjuntos(element[1]);
-	$('#modal-adjuntos').modal('show');
 });
 
 var uploadControl = new Resumable({
