@@ -255,7 +255,7 @@ function buscarAdjuntos(contrato) {
 		if(data.respuesta > 0){
 			var index = 0;
 			data.adjuntos.forEach(function(adjunto){
-				console.log(adjunto);
+				//console.log(adjunto);
 				index++;
 				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
 				if(extension(adjunto).toLowerCase() == 'pdf') {
@@ -270,6 +270,10 @@ function buscarAdjuntos(contrato) {
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
 	});
+}
+
+function extension(filename) {
+	return filename.split('.').pop();
 }
 
 </script>
