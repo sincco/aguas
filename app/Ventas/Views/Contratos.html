@@ -148,10 +148,13 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	loader.show();
 	$('.modal-title span').html(element[1]);
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
 	buscarAdjuntos(element[1]);
+	loader.hide();
+	$('#modal-adjuntos').modal('show');
 });
 
 var uploadControl = new Resumable({
@@ -216,7 +219,6 @@ function asignarContratos() {
 }
 
 function buscarContrato(contrato) {
-	loader.show();
 	$('[data-fields=propietario]').html('');
 	$('[data-fields=usuario]').html('');
 	$('[data-fields=suministro]').html('');
@@ -240,10 +242,8 @@ function buscarContrato(contrato) {
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
 		}
-		loader.hide();
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer obtener los datos del contrato.', 'Intenta de nuevo');
-		loader.hide();
 	});
 }
 
@@ -267,7 +267,6 @@ function buscarAdjuntos(contrato) {
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
 	});
-	$('#modal-adjuntos').modal('show');
 }
 
 function extension(filename) {
