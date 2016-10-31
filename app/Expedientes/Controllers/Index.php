@@ -97,7 +97,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$files = glob(PATH_ROOT . '/_expedientes/' . $contrato . '/venta*');
 		$adjuntos = array();
 		foreach ($files as $adjunto) {
-			array_push($adjuntos, str_replace(' ', '%20', $adjunto));
+			array_push($adjuntos, str_replace(PATH_ROOT . '/_expedientes/' . $contrato . '/', '', str_replace(' ', '%20', $adjunto)));
 		}
 		new Response('json', [ 'respuesta'=>count($adjuntos), 'adjuntos'=>$adjuntos ]);
 	}
