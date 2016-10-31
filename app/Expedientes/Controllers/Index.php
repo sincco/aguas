@@ -92,6 +92,18 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', [ 'respuesta'=>count($adjuntos), 'adjuntos'=>$adjuntos ]);
 	}
 
+	public function apiAdjuntosVentas() {
+		$contrato = $this->getParams('contrato');
+		$files = glob(PATH_ROOT . '/_expedientes/' . $contrato . '/venta*');
+		array_shift($files);
+		array_shift($files);
+		$adjuntos = array();
+		foreach ($files as $adjunto) {
+			array_push($adjuntos, str_replace(' ', '%20', $adjunto));
+		}
+		new Response('json', [ 'respuesta'=>count($adjuntos), 'adjuntos'=>$adjuntos ]);
+	}
+
 	public function apiAsignados() {
 		$cuadrilla = $this->getParams('cuadrilla');
 		$model = $this->getModel('Expedientes\Contratos');

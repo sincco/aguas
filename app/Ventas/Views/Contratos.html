@@ -152,6 +152,7 @@ $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	$('.adjuntos').html('');
 	buscarContrato(element[1]);
 	buscarAdjuntos(element[1]);
+	$('#modal-adjuntos').modal('show');
 });
 
 var uploadControl = new Resumable({
@@ -237,7 +238,6 @@ function buscarContrato(contrato) {
 				$('[data-fields=serieMedidor]').html(this.serieMedidor);
 				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
 			})
-			$('#modal-adjuntos').modal('show');
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
 		}
@@ -249,7 +249,7 @@ function buscarContrato(contrato) {
 }
 
 function buscarAdjuntos(contrato) {
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntos', {contrato:contrato})
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntosventas', {contrato:contrato})
 	.done(function(data) {
 		if(data.respuesta > 0){
 			var index = 0;
