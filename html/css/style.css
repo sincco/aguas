@@ -13,7 +13,7 @@ body {
 }
 table { font-family: "Ubuntu", sans-serif;  font-size: 0.8em; }
 
-.jumbotron { background-color: #fff; }
+.jumbotron { background-color: #fff; margin-top: 20px; }
 
 .container { margin-top: 50px; }
 

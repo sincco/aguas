@@ -3,8 +3,8 @@
 
 <div class="jumbotron">
 	<div class="row">
-		<div class="col-xs-6"><h4>Selecciona la región de búsqueda</h4></div>
-		<div class="col-xs-6"><button type="button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button></div>
+		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
+		<div class="col-xs-6"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button></div>
 	</div>
 	<div class="row">
 		<div class="col-xs-8">
@@ -23,16 +23,16 @@ var infoWindow;
 var marker;
 
 var bounds = {
-	north: 19.020,
-	south: 19.040,
-	east: -98.180,
-	west: -98.199
+	north: 19.042758566473278,
+	south: 19.03979813966975,
+	east: -98.20334594726563,
+	west: -98.20878469848634
 };
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: 19.0252, lng: -98.1915},
-		zoom: 13
+		center: {lat: 19.03979813966975, lng: -98.20878469848634},
+		zoom: 15
 	});
 
 	rectangle = new google.maps.Rectangle({
