@@ -132,7 +132,14 @@ $('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
 	}
 	marker = new google.maps.Marker({
 		position: new google.maps.LatLng(element.latitud,element.longitud),
-		title: element.contrato
+		title: element.contrato,
+		animation: google.maps.Animation.DROP
+	});
+	var infowindow = new google.maps.InfoWindow({
+		content: element.contrato + '\n' + element.propietario
+	});
+	marker.addListener('click', function() {
+		infowindow.open(map, marker);
 	});
 	marker.setMap(map);
 });
