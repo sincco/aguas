@@ -4,7 +4,6 @@ use \Sincco\Sfphp\Response;
 
 class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
-		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
 		$view = $this->newView('Gestion\FormatosTabla');
