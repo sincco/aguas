@@ -72,6 +72,9 @@ function showNewRect(event) {
 
 function cargarContratos() {
 	loader.show();
+	if (typeof marker !== 'undefined') {
+		marker.setMap(null);
+	}
 	$('#table-contratos').bootstrapTable('destroy');
 	$('#table-contratos').bootstrapTable({
 		method: 'post',
