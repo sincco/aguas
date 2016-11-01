@@ -123,7 +123,6 @@ function cargarContratos() {
 			sortable: true
 		}]
 	});
-	loader.hide();
 }
 
 $('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
@@ -142,6 +141,18 @@ $('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
 		infowindow.open(map, marker);
 	});
 	marker.setMap(map);
+});
+
+$('#table-contratos').on('load-success.bs.table' , function(data){
+	loader.hide();
+});
+
+$('#table-contratos').on('load-error.bs.table' , function(status,res){
+	loader.hide();
+});
+
+$('#table-contratos').on('refresh.bs.table' , function(params){
+	loader.show();
 });
 
 </script>
