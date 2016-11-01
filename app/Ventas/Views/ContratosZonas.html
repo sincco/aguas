@@ -144,6 +144,8 @@ $('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
 });
 
 $('#table-contratos').on('load-success.bs.table' , function(data){
+	var offset = $('#table-contratos').offset();
+    window.scrollTo(0, offset.top);
 	loader.hide();
 });
 
