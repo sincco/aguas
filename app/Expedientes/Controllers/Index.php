@@ -159,4 +159,9 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['respuesta'=>$respuesta]);
 	}
 
+	public function apiGetByZone() {
+		$data = $this->getModel('Expedientes\Contratos')->getByZone($this->getParams('limites'));
+		new Response('json', ['total'=>count($data), 'data'=>$data]);
+	}
+
 }

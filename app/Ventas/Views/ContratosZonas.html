@@ -1,0 +1,138 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-xs-6"><h4>Selecciona la región de búsqueda</h4></div>
+		<div class="col-xs-6"><button type="button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button></div>
+	</div>
+	<div class="row">
+		<div class="col-xs-8">
+			<div id="map" style="width: 100%; height: 300px;"></div>
+		</div>
+		<div class="col-xs-4">
+			<table id="table-contratos" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+
+<script>
+var rectangle;
+var map;
+var infoWindow;
+
+var bounds = {
+	north: 19.020,
+	south: 19.040,
+	east: -98.180,
+	west: -98.199
+};
+
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 19.0252, lng: -98.1915},
+		zoom: 13
+	});
+
+	rectangle = new google.maps.Rectangle({
+		bounds: bounds,
+		editable: true,
+		draggable: true
+	});
+
+	rectangle.setMap(map);
+
+	rectangle.addListener('bounds_changed', showNewRect);
+
+	infoWindow = new google.maps.InfoWindow();
+}
+
+function showNewRect(event) {
+	var ne = rectangle.getBounds().getNorthEast();
+	var sw = rectangle.getBounds().getSouthWest();
+
+	var contentString = '<b>Nuevas coordenadas.</b><br>' +
+	'NE: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+	'SO: ' + sw.lat() + ', ' + sw.lng();
+
+	bounds = {
+		north: ne.lat(),
+		south: sw.lat(),
+		east: ne.lng(),
+		west: sw.lng()
+	};
+
+	// Set the info window's content and position.
+	//infoWindow.setContent(contentString);
+	//infoWindow.setPosition(ne);
+
+	//infoWindow.open(map);
+}
+
+function cargarContratos() {
+	//$('#table-contratos').attr('data-url', BASE_URL + 'expedientes/index/apigetbyzone/limites/' + bounds);
+	//$('#table-contratos').bootstrapTable('refresh');
+	loader.show();
+	$('#table-contratos').bootstrapTable('destroy');
+	$('#table-contratos').bootstrapTable({
+		method: 'post',
+		url: BASE_URL + 'expedientes/index/apigetbyzone',
+		queryParams: function (p) {
+			return { limites: bounds };
+		},
+		mobileResponsive: true,
+		minWidth: 1200,
+		height: 400,
+		striped: true,
+		pagination: true,
+		pageSize: 50,
+		pageList: [10, 25, 50, 100, 200],
+		search: false,
+		showColumns: false,
+		showRefresh: false,
+		minimumCountColumns: 2,
+		columns: [{
+			field: 'state',
+			checkbox: true
+		}, {
+			field: 'contrato',
+			title: 'Contrato',
+			sortable: true
+		}, {
+			field: 'propietario',
+			title: 'Propietario',
+			sortable: true
+		}, {
+			field: 'colonia',
+			title: 'Colonia',
+			sortable: true
+		}, {
+			field: 'municipio',
+			title: 'Municipio',
+			sortable: true
+		}]
+	});
+	loader.hide();
+	/*loader.show();
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone', {limites: bounds})
+	.done(function(data) {
+		//console.log(map.getBounds())
+		//if(map.getZoom()>16) {
+		//	console.log('se dibujaría el detalle');
+		//}
+		//toastr.success('Contratos asignados.', 'Éxito');
+		//$('#modal-vendedores').modal('hide');
+		//location.reload();
+
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});*/
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&callback=initMap&signed_in=true" async defer>
+</script>
+
+{% include 'footer.html' %}

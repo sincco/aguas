@@ -326,4 +326,10 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, $parametros );
 	}
 
+	public function getByZone($data) {
+		$query = 'SELECT * FROM contratos WHERE longitud BETWEEN :east AND :west AND latitud BETWEEN :south AND :north;';
+		return $this->connector->query($query, $data);
+	}
+
 }
+
