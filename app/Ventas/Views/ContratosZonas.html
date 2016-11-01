@@ -20,6 +20,7 @@
 var rectangle;
 var map;
 var infoWindow;
+var marker;
 
 var bounds = {
 	north: 19.020,
@@ -70,8 +71,6 @@ function showNewRect(event) {
 }
 
 function cargarContratos() {
-	//$('#table-contratos').attr('data-url', BASE_URL + 'expedientes/index/apigetbyzone/limites/' + bounds);
-	//$('#table-contratos').bootstrapTable('refresh');
 	loader.show();
 	$('#table-contratos').bootstrapTable('destroy');
 	$('#table-contratos').bootstrapTable({
@@ -82,6 +81,7 @@ function cargarContratos() {
 		},
 		mobileResponsive: true,
 		minWidth: 1200,
+		columnsHidden: ['longitud', 'latitud'],
 		height: 400,
 		striped: true,
 		pagination: true,
@@ -110,26 +110,30 @@ function cargarContratos() {
 			field: 'municipio',
 			title: 'Municipio',
 			sortable: true
+		}, {
+			field: 'longitud',
+			title: 'Longitud',
+			sortable: true
+		}, {
+			field: 'latitud',
+			title: 'Latitud',
+			sortable: true
 		}]
 	});
 	loader.hide();
-	/*loader.show();
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone', {limites: bounds})
-	.done(function(data) {
-		//console.log(map.getBounds())
-		//if(map.getZoom()>16) {
-		//	console.log('se dibujaría el detalle');
-		//}
-		//toastr.success('Contratos asignados.', 'Éxito');
-		//$('#modal-vendedores').modal('hide');
-		//location.reload();
-
-		loader.hide();
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
-		loader.hide();
-	});*/
 }
+
+$('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
+	if (typeof marker !== 'undefined') {
+		marker.setMap(null);
+	}
+	marker = new google.maps.Marker({
+		position: new google.maps.LatLng(element.latitud,element.longitud),
+		title: element.contrato
+	});
+	marker.setMap(map);
+});
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&callback=initMap&signed_in=true" async defer>
