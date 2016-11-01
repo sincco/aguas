@@ -4,12 +4,12 @@ use \Sincco\Sfphp\Response;
 
 class UsuariosController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
-		//$this->helper('UsersAccount')->checkLogin();
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Catalogos\Usuarios');
 		$view = $this->newView('Catalogos\UsuariosTabla');
 		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->usuarios = $model->getAll();
-		//$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
 
