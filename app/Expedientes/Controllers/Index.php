@@ -42,6 +42,12 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+	public function mapa() {
+		$view = $this->newView('Expedientes\BusquedaMapa');
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->render();	
+	}
+
 #----------------
 #----------- API
 #----------------

@@ -1,0 +1,68 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
+		<div class="col-xs-6">
+			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap();"> <span>Mostrar densidad</span></i></button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-6">
+			<div id="map" style="width: 100%; height: 300px;"></div>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<table id="table-contratos" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+
+<script>
+var rectangle;
+var map;
+var infoWindow;
+var marker;
+var heatmap;
+
+var bounds = {
+	north: 19.042758566473278,
+	south: 19.03979813966975,
+	east: -98.20334594726563,
+	west: -98.20878469848634
+};
+
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 19.03979813966975, lng: -98.20878469848634},
+		zoom: 15
+	});
+
+
+	infoWindow = new google.maps.InfoWindow();
+}
+
+function heatMap() {
+	loader.show();
+	var points = [];
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone', {limites: map.getBounds()})
+	.done(function(data) {
+		$(data.data).each(function() {
+			points.push(new google.maps.LatLng(this.latitud,this.longitud));
+		})
+		heatmap = new google.maps.visualization.HeatmapLayer({
+			data: points,
+			map: map
+		});
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		loader.hide();
+	});
+}
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&libraries=visualization&callback=initMap&signed_in=true" async defer>
+</script>
+
+{% include 'footer.html' %}

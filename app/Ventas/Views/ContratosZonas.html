@@ -4,7 +4,9 @@
 <div class="jumbotron">
 	<div class="row">
 		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
-		<div class="col-xs-6"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button></div>
+		<div class="col-xs-6">
+			<button type="button" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-12 col-md-6">
@@ -21,6 +23,7 @@ var rectangle;
 var map;
 var infoWindow;
 var marker;
+var heatmap;
 
 var bounds = {
 	north: 19.042758566473278,
@@ -161,7 +164,7 @@ $('#table-contratos').on('refresh.bs.table' , function(params){
 
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&callback=initMap&signed_in=true" async defer>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&libraries=visualization&callback=initMap&signed_in=true" async defer>
 </script>
 
 {% include 'footer.html' %}
