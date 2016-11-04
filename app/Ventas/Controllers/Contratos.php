@@ -15,6 +15,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 	public function zonas() {
 		$view = $this->newView('Ventas\ContratosZonas');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->vendedores = $this->getModel('Catalogos\Vendedores')->getAll();
 		$view->render();
 	}
 
@@ -22,6 +23,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 		$vendedor = $this->getParams('vendedor');
 		$contratos = $this->getParams('contratos');
 		try {
+			$this->getModel('Ventas\Ventas')->setRegister($contratos);
 			$respuesta = $this->getModel('Ventas\Ventas')->asignar($vendedor, $contratos);
 			new Response('json', ['respuesta'=>true]);
 		} catch (Exception $e) {
@@ -43,5 +45,10 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 			unlink($file);
 		} 
 		new Response('json', ['total'=>$total, 'insertados'=>$count]);
+	}
+
+	public function getByZone() {
+		$data = $this->getModel('Ventas\Ventas')->getByZone($this->getParams('limites'));
+		new Response('json', ['total'=>count($data), 'data'=>$data]);
 	}
 }

@@ -45,7 +45,7 @@ function initMap() {
 function heatMap() {
 	loader.show();
 	var points = [];
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone', {limites: map.getBounds()})
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone?filters[status]=Terminado&pagination[]=1&pagination[]=3000')
 	.done(function(data) {
 		$(data.data).each(function() {
 			points.push(new google.maps.LatLng(this.latitud,this.longitud));

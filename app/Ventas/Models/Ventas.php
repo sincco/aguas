@@ -14,20 +14,16 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function setRegister($data)
 	{
-		$query = "SELECT * FROM contratos WHERE contrato = '" . $data['contrato'] . "';";
-		$previous = $this->connector->query($query);
-		if (count($previous) > 0) {
-			$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato;";
-			return $this->connector->query($query, $data);
-		} else {
-			return false;
+		foreach ($data as $row) {
+			$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato ON DUPLICATE KEY UPDATE fechaAsignacion=CURDATE(), estatusId=1;";
+			$this->connector->query($query, ['contrato'=>$row['contrato']]);
 		}
 	}
 
 	public function asignar($vendedor, $contratos) {
 		$values = [];
 		foreach ($contratos as $contrato) {
-			$values[] = "'" . $contrato[1] . "'";
+			$values[] = "'" . $contrato['contrato'] . "'";
 		}
 		$query = "UPDATE ventasContratosAsignados SET fechaAsignacion=CURDATE(), vendedorId=" . $vendedor ." WHERE contrato IN (" . implode(',', $values) . ");";
 		return $this->connector->query($query);
@@ -52,6 +48,11 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function setEstatus($data) {
 		$query = "UPDATE ventasContratosAsignados SET estatusId=:estatusId WHERE contrato=:contrato;";
+		return $this->connector->query($query, $data);
+	}
+
+	public function getByZone($data) {
+		$query = 'SELECT * FROM contratos WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND contrato NOT IN (SELECT contrato FROM ventasContratosAsignados);';
 		return $this->connector->query($query, $data);
 	}
 }

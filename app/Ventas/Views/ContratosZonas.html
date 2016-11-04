@@ -6,6 +6,7 @@
 		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
 		<div class="col-xs-6">
 			<button type="button" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button>
+			<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-sign-in" aria-hidden="true" onclick="$('#modal-vendedores').modal('show');"> <span>Asignar contratos</span></i></button>
 		</div>
 	</div>
 	<div class="row">
@@ -14,6 +15,33 @@
 		</div>
 		<div class="col-sm-12 col-md-6">
 			<table id="table-contratos" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+
+<div id="modal-vendedores" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la vendedor</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>vendedor 
+							<select class="form-control col-lg-8" name="vendedor">
+								{% for vendedor in vendedores %}
+								<option value="{{ vendedor.vendedorId|e }}">{{ vendedor.nombre|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -81,7 +109,7 @@ function cargarContratos() {
 	$('#table-contratos').bootstrapTable('destroy');
 	$('#table-contratos').bootstrapTable({
 		method: 'post',
-		url: BASE_URL + 'expedientes/index/apigetbyzone',
+		url: BASE_URL + 'ventas/contratos/getbyzone',
 		queryParams: function (p) {
 			return { limites: bounds };
 		},
@@ -161,6 +189,20 @@ $('#table-contratos').on('load-error.bs.table' , function(status,res){
 $('#table-contratos').on('refresh.bs.table' , function(params){
 	loader.show();
 });
+
+function asignarContratos() {
+	loader.show();
+	sincco.consumirAPI('POST', BASE_URL + 'ventas/contratos/apiasignar', {contratos: $('#table-contratos').bootstrapTable('getSelections'), vendedor: $('[name=vendedor]').val()})
+	.done(function(data) {
+		loader.hide();
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-vendedores').modal('hide');
+		//location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
 
 </script>
 
