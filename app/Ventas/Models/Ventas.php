@@ -25,7 +25,7 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 		foreach ($contratos as $contrato) {
 			$values[] = "'" . $contrato['contrato'] . "'";
 		}
-		$query = "UPDATE ventasContratosAsignados SET fechaAsignacion=CURDATE(), vendedorId=" . $vendedor ." WHERE contrato IN (" . implode(',', $values) . ");";
+		$query = "UPDATE ventasContratosAsignados SET fechaAsignacion=CURDATE(), vendedorId=" . $vendedor ." WHERE contrato IN (" . implode(',', $values) . "), estatusId=2;";
 		return $this->connector->query($query);
 	}
 
