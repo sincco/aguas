@@ -11,18 +11,18 @@ use \Sincco\Tools\Tokenizer;
  */
 class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 
-	public function editUser( $data ) {
-		$db = Reader::get( 'bases' );
+	public function editUser($data) {
+		$db = Reader::get('bases');
 		$db = $db[ 'default' ];
-		$db[ 'password' ] = trim( Crypt::decrypt( $db['password'] ) );
-		Login::setDatabase( $db );
-		return Login::editUser( $data );
+		$db[ 'password' ] = trim(Crypt::decrypt($db['password']));
+		Login::setDatabase($db);
+		return Login::editUser($data);
 	}
 
-	public function createUser( $data ) {
-		$db = Reader::get( 'bases' );
+	public function createUser($data) {
+		$db = Reader::get('bases');
 		$db = $db[ 'default' ];
-		$db[ 'password' ] = trim( Crypt::decrypt( $db['password'] ) );
+		$db[ 'password' ] = trim(Crypt::decrypt($db['password']));
 		Login::setDatabase($db);
 		return Login::createUser($data);
 	}
@@ -31,13 +31,14 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 	 * @return none
 	 */
 	public function checkLogin() {
-		$db = Reader::get( 'bases' );
+		$db = Reader::get('bases');
 		$db = $db[ 'default' ];
-		$db[ 'password' ] = trim( Crypt::decrypt( $db['password'] ) );
-		Login::setDatabase( $db );
-		if(! $data = Login::isLogged() ) {
-			Request::redirect( 'login' );
-		}
+		$db[ 'password' ] = trim(Crypt::decrypt($db['password']));
+		Login::setDatabase($db);
+		return Login::isLogged();
+		//if(! $data = Login::isLogged()) {
+		//	Request::redirect('login');
+		//}
 	}
 
 	/**
@@ -46,7 +47,7 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 	 */
 	public function logout() {
 		Login::logout();
-		Request::redirect( 'login' );
+		Request::redirect('login');
 	}
 
 	/**
@@ -54,12 +55,12 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 	 * @return [type] [description]
 	 */
 	public function createMenus() {
-		$this->checkLogin();
-		$mdlMenus = $this->getModel( 'Menus' );
+		// $this->checkLogin();
+		$mdlMenus = $this->getModel('Menus');
 		$menus = $mdlMenus->getAll();
 		$response = array();
-		foreach ( $menus as $menu ) {
-			if( intval($menu[ 'menuParent' ]) > 0 ) {
+		foreach ($menus as $menu) {
+			if(intval($menu[ 'menuParent' ]) > 0) {
 				$response[ $menu[ 'menuParent' ] ][ 'childs' ][] = array(
 					'text'=>$menu[ 'menuText' ],
 					'url'=>$menu[ 'menuURL' ]

@@ -15,8 +15,10 @@ require_once __DIR__ . '/paths.php';
 use Sincco\Sfphp\Session;
 use Sincco\Sfphp\Launcher;
 use Sincco\Tools\Debug;
+use Sincco\Sfphp\Translations;
 
 try {
+	Translations::init();
 	Session::get();
 	new Launcher();
 }catch (\Exception $err) {
