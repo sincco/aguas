@@ -52,7 +52,7 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getByZone($data) {
-		$query = 'SELECT * FROM contratos WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND contrato NOT IN (SELECT contrato FROM ventasContratosAsignados);';
+		$query = 'SELECT con.* FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp ON (con.contrato=tmp.contrato AND tmp.estatusId != 5) WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND con.contrato NOT IN (SELECT contrato FROM ventasContratosAsignados);';
 		return $this->connector->query($query, $data);
 	}
 }
