@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
 		<div class="col-xs-6">
-			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap();"> <span>Mostrar densidad</span></i></button>
+			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Terminado');"> <span>Mostrar terminados</span></i></button>
 		</div>
 	</div>
 	<div class="row">
@@ -42,10 +42,14 @@ function initMap() {
 	infoWindow = new google.maps.InfoWindow();
 }
 
-function heatMap() {
+function heatMap(status) {
 	loader.show();
+	bounds.north = map.getBounds().getNorthEast().lat();
+	bounds.south = map.getBounds().getSouthWest().lat()
+	bounds.east = map.getBounds().getNorthEast().lng();
+	bounds.west = map.getBounds().getSouthWest().lng();
 	var points = [];
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone?filters[status]=Terminado&pagination[]=1&pagination[]=3000')
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetbyzone/status/' + status, {limites: bounds})
 	.done(function(data) {
 		$(data.data).each(function() {
 			points.push(new google.maps.LatLng(this.latitud,this.longitud));
