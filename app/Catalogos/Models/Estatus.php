@@ -3,7 +3,7 @@
 class EstatusModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
-		$query = 'SELECT * FROM ventasEstatus;';
+		$query = 'SELECT * FROM ventasEstatus ORDER BY estatusId;';
 		return $this->connector->query( $query );
 	}
 
