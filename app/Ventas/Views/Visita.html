@@ -61,14 +61,32 @@
 			</div>
 			<div class="row">
 				<h4>Cliente</h4>
-				<div class="col-lg-6">
-					<label>Nombre: <input type="text" name="clienteNombre" class="form-control col-lg-6" aria-describedby="sizing-addon2" placeholder="Atendió"></label>
+				<div class="col-md-4">
+					<label>Nombre: <input type="text" name="clienteNombre" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Atendió"></label>
 				</div>
-				<div class="col-lg-6">
-					<label>Telefono: <input type="text" name="clienteTelefono" class="form-control col-lg-6" aria-describedby="sizing-addon2" placeholder="Teléfono"></label>
+				<div class="col-md-4">
+					<label>Telefono: <input type="text" name="clienteTelefono" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Teléfono"></label>
 				</div>
-				<div class="col-lg-6">
-					<label>Correo electrónico: <input type="text" name="clienteCorreo" class="form-control col-lg-6" aria-describedby="sizing-addon2" placeholder="Correo"></label>
+				<div class="col-md-4">
+					<label>Correo electrónico: <input type="text" name="clienteCorreo" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Correo"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<label>Fecha preferida de instalación: <div class="form-group">
+					<div class="input-group date" id="fechaInstalacion">
+					<input type="text" class="form-control" name="fechaInstalacion"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					</div>
+					</div></label>
+				</div>
+				<div class="col-md-6">
+					<label>Horario preferido de instalación: <select class="form-control col-lg-10" name="horarioInstalacion">
+						<option value="Matutino">Matutino</option>
+						<option value="Vespertino">Vespertino</option>
+					</select></label>
 				</div>
 			</div>
 		</form>
@@ -153,6 +171,10 @@ $('#qrCamera').on('change', function(){
 });
 
 $(function() {
+	$('#fechaInstalacion').datetimepicker({
+		useCurrent: true,
+		format: 'YYYY-MM-DD'
+	});
 	$('.rowImagenes').hide();
 	$('.rowContrato').hide();
 	$('.proceso').hide();

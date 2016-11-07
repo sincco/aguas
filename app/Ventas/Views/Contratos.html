@@ -121,24 +121,32 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-12">
+							<div class="col-md-12">
 								<h4>Visita</h4>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-md-6">
 										<label>Nombre: <span data-fields="clienteNombre"></span></label>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-md-6">
 										<label>Teléfono: <span data-fields="clienteTelefono"></span></label>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-md-6">
 										<label>Correo: <span data-fields="clienteCorreo"></span></label>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-md-6">
 										<label>Fecha de visita: <span data-fields="fechaVisita"></span></label>
 									</div>
 								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Fecha preferida para instalación: <span data-fields="fechaInstalacion"></span></label>
+							</div>
+							<div class="col-md-6">
+								<label>Horario preferida para instalación: <span data-fields="horarioInstalacion"></span></label>
 							</div>
 						</div>
 					</div>
@@ -239,6 +247,8 @@ function buscarContrato(contrato) {
 	$('[data-fields=clienteTelefono]').html('');
 	$('[data-fields=clienteNombre]').html('');
 	$('[data-fields=fechaVisita]').html('');
+	$('[data-fields=fechaInstalacion]').html('');
+	$('[data-fields=horarioInstalacion]').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'ventas/visita/apigetcontrato', {contrato:contrato})
 	.done(function(data) {
 		if (data.total) {
@@ -254,6 +264,8 @@ function buscarContrato(contrato) {
 				$('[data-fields=clienteTelefono]').html(this.clienteTelefono);
 				$('[data-fields=clienteNombre]').html(this.clienteNombre);
 				$('[data-fields=fechaVisita]').html(this.fechaVisita);
+				$('[data-fields=fechaInstalacion]').html(this.fechaInstalacion);
+				$('[data-fields=horarioInstalacion]').html(this.horarioInstalacion);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
