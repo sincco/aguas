@@ -3,16 +3,18 @@
 
 <div class="jumbotron">
 	<div class="row">
-		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
+		<div class="col-xs-6"><h5>Acerca o aleja la región de búsqueda</h5></div>
 		<div class="col-xs-6">
 			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Terminado');"> <span>Mostrar terminados</span></i></button>
+			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('En proceso');"> <span>Mostrar en proceso</span></i></button>
+			<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Asignado');"> <span>Mostrar asignados</span></i></button>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-12 col-md-6">
+		<div class="col-sm-12">
 			<div id="map" style="width: 100%; height: 300px;"></div>
 		</div>
-		<div class="col-sm-12 col-md-6">
+		<div class="col-sm-12">
 			<table id="table-contratos" data-mobile-responsive="true"></table>
 		</div>
 	</div>
