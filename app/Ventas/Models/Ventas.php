@@ -20,7 +20,7 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 			INNER JOIN ventasVisita vis USING (contrato)
 			LEFT JOIN vendedores ven USING (vendedorId)
 			WHERE asg.estatusId = 3
-			ORDER BY asg.fechaAsignacion DESC, con.contrato ASC";
+			ORDER BY asg.fechaInstalacion DESC, con.contrato ASC";
 		return $this->connector->query($query);
 	}
 
