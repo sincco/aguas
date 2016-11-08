@@ -15,6 +15,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 	public function vendidos() {
 		$view = $this->newView('Ventas\ContratosVendidos');
 		$view->contratos = $this->getModel('Ventas\Ventas')->getVendidos();
+		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}

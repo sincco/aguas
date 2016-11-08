@@ -13,14 +13,8 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getVendidos() {
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.*
-			FROM ventasContratosAsignados asg
-			INNER JOIN contratos con USING (contrato)
-			INNER JOIN ventasEstatus est USING (estatusId)
-			INNER JOIN ventasVisita vis USING (contrato)
-			LEFT JOIN vendedores ven USING (vendedorId)
-			WHERE asg.estatusId = 3
-			ORDER BY vis.fechaInstalacion DESC, con.contrato ASC";
+		$query = 'SELECT con.*, vis.fechaInstalacion, vis.horarioInstalacion, CONCAT(con.via, " ", con.calle, " ", con.numOficial) direccion, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.anexo, tmp.cuadrilla, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) INNER JOIN ventasContratosAsignados asg USING (contrato) INNER JOIN ventasVisita vis USING (contrato) WHERE asg.estatusId = 3 ORDER BY vis.fechaInstalacion DESC, con.contrato ASC;';
+		//var_dump($query);
 		return $this->connector->query($query);
 	}
 

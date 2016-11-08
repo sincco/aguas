@@ -4,10 +4,11 @@
 <div class="container">
 	<div class="row">
 		<h1>Contratos Vendidos</h1>
+		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar a cuadrillas</span></i></button>
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
 			<thead>
 				<tr>
-					<th data-checkbox="true"></th><th data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Vendedor</th><th data-sortable="true">Fecha solicitada</th><th data-sortable="true">Horario solicitado</th>
+					<th data-checkbox="true"></th><th data-sortable="true" data-field="contrato">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha solicitada</th><th data-sortable="true">Horario solicitado</th><th>Cuadrilla</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,9 +23,9 @@
 					<td>{{ contrato.direccion|e }}</td>
 					<td>{{ contrato.colonia|e }}</td>
 					<td>{{ contrato.municipio|e }}</td>
-					<td>{{ contrato.nombre|e }}</td>
 					<td>{{ contrato.fechaInstalacion|e }}</td>
 					<td>{{ contrato.horarioInstalacion|e }}</td>
+					<td>{{ contrato.cuadrilla|e }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -60,7 +61,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la vendedor</h4>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos al vendedor</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -176,6 +177,34 @@
 		</div>
 	</div>
 </div>
+
+<div id="modal-cuadrillas" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la cuadrilla</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>Cuadrilla 
+							<select class="form-control col-lg-8" name="cuadrilla">
+								{% for cuadrilla in cuadrillas %}
+								<option value="{{ cuadrilla.cuadrilla|e }}">{{ cuadrilla.descripcion|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarCuadrillas()"> <span>Asignar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
@@ -324,6 +353,20 @@ function buscarAdjuntos(contrato) {
 
 function extension(filename) {
 	return filename.split('.').pop();
+}
+
+function muestraCuadrillas() {
+	$('#modal-cuadrillas').modal('show');
+}
+
+function asignarCuadrillas() {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), cuadrilla: $('[name=cuadrilla]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-cuadrillas').modal('hide');
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
 }
 
 </script>
