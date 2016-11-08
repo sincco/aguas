@@ -18,7 +18,7 @@ class VendedoresModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function insert($data) {
 		$query = 'INSERT INTO vendedores 
-			SET nombre=:nombre';
+			SET nombre=:nombre, userId=:userId';
 		return $this->connector->query($query, $data);
 	}
 

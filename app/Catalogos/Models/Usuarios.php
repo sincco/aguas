@@ -17,6 +17,11 @@ class UsuariosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, ['userName'=>$data] );
 	}
 
+	public function esVendedor($data) {
+		$query = 'SELECT COUNT(vendedorId) vendedor FROM vendedores WHERE vendedorId=:userId;';
+		return $this->connector->query( $query, $data);
+	}
+
 	public function insert( $data ) {
 		$query = 'INSERT INTO usuariosExtra 
 			SET userId = :userId, nombre = :nombre, cuadrilla = :cuadrilla;';

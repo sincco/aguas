@@ -47,6 +47,8 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 			$cuadrilla = $this->getModel('Catalogos\Usuarios')->getByUserName(Request::getParams('userData')['user']);
 			$cuadrilla = array_pop($cuadrilla);
 			$_SESSION['user\extra'] = serialize(['cuadrilla'=>$cuadrilla]);
+			$data = unserialize($_SESSION['sincco\login\controller']);
+			$_SESSION['user\vendedor'] = $this->getModel('Catalogos\Usuarios')->esVendedor(['userId'=>$data['userId']])[0]['vendedor'];
 			$acceso = TRUE;
 		}
 		else {

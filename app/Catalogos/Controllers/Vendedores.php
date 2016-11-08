@@ -15,15 +15,15 @@ class VendedoresController extends Sincco\Sfphp\Abstracts\Controller {
 	public function api() {
 		$vendedor = $this->getParams('vendedor');
 		$model = $this->getModel('Catalogos\Vendedores');
-		unset($vendedor['usuario']);
-		unset($vendedor['password']);
-		$vendedorId = $model->insert($vendedor);
-		$vendedor = $this->getParams('vendedor');
-
 		$data = array('user'=>$vendedor['usuario'], 'email'=>$vendedor['usuario'], 'password'=>$vendedor['password']);
 		$userId = $this->helper('UsersAccount')->createUser($data);
-		
-		if ($userId && $vendedorId){
+		$vendedor = $this->getParams('vendedor');
+		unset($vendedor['usuario']);
+		unset($vendedor['password']);
+		$vendedor['vendedorId'] = $userId;
+		$vendedorId = $model->insert($vendedor);
+
+		if ($userId){
 			new Response('json', ['respuesta'=>$vendedorId]);
 		}
 	}

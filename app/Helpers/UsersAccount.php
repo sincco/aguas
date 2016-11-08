@@ -55,7 +55,7 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 	 * @return [type] [description]
 	 */
 	public function createMenus() {
-		// $this->checkLogin();
+		$this->checkLogin();
 		$mdlMenus = $this->getModel('Menus');
 		$menus = $mdlMenus->getAll();
 		$response = array();
@@ -72,6 +72,11 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 					'childs'=>array()
 				);
 			}
+		}
+		if ($_SESSION['user\vendedor']) {
+			array_shift($response);
+			array_shift($response);
+			array_shift($response);
 		}
 		return $response;
 	}
