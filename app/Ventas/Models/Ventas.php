@@ -28,7 +28,7 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getContrato($contrato) {
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.fechaVisita, vis.clienteNombre, vis.clienteTelefono, vis.clienteCorreo, vis.fechaInstalacion, vis.horarioInstalacion
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.*
 			FROM ventasContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN ventasEstatus est USING (estatusId)
@@ -40,7 +40,7 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function setVisita($data) {
-		$query = "INSERT INTO ventasVisita SET contrato=:contrato, fechaVisita=CURDATE(), clienteNombre=:clienteNombre, clienteTelefono=:clienteTelefono, clienteCorreo=:clienteCorreo, fechaInstalacion=:fechaInstalacion, horarioInstalacion=:horarioInstalacion;";
+		$query = "INSERT INTO ventasVisita SET contrato=:contrato, fechaVisita=CURDATE(), clienteNombre=:clienteNombre, clienteTelefono=:clienteTelefono, clienteCorreo=:clienteCorreo, fechaInstalacion=:fechaInstalacion, horarioInstalacion=:horarioInstalacion, diametroMedidor=:diametroMedidor, ubicacionMedidor=:ubicacionMedidor, materialMedidor=:materialMedidor, observaciones=:observaciones, usoToma=:usoToma;";
 		return $this->connector->query($query, $data);
 	}
 

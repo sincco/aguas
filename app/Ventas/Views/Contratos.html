@@ -149,6 +149,23 @@
 								<label>Horario preferida para instalación: <span data-fields="horarioInstalacion"></span></label>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<label>Diametro Medidor: <span data-fields="diametroMedidor"></span></label>
+							</div>
+							<div class="col-md-4">
+								<label>Ubicación Cuadro: <span data-fields="ubicacionMedidor"></span></label>
+							</div>
+							<div class="col-md-4">
+								<label>Material Medidor: <span data-fields="materialMedidor"></span></label>
+							</div>
+							<div class="col-md-4">
+								<label>Uso Toma: <span data-fields="usoToma"></span></label>
+							</div>
+							<div class="col-md-4">
+								<label>Observaciones: <span data-fields="observaciones"></span></label>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -249,6 +266,11 @@ function buscarContrato(contrato) {
 	$('[data-fields=fechaVisita]').html('');
 	$('[data-fields=fechaInstalacion]').html('');
 	$('[data-fields=horarioInstalacion]').html('');
+	$('[data-fields=diametroMedidor]').html('');
+	$('[data-fields=ubicacionMedidor]').html('');
+	$('[data-fields=materialMedidor]').html('');
+	$('[data-fields=usoToma]').html('');
+	$('[data-fields=observaciones]').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'ventas/visita/apigetcontrato', {contrato:contrato})
 	.done(function(data) {
 		if (data.total) {
@@ -266,6 +288,11 @@ function buscarContrato(contrato) {
 				$('[data-fields=fechaVisita]').html(this.fechaVisita);
 				$('[data-fields=fechaInstalacion]').html(this.fechaInstalacion);
 				$('[data-fields=horarioInstalacion]').html(this.horarioInstalacion);
+				$('[data-fields=diametroMedidor]').html(this.diametroMedidor);
+				$('[data-fields=ubicacionMedidor]').html(this.ubicacionMedidor);
+				$('[data-fields=materialMedidor]').html(this.materialMedidor);
+				$('[data-fields=usoToma]').html(this.usoToma);
+				$('[data-fields=observaciones]').html(this.observaciones);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
