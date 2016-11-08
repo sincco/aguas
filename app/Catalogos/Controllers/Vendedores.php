@@ -23,8 +23,6 @@ class VendedoresController extends Sincco\Sfphp\Abstracts\Controller {
 		$vendedor['vendedorId'] = $userId;
 		$vendedorId = $model->insert($vendedor);
 
-		if ($userId){
-			new Response('json', ['respuesta'=>$vendedorId]);
-		}
+		new Response('json', ['respuesta'=>$userId]);
 	}
 }
