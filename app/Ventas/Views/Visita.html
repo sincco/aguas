@@ -235,6 +235,10 @@ function buscarContrato() {
 	sincco.consumirAPI('POST', BASE_URL + 'ventas/visita/apigetcontrato', {contrato:$('[name=contrato]').val()})
 	.done(function(data) {
 		if (data.total) {
+			if (data.rows[0].estatus != 'Asignado') {
+				alert('Este contrato ya fue gestionado');
+				location.reload();
+			}
 			$('.rowImagenes').show();
 			$('.rowContrato').show();
 			$(data.rows).each(function(){

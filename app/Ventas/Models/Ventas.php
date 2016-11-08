@@ -14,10 +14,8 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function setRegister($data)
 	{
-		foreach ($data as $row) {
-			$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato ON DUPLICATE KEY UPDATE fechaAsignacion=CURDATE(), estatusId=1;";
-			$this->connector->query($query, ['contrato'=>$row['contrato']]);
-		}
+		$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato, vendedorId = :vendedorId, fechaAsignacion=CURDATE(), estatusId=2 ON DUPLICATE KEY UPDATE estatusId=2;";
+		$this->connector->query($query, $data);
 	}
 
 	public function asignar($vendedor, $contratos) {
