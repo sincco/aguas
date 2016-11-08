@@ -12,10 +12,28 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+	public function getVendidos() {
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre
+			FROM ventasContratosAsignados asg
+			INNER JOIN contratos con USING (contrato)
+			INNER JOIN ventasEstatus est USING (estatusId)
+			LEFT JOIN vendedores ven USING (vendedorId)
+			WHERE asg.estatusId = 3
+			ORDER BY asg.fechaAsignacion DESC, con.contrato ASC";
+		return $this->connector->query($query);
+	}
+
 	public function setRegister($data)
 	{
-		$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato, vendedorId = :vendedorId, fechaAsignacion=CURDATE(), estatusId=2 ON DUPLICATE KEY UPDATE estatusId=2;";
-		$this->connector->query($query, $data);
+		$query = "SELECT COUNT(*) contratos FROM ventasContratosAsignados WHERE contrato='" . $data['contrato'] . "' AND estatusId=3;";
+		$previo = $this->connector->query($query);
+		if (!$previo[0]['contratos']) {
+			$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato, vendedorId = :vendedorId, fechaAsignacion=CURDATE(), estatusId=2 ON DUPLICATE KEY UPDATE fechaAsignacion=CURDATE(), estatusId=2, vendedorId = :vendedorIdUpd;";
+			$data['vendedorIdUpd'] = $data['vendedorId'];
+			$this->connector->query($query, $data);
+		} else {
+			return true;
+		}
 	}
 
 	public function asignar($vendedor, $contratos) {
