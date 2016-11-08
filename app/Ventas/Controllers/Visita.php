@@ -61,7 +61,8 @@ class VisitaController extends Sincco\Sfphp\Abstracts\Controller
 		if(trim($data['fechaInstalacion']) == '') {
 			$data['fechaInstalacion'] = 'NULL';
 		}
-		$this->getModel('Ventas\Ventas')->setEstatus($data);
-		new Response('json', ['respuesta'=>$visitaId]);
+		var_dump($data);
+		//$this->getModel('Ventas\Ventas')->setEstatus($data);
+		//new Response('json', ['respuesta'=>$visitaId]);
 	}
 }
