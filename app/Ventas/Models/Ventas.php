@@ -13,10 +13,11 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getVendidos() {
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.*
 			FROM ventasContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN ventasEstatus est USING (estatusId)
+			INNER JOIN ventasVisita vis USING (contrato)
 			LEFT JOIN vendedores ven USING (vendedorId)
 			WHERE asg.estatusId = 3
 			ORDER BY asg.fechaAsignacion DESC, con.contrato ASC";
