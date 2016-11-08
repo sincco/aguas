@@ -54,8 +54,8 @@ class VisitaController extends Sincco\Sfphp\Abstracts\Controller
 		$visita = $this->getParams();
 		$visita['contrato'] = $contrato;
 		unset($visita['estatus']);
-		if(trim($data['fechaInstalacion']) == '') {
-			$data['fechaInstalacion'] = 'NULL';
+		if(trim($visita['fechaInstalacion']) == '') {
+			$visita['fechaInstalacion'] = 'NULL';
 		}
 		$visitaId = $this->getModel('Ventas\Ventas')->setVisita($visita);
 		$data = [];
