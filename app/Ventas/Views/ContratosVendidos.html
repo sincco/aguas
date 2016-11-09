@@ -45,7 +45,7 @@
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
 			<thead>
 				<tr>
-					<th data-checkbox="true"></th><th data-sortable="true" data-field="contrato">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha solicitada</th><th data-sortable="true">Horario solicitado</th><th>Cuadrilla</th>
+					<th data-checkbox="true"></th><th data-sortable="true" data-field="contrato">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Vendedor</th><th data-sortable="true">Fecha solicitada</th><th data-sortable="true">Horario solicitado</th><th>Cuadrilla</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -60,6 +60,7 @@
 					<td>{{ contrato.direccion|e }}</td>
 					<td>{{ contrato.colonia|e }}</td>
 					<td>{{ contrato.municipio|e }}</td>
+					<td>{{ contrato.nombre|e }}</td>
 					<td>{{ contrato.fechaInstalacion|e }}</td>
 					<td>{{ contrato.horarioInstalacion|e }}</td>
 					<td>{{ contrato.cuadrilla|e }}</td>
