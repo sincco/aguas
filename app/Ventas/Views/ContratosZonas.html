@@ -192,7 +192,7 @@ $('#table-contratos').on('refresh.bs.table' , function(params){
 
 function asignarContratos() {
 	loader.show();
-	sincco.consumirAPI('POST', BASE_URL + 'ventas/contratos/apiasignar', {contratos: $('#table-contratos').bootstrapTable('getSelections'), vendedor: $('[name=vendedor]').val()})
+	sincco.consumirAPI('POST', BASE_URL + 'ventas/contratos/apiasignarmasivo', {contratos: $('#table-contratos').bootstrapTable('getSelections'), vendedorId: $('[name=vendedor]').val()})
 	.done(function(data) {
 		loader.hide();
 		toastr.success('Contratos asignados.', 'Éxito');

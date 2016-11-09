@@ -43,6 +43,18 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 		}
 	}
 
+	public function apiAsignarMasivo() {
+		$vendedor = $this->getParams('vendedorId');
+		$contratos = $this->getParams('contratos');
+		try {
+			$this->getModel('Ventas\Ventas')->setRegisters($contratos,$vendedor);
+			$respuesta = $this->getModel('Ventas\Ventas')->asignar($vendedor, $contratos);
+			new Response('json', ['respuesta'=>true]);
+		} catch (Exception $e) {
+			new Response('json', ['respuesta'=>false]);
+		}
+	}
+
 	public function procesarArchivo() {
 		$count = 0;
 		$total = 0;

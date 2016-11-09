@@ -31,6 +31,21 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 		}
 	}
 
+	public function setRegisters($data, $vendedorId)
+	{
+		foreach ($data as $row) {
+			$_data['contrato'] = $row['contrato'];
+			$query = "SELECT COUNT(*) contratos FROM ventasContratosAsignados WHERE contrato='" . $_data['contrato'] . "' AND estatusId=3;";
+			$previo = $this->connector->query($query);
+			if (!$previo[0]['contratos']) {
+				$_data['vendedorId'] = $vendedorId;
+				$query = "INSERT INTO ventasContratosAsignados SET contrato = :contrato, vendedorId = :vendedorId, fechaAsignacion=CURDATE(), estatusId=2 ON DUPLICATE KEY UPDATE fechaAsignacion=CURDATE(), estatusId=2, vendedorId = :vendedorIdUpd;";
+				$_data['vendedorIdUpd'] = $_data['vendedorId'];
+				$this->connector->query($query, $_data);
+			}
+		}
+	}
+
 	public function asignar($vendedor, $contratos) {
 		$values = [];
 		foreach ($contratos as $contrato) {
