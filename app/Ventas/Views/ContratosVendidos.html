@@ -5,6 +5,43 @@
 	<div class="row">
 		<h1>Contratos Vendidos</h1>
 		<button type="button" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true" onclick="muestraCuadrillas()"> <span>Asignar a cuadrillas</span></i></button>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class='col-xs-1'>
+						Desde
+					</div>
+					<div class='col-xs-3'>
+						<div class="form-group">
+						<div class='input-group date' id='fecha-inicio'>
+						<input type='text' class="form-control" id="fechaInicio" value="{{desde}}" />
+						<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+						</div>
+						</div>
+					</div>
+					<div class='col-xs-1'>
+						Hasta
+					</div>
+					<div class='col-xs-3'>
+						<div class="form-group">
+						<div class='input-group date' id='fecha-fin'>
+						<input type='text' class="form-control" id="fechaFin" value="{{hasta}}"/>
+						<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+						</div>
+						</div>
+					</div>
+					<div class='col-xs-4'>
+						<button type="button" class="btn btn-success" onclick="jQuery.redirect(BASE_URL + 'ventas/contratos/vendidos', { 'fechaInicio': $('#fechaInicio').val(), 'fechaFin': $('#fechaFin').val() });">Filtrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
 			<thead>
 				<tr>
@@ -207,6 +244,24 @@
 
 
 <script type="text/javascript">
+
+$(function(){
+	$('#fecha-fin').datetimepicker({
+		format: 'YYYY-MM-DD'
+	});
+	$('#fecha-inicio').datetimepicker({
+		useCurrent: true,
+		format: 'YYYY-MM-DD'
+	});
+	$("#fecha-inicio").on("dp.change", function (e) {
+		$('#fecha-fin').data("DateTimePicker").minDate(e.date);
+		$('#fecha-fin').data("DateTimePicker").date(e.date);
+	});
+	$("#fecha-fin").on("dp.change", function (e) {
+		$('#fecha-inicio').data("DateTimePicker").maxDate(e.date);
+	});
+})
+
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
 	loader.show();
 	$('.modal-title span').html(element[1]);

@@ -14,7 +14,11 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function vendidos() {
 		$view = $this->newView('Ventas\ContratosVendidos');
-		$view->contratos = $this->getModel('Ventas\Ventas')->getVendidos();
+		$fechaInicio = (is_null($this->getParams('fechaInicio')) ? date('Y/m/d') : $this->getParams('fechaInicio'));
+		$fechaFin = (is_null($this->getParams('fechaFin')) ? date('Y/m/d') : $this->getParams('fechaFin'));
+		$view->desde = $fechaInicio;
+		$view->hasta = $fechaFin;
+		$view->contratos = $this->getModel('Ventas\Ventas')->getVendidos(['inicio'=>$fechaInicio,'fin'=>$fechaFin]);
 		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();

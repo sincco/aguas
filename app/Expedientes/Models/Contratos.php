@@ -28,7 +28,6 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getTable($data, $cuadrilla = 0) {
-		ini_set("memory_limit", "640M");
 		$modCuadrilla = '';
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
