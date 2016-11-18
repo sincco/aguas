@@ -1,0 +1,115 @@
+{% include 'header_full.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Medidores</h1>
+		<button type="button" class="btn btn-info"><i class="fa fa-upload" aria-hidden="true" onclick="$('#modal-carga').modal('show');"> <span>Cargar</span></i></button>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Serie</th><th data-sortable="false">qMax</th><th data-sortable="false">qN</th><th data-sortable="false">qT</th><th data-sortable="false">qMin</th><th data-sortable="false">Diametro</th><th data-sortable="false">Modelo</th><th data-sortable="false">Digitos Lectura</th><th data-sortable="false">Banca</th><th data-sortable="false">Usuario</th><th data-sortable="false">Fabricación</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for medidor in medidores %}
+				<tr>
+					<td>{{ medidor.serie|e }}</td>
+					<td>{{ medidor.qMax|e }}</td>
+					<td>{{ medidor.qN|e }}</td>
+					<td>{{ medidor.qT|e }}</td>
+					<td>{{ medidor.qMin|e }}</td>
+					<td>{{ medidor.diametro|e }}</td>
+					<td>{{ medidor.modelo|e }}</td>
+					<td>{{ medidor.digitosLectura|e }}</td>
+					<td>{{ medidor.banca|e }}</td>
+					<td>{{ medidor.usuario|e }}</td>
+					<td>{{ medidor.fechaFabricacion|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="modal-carga" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Carga de layout</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+  						<div class="fileUpload btn btn-default">
+							<label>Archivo</label><input type="file" class="upload" name="carga-medidores-{{ "now"|date("Ymd") }}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	$('#modal-carga').modal('show');
+});
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'files/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	console.log(progress);
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	console.log(file.uniqueIdentifier);
+});
+
+uploadControl.on('uploadStart', function () {
+	console.log('CARGANDO...');
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	console.log('completo...')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}catalogos/medidores/procesararchivo')
+	.done(function(data) {
+		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al procesar el archivo.', 'Intenta de nuevo');
+	})
+	loader.hide();
+});
+
+$('#upload').click(function() {
+	uploadControl.upload();
+});
+
+$('.upload').change(function() {
+	$(this).parent().removeClass('btn-default');
+	$(this).parent().addClass('btn-info');
+	uploadControl.addFile(this.files[0], this.name);
+});
+
+</script>
+
+{% include 'footer_full.html' %}
