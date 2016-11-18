@@ -90,7 +90,7 @@ uploadControl.on('uploadStart', function () {
 
 uploadControl.on('complete', function () {
 	console.log('completo...')
-	sincco.consumirAPI('POST','{{constant('BASE_URL')}}catalogos/medidores/procesararchivo')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}almacenes/medidores/procesararchivo')
 	.done(function(data) {
 		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
 		location.reload();
