@@ -1,4 +1,25 @@
+{% include 'header.html' %}
+<style type="text/css">
+  .row {outline: 1px solid orange; padding: 1em;}
+  .container { font-size: 16px; }
+</style>
 
+<div class="container">
+{% for contrato in contratos %}
+
+  <div class="row">
+    <div class="col-xs-2">
+      <img src="{{constant('BASE_URL')}}html/img/logo_adp.png" width=250 height=50 hspace=3 vspace=6>
+    </div>
+    <div class="col-xs-8">
+      <strong>SOLICITUD DE INSTALACIÓN Y/O SUSTITUCIÓN DE DISPOSITIVOS DE MEDICIÓN</strong>
+    </div>
+    <div class="col-xs-2">
+      <img src='https://chart.googleapis.com/chart?cht=qr&chl={{contrato.contrato}}&chs=90x90&choe=UTF-8&chld=L|2' rel='nofollow' alt='qr code'>
+    </div>
+    <div class="col-xs-6">
+      Fecha: __ / __ / ____
+    </div>
     <div class="col-xs-6">
       NIS: <strong>{{contrato.contrato}}</strong>
     </div>
@@ -98,7 +119,7 @@ Con el presente se hace constar que estará correctamente instalado y operando e
   <div class="center"> Quejas o sugerencias al teléfono: (222) 5-70-07-21</div>
   <div style="page-break-after: always;"></div>
 
-{%endfor %}
+{% endfor %}
 </div>
 
 </body>
