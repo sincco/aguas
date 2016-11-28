@@ -1,28 +1,4 @@
-{% include 'header.html' %}
-<style type="text/css">
-  .row {outline: 1px solid orange; padding: 1em;}
-  .container { font-size: 16px; }
-</style>
 
-<div class="container">
-{% for contrato in contratos %}
-
-  <div class="row">
-    <div class="col-xs-2">
-      <img src="{{constant('BASE_URL')}}html/img/logo_adp.png" width=200 height=38 hspace=3 vspace=6>
-    </div>
-    <div class="col-xs-8">
-      SOLICITUD DE INSTALACIÓN Y/O SUSTITUCIÓN DE DISPOSITIVOS DE MEDICIÓN
-    </div>
-    <div class="col-xs-2">
-      <img src='https://chart.googleapis.com/chart?cht=qr&chl={{contrato.contrato}}&chs=50x50&choe=UTF-8&chld=L|2' rel='nofollow' alt='qr code'>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-6">
-      Fecha: __ / __ / ____
-    </div>
     <div class="col-xs-6">
       NIS: <strong>{{contrato.contrato}}</strong>
     </div>
@@ -49,7 +25,7 @@
   <div class="row">
     <div class="col-xs-6">
       Nombre de la persona que atiende: _________________________________________________________________<br>
-      Identificación: _______________   No. Identificación: ______________ 
+      Identificación: _______________   No. Identificación: ______________ E-mail:_______________________
     </div>
     <div class="col-xs-6">
       Tel. Local: ________________ <br>
@@ -74,11 +50,12 @@
       6.- Material de la adecuación:<br>
       Cobre(   )  Galvanizado(   )  PVC(   )  CPVC(   )  Tubo plus(   ) Otro________<br>
       7.- Diámetro de la adecuación:<br>
-      13mm – ½”(   )     19mm – ¾”(   )     25mm – 1”(   )     Otro_______
+      13mm – ½”(   )     19mm – ¾”(   )     25mm – 1”(   )     Otro_______<br>
       8.-Uso de la toma<br>
       <span style="font-size:0.75em;">Doméstico(   )   Comercial(   )   Mixto(   )   Industrial(   )    Sin toma(    )</span><br>
       9.- Estatus del predio<br>
       <span style="font-size:0.75em;">Habitada(   )   Deshabitada(   )   Operando(   )   No operando(   )   En construcción(   )   En obra negra(   )   Terreno baldío(   )</span>
+      OBSERVACIONES;_____________________________________________________________________________________________________________________________<br>
     </div>
   </div>
 
@@ -101,6 +78,14 @@
     </table>
     </div>
   </div>
+<div class="row">
+    <div class="col-xs-12">
+  Acepto la sustitución y/o instalación del medidor, así como el cargo que corresponda diferido a 18 meses el cual se aplicará en los subsecuentes recibos. Dichos importes no generarán ningún cargo adicional por concepto de intereses. Los precios están sujetos a cambio dependiendo las condiciones de sus instalaciones.<br>
+<br>
+Con el presente se hace constar que estará correctamente instalado y operando el dispositivo de medición, lo anterior con base al artículo 59 de la Ley de Agua para el Estado de Puebla; además, se obliga a el pago de contribuciones por este servicio según el artículo 104, fracción VI de la Ley de Agua para el Estado de Puebla, así como el artículo 10, fracción I y II de la estructura tarifaria para 2016. Es necesario mencionar que conforme al artículo 60 de la Ley de Agua para el Estado de Puebla, el dispositivo de medición queda bajo su cuidado y conservación ya que en caso de daño o alteración del mismo se obliga al usuario a cubrir un costo de reposición conforme al costo señalado en el artículo 10 del decreto de la estructura tarifaria para el 2016.
+ </div>
+  </div>
+
 
   <div class="row">
     <div class="col-xs-6">
@@ -110,6 +95,7 @@
       Nombre y Firma del Propietario y/o Usuario
     </div>
   </div>
+  <div class="center"> Quejas o sugerencias al teléfono: (222) 5-70-07-21</div>
   <div style="page-break-after: always;"></div>
 
 {%endfor %}
