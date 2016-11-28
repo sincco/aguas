@@ -14,6 +14,16 @@ class VisitaController extends Sincco\Sfphp\Abstracts\Controller
 		$view->render();
 	}
 
+	public function formatos () {
+		$contratos = $this->getParams('contratos');
+		$ids = "'" . implode("','", $contratos) . "'";
+		$contratos = $this->getModel('Expedientes\Contratos')->getByIds($ids);
+		$view = $this->newView('Ventas\Formato');
+		$view->supervisor = $userData['cuadrilla']['nombre'];
+		$view->contratos = $contratos;
+		$view->render();
+	}
+
 	public function apiGetContrato() {
 		$model = $this->getModel('Ventas\Ventas');
 		$data = $model->getContrato($this->getParams('contrato'));

@@ -6,10 +6,11 @@
 		<h1>Contratos Asignados</h1>
 		<button type="button" class="btn btn-info" onclick="$('#modal-carga').modal('show');"><i class="fa fa-upload" aria-hidden="true"> <span>Cargar</span></i></button>
 		<button type="button" class="btn btn-primary" onclick="$.redirect(BASE_URL + 'ventas/contratos/zonas');"><i class="fa fa-map" aria-hidden="true"> <span>Asignar zonas a vendedores</span></i></button>
+		<button type="button" class="btn btn-warning" onclick="imprimir();"><i class="fa fa-map" aria-hidden="true"> <span>Imprimir formatos</span></i></button>
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
 			<thead>
 				<tr>
-					<th data-checkbox="true"></th><th data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Venta</th><th data-sortable="true">Vendedor</th>
+					<th data-checkbox="true"></th><th data-field="contrato" data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Venta</th><th data-sortable="true">Vendedor</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -326,6 +327,15 @@ function buscarAdjuntos(contrato) {
 
 function extension(filename) {
 	return filename.split('.').pop();
+}
+
+function imprimir() {
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'ventas/visita/formatos', {contratos: ids}, 'POST', '_blank'); 
 }
 
 </script>
