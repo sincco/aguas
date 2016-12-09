@@ -56,7 +56,7 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 	
 	public function encriptar() {
-		var_dump($this->getParams('t'));
-		echo trim(Crypt::encrypt($this->getParams('t')));
+		echo trim(Crypt::encrypt($this->getParams('t'))) . '<br>';
+		echo trim(Crypt::decrypt($this->getParams('d'))) . '<br>';
 	}
 }
