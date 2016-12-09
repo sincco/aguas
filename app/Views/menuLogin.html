@@ -12,6 +12,7 @@
 			<form class="navbar-form navbar-left" id="acceso">
 				<input type="text" class="form-control col-lg-8" placeholder="usuario" name="user" id="usuario">
 				<input type="password" class="form-control col-lg-8" placeholder="contraseña" name="password" id="password">
+				<input type="hidden" value="{{token('Generic')}}" name="_token">
 				<button type="button" class="btn btn-success">entrar</button>
 			</form>
 			<ul class="nav navbar-nav navbar-right">
