@@ -59,4 +59,9 @@ class LoginController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 		echo json_encode(array('acceso'=>$acceso));
 	}
+	
+	public function encriptar() {
+		echo trim(Crypt::encrypt($this->getParams('t'))) . '<br>';
+		echo trim(Crypt::decrypt($this->getParams('d'))) . '<br>';
+	}
 }
