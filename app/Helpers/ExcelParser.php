@@ -6,7 +6,7 @@
 class ExcelParserHelper extends Sincco\Sfphp\Abstracts\Helper {
 
 	public function read($file, $sheet=0) {
-		$file = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+		$file = \Sincco\Excell\IOFactory::load($file);
 		$sheet = $file->getSheet($sheet);
 		$columns = count($sheet->getColumnDimensions());
 		$tableData = [];
