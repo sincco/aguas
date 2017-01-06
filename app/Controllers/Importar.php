@@ -56,14 +56,3 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 	}
 }
-
-
-INSERT INTO contratos (contrato, altaContrato, propietario, usuario, suministro, numTomas, giro, utilizacion, tarifa, servicios, nivelTarifario, asoc
-iacion, cveCatastral, municipio, colonia, via, calle, numOficial, longitud, latitud, serieMedidor, telemetriaMedidor, interior, interior2, marca_act,
- num_apa, aparato, tip_medicion, f_inst, anos_disp_med, mayores_5_anos, f_retiro_disp_med, cobro, mod_med_ins, tipo_material, caudal_max, num_dig_med
-idor, f_fabricacion, diametro_toma, lectura_inicial, region, estrato, bandera, USUARIO_S, ESTADO_ORDEN, CANTIDAD_MEDIDORES, NUM_OS, CON_PAGO, DIAMETR
-O_CONEXION, TEL_PROP, CEL_PROP, TEL_TP, CEL_TP, COMENT_OS) VALUES ('1000003','1998-11-19','J SALVADOR FLORES LOPEZ','FLORES LOPEZ J SALVADOR','Direct
-o','1','Vivienda Unifamiliar','Unifamiliar Habitacional','Habitac. Fijo Sec. C','Agua + Drenaje + Saneam. + IVA','Sector C','Sin asociacion','1010324
-1022','PUEBLA','FRACC. EL MIRADOR','CALLE','31 ORIENTE','2017','','','','',' ','UNI-0','','','','','1900-01-01','','','1900-01-01','','','','',0,NULL
-,'',0,'3','5',1) ON DUPLICATE KEY UPDATE interior2='UNI-0',region='3',estrato='5',bandera=1, longitud='-98.19152368340', latitud='19.02528924150', ''
-,'EO999','1','','','','','','','','';
