@@ -14,7 +14,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function index() {
-		//$this->helper('UsersAccount')->checkLogin();
+		$this->helper('UsersAccount')->checkLogin();
 		$view = $this->newView('Dashboard');
 
 		$fechaInicio = (is_null($this->getParams('fechaInicio')) ? date('d/m/Y') : $this->getParams('fechaInicio'));
