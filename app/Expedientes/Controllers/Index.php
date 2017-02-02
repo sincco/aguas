@@ -5,6 +5,7 @@ use \Sincco\Sfphp\Response;
 class IndexController extends Sincco\Sfphp\Abstracts\Controller 
 {
 	public function index() {
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosTabla');
 		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
@@ -13,6 +14,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function urgentes() {
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosUrgentesTabla');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
@@ -20,6 +22,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function noejecutados() {
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\NoEjecutadosTabla');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
@@ -27,6 +30,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function terminados() {
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\TerminadosTabla');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
@@ -34,6 +38,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function procesados() {
+		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTableProcesados($_GET);
 		$view = $this->newView('Expedientes\ProcesadosTabla');
@@ -43,6 +48,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function mapa() {
+		$this->helper('UsersAccount')->checkLogin();
 		$view = $this->newView('Expedientes\BusquedaMapa');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();	
