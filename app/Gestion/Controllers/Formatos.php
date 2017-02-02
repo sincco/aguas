@@ -4,6 +4,7 @@ use \Sincco\Sfphp\Response;
 
 class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
+		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
 		$view = $this->newView('Gestion\FormatosTabla');
@@ -13,6 +14,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 	public function imprimir () {
+		$this->helper('UsersAccount')->checkLogin();
 		$contratos = $this->getParams('contratos');
 		$ids = "'" . implode("','", $contratos) . "'";
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
@@ -24,6 +26,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 	public function terminados () {
+		$this->helper('UsersAccount')->checkLogin();
 		$contratos = $this->getParams('contratos');
 		$ids = "'" . implode("','", $contratos) . "'";
 		$fotos = [];
@@ -43,6 +46,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 	public function noejecutados () {
+		$this->helper('UsersAccount')->checkLogin();
 		$contratos = $this->getParams('contratos');
 		$ids = "'" . implode("','", $contratos) . "'";
 		$contratos = $this->getModel('Expedientes\Contratos')->getReporteNoEjecutados($ids);
