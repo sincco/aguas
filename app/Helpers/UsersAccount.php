@@ -34,11 +34,11 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 		$db = Reader::get('bases');
 		$db = $db[ 'default' ];
 		$db[ 'password' ] = trim(Crypt::decrypt($db['password']));
-		Login::setDatabase($db);
-		return Login::isLogged();
-		//if(! $data = Login::isLogged()) {
-		//	Request::redirect('login');
-		//}
+		//Login::setDatabase($db);
+		//return Login::isLogged();
+		if(! $data = Login::isLogged()) {
+			Request::redirect('login');
+		}
 	}
 
 	/**
