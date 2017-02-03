@@ -17,6 +17,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Expedientes\Contratos');
 		$view = $this->newView('Expedientes\ContratosUrgentesTabla');
+		$view->cuadrillas = $this->getModel('Catalogos\Cuadrillas')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
