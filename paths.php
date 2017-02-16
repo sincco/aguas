@@ -9,5 +9,5 @@
 # @author: Iván Miranda (@deivanmiranda)
 # @version: 1.0.0
 # -----------------------
-define('PATH_TMP', PATH_ROOT . '/var/tmp');
+#define('PATH_TMP', PATH_ROOT . '/var/tmp');
 define('PATH_IMG', PATH_ROOT . '/_expedientes/');
