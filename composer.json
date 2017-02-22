@@ -22,7 +22,8 @@
             "var/log",
             "etc/config",
             "bkp",
-            "var/tmp"
+            "var/tmp",
+            "_expedientes"
         ]
     }
 }
