@@ -43,8 +43,8 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			} else {
 				// checa las partes cargadas y crea el archivo
 				$expediente = explode('-', $_POST['resumableIdentifier']);
-				$file = $this->createFileFromChunks($temp_dir, $_POST['resumableFilename'], $_POST['resumableChunkSize'], $_POST['resumableTotalSize'], $_POST['resumableTotalChunks'], $expediente[0]);
-				$this->process($file);
+				$this->createFileFromChunks($temp_dir, $_POST['resumableFilename'], $_POST['resumableChunkSize'], $_POST['resumableTotalSize'], $_POST['resumableTotalChunks'], $expediente[0]);
+				$this->process(PATH_IMG . $expediente[0] . '/' . $_POST['resumableFilename']);
 			}
 		}
 	}
