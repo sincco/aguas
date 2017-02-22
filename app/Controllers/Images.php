@@ -44,8 +44,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 				// checa las partes cargadas y crea el archivo
 				$expediente = explode('-', $_POST['resumableIdentifier']);
 				$file = $this->createFileFromChunks($temp_dir, $_POST['resumableFilename'], $_POST['resumableChunkSize'], $_POST['resumableTotalSize'], $_POST['resumableTotalChunks'], $expediente[0]);
-				$this->process($file);
-				$this->process(PATH_IMG . $expediente[0] . '/' . $_POST['resumableFilename']);
+				var_dump($file);
 			}
 		}
 	}
@@ -104,7 +103,6 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	private function process($name) {
-		var_dump('PROCESAR', $name);
 		$model = $this->getModel('Aguas');
 		$model->init();
 		$model->contratosImages();
@@ -134,7 +132,6 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	private function resize($newWidth, $targetFile, $originalFile) {
-		var_dump('RESIZE', $targetFile);
 		$date = date("d M Y H:i:s.", filectime($originalFile));
 		$info = getimagesize($originalFile);
 		$mime = $info['mime'];
@@ -177,7 +174,6 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	private function watermark($fileName, $image_create_func, $image_save_func, $text = false) {
-		var_dump('WATERMAKR', $fileName);
 		$im = $image_create_func($fileName);
 		$estampa = imagecreatefrompng('html/img/adp_watermark.png');
 
