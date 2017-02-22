@@ -103,6 +103,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	private function process($name) {
+		var_dump('PROCESS');
 		$model = $this->getModel('Aguas');
 		$model->init();
 		$model->contratosImages();
@@ -127,7 +128,8 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
 			$contrato = array_pop($path);
 			$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64, 'fecha'=>date('Y-m-d')];
-			var_dump($model->insert($data, $table=false));
+			#var_dump($model->insert($data, $table=false));
+			var_dump($data);
 		}
 	}
 
