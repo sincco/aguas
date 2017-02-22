@@ -107,7 +107,6 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 		$model->init();
 		$model->contratosImages();
 		$fileName = pathinfo($name, PATHINFO_FILENAME);
-		var_dump('PROCESS', $fileName, $name);
 		if (strlen($fileName) > 1) {
 			$type = pathinfo($name, PATHINFO_EXTENSION);
 			$path = pathinfo($name, PATHINFO_DIRNAME);
@@ -123,19 +122,16 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			$ext = explode('.', $name);
 			$ext = end($ext);
 			$destiny = pathinfo($name, PATHINFO_DIRNAME) . '/' . $fileName . '_MIN.' . $ext;
-			var_dump($destiny,$name);
 			$this->resize(500, $destiny, $name);
 			$content = file_get_contents($destiny);
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
 			$contrato = array_pop($path);
 			$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64, 'fecha'=>date('Y-m-d')];
-			#var_dump($model->insert($data, $table=false));
-			var_dump($data);
+			$model->insert($data, $table=false);
 		}
 	}
 
 	private function resize($newWidth, $targetFile, $originalFile) {
-		var_dump('RESIZE');
 		$date = date("d M Y H:i:s.", filectime($originalFile));
 		$info = getimagesize($originalFile);
 		$mime = $info['mime'];
