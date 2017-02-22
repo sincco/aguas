@@ -103,11 +103,11 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	private function process($name) {
-		var_dump('PROCESS');
 		$model = $this->getModel('Aguas');
 		$model->init();
 		$model->contratosImages();
 		$fileName = pathinfo($name, PATHINFO_FILENAME);
+		var_dump('PROCESS', $fileName, $name);
 		if (strlen($fileName) > 1) {
 			$type = pathinfo($name, PATHINFO_EXTENSION);
 			$path = pathinfo($name, PATHINFO_DIRNAME);
