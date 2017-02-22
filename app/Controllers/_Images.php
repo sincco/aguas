@@ -5,6 +5,64 @@ use \Sincco\Tools\Debug;
 
 class ImagesController extends Sincco\Sfphp\Abstracts\Controller 
 {
+	public function resize() {
+		$directories = scandir(PATH_ROOT . '/_expedientes');
+		array_shift($directories);
+		array_shift($directories);
+		foreach ($directories as $dir) {
+			if (is_dir(PATH_ROOT . '/_expedientes/' .str_replace(' ', '%20', $dir))) {
+				$files = scandir(PATH_ROOT . '/_expedientes/' .str_replace(' ', '%20', $dir));
+				array_shift($files);
+				array_shift($files);
+				foreach ($files as $file) {
+					if (strpos($file, '_thumbnails') === FALSE) {
+						$fileOld = PATH_ROOT . '/_expedientes/' . $dir . '/' . $file;
+						$fileNew = PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/' . $file;
+						if (!is_dir(PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/')) {
+							mkdir(PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/');
+							chmod(PATH_ROOT . '/_expedientes/' . $dir . '/_thumbnails/', 0777);
+						}
+						if (!file_exists($fileNew)) {
+							$this->helper('Images')->resize($fileOld, $fileNew);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Marca de agua
+	public function watermark() {
+		die();
+		$contrato = $this->getParams('contrato');
+		$files = scandir(PATH_IMG . '/' . $contrato);
+		array_shift($files);
+		array_shift($files);
+		foreach ($files as $file) {
+			if (strpos($file, '_thumbnails') === FALSE) {
+
+				imagepng(imagecreatefromstring(file_get_contents(PATH_IMG . $contrato . '/' . $file)), PATH_IMG . $contrato . '/tmp_' . $file);
+				$imagen=imagecreatefrompng(PATH_IMG . $contrato . '/tmp_' . $file);
+				$watermarktext="adp.itron.mx\n" . date("Y-m-d H:i") . "\NIS " . $contrato . "\n" . $_imagen;
+				$blanco = imagecolorallocate($imagen, 255, 255, 255);
+				$negro = imagecolorallocate($imagen, 0, 0, 0);
+				imagettftext($imagen, 30, 0, 21, 30, $negro, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagettftext($imagen, 30, 0, 20, 29, $blanco, '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', $watermarktext);
+				imagepng($imagen, PATH_IMG . $contrato . '/' . $file);
+
+				$fileOld = PATH_IMG . '/' . $contrato . '/tmp_' . $file;
+				$fileNew = PATH_IMG . '/' . $contrato . '/_thumbnails/' . $file;
+				if (!is_dir(PATH_IMG . '/' . $contrato . '/_thumbnails/')) {
+					mkdir(PATH_IMG . '/' . $contrato . '/_thumbnails/');
+					chmod(PATH_IMG . '/' . $contrato . '/_thumbnails/', 0777);
+				}
+				if (!file_exists($fileNew)) {
+					$this->helper('Images')->resize($fileOld, $fileNew);
+				}
+			}
+		}
+	}
+
 	public function upload() {
 		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 			if(!(isset($_GET['resumableIdentifier']) && trim($_GET['resumableIdentifier'])!='')){
@@ -43,8 +101,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			} else {
 				// checa las partes cargadas y crea el archivo
 				$expediente = explode('-', $_POST['resumableIdentifier']);
-				$file = $this->createFileFromChunks($temp_dir, $_POST['resumableFilename'], $_POST['resumableChunkSize'], $_POST['resumableTotalSize'], $_POST['resumableTotalChunks'], $expediente[0]);
-				var_dump($file);
+				$this->createFileFromChunks($temp_dir, $_POST['resumableFilename'], $_POST['resumableChunkSize'], $_POST['resumableTotalSize'], $_POST['resumableTotalChunks'], $expediente[0]);
 			}
 		}
 	}
@@ -72,7 +129,9 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 				}
 				fclose($fp);
 				chmod(PATH_IMG . $expediente . '/' . $fileName, 0777);
-				return PATH_IMG . $expediente . '/' . $fileName;
+				//$size = getimagesize(PATH_IMG . $expediente . '/' . $fileName . '.tmp');
+				//$this->helper('Images')->resize(PATH_IMG . $expediente . '/' . $fileName . '.tmp', PATH_IMG . $expediente . '/' . $fileName, $size[0] / 2, $size[1] / 2);
+				// unlink(PATH_IMG . $expediente . '/' . $fileName);
 			} else {
 				var_dump('no se pudo escribir el archivo final',PATH_IMG . $expediente . '/' . $fileName);
 				return false;
