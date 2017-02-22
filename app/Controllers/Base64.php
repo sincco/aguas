@@ -35,7 +35,7 @@ class Base64Controller extends Sincco\Sfphp\Abstracts\Controller {
 				$contrato = array_pop($path);
 				$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64];
 				#$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type];
-				echo 'PROCESANDO ' . $name . '::' . $model->insert($data) . '\n';
+				echo 'PROCESANDO ' . $name . '::' . $model->insert($data, $table=false) . '\n';
 				#find _expedientes/*/_thumbnails -mindepth 1 -maxdepth 1 | xargs rm -rf; find _expedientes -type f -name "*.db" | xargs rm -rf; find _expedientes -type f -name "*_MIN*" | xargs rm -rf
 			}
 		}

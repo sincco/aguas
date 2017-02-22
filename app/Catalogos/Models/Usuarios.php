@@ -22,7 +22,7 @@ class UsuariosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, $data);
 	}
 
-	public function insert( $data ) {
+	public function insert( $data, $table = false ) {
 		$query = 'INSERT INTO usuariosExtra 
 			SET userId = :userId, nombre = :nombre, cuadrilla = :cuadrilla;';
 		$id = $this->connector->query( $query, [

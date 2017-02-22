@@ -16,7 +16,7 @@ class EstatusModel extends Sincco\Sfphp\Abstracts\Model {
 			ORDER BY det.descripcion', [ 'Cotizacion'=>$data ] );
 	}
 
-	public function insert($data) {
+	public function insert($data, $table=false) {
 		$query = 'INSERT INTO ventasEstatus 
 			SET descripcion=:descripcion';
 		return $this->connector->query($query, $data);
