@@ -105,6 +105,7 @@ uploadControl.on('complete', function () {
 	// console.log('completo...')
 	loader.hide();
 	toastr.success('Imágenes guardadas.', 'Éxito');
+	location.reload();
 });
 
 $(function() {
@@ -128,8 +129,8 @@ $(function() {
 		sincco.consumirAPI('POST', BASE_URL + 'api/v2/visitas/lectura', {contrato: $('[data-field=contrato]').val(), lecturaMedidor:$('[data-field=lecturaMedidor]').val(), observaciones:$('[data-field=observaciones]').val()})
 		.done(function(data) {	
 			toastr.success('Lectura almacenada.', 'Control de Cobranza');
-			location.reload();
-			loader.hide();
+			//location.reload();
+			//loader.hide();
 		});
 	});
 });

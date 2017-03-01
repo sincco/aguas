@@ -19,6 +19,7 @@
 					<td>{{ lectura.contrato|e }}</td>
 					<td>{{ lectura.fechaLectura|e }}</td>
 					<td>{{ lectura.lecturaMedidor|e }}</td>
+					<td><img src="{{ lectura.base64|e }}" height="50px" width="50px"></td>
 				</tr>
 				{% endfor %}
 			</tbody>
