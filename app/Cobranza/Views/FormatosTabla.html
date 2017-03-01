@@ -1,0 +1,39 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Impresión de Formatos - Cuadrilla {{ cuadrilla }}</h1>
+		<button type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true" onclick="imprimir()"> <span>Imprimir formatos</span></i></button>
+		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}expedientes/index/apiasignados/cuadrilla/{{ cuadrilla }}" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th>
+					<th data-sortable="true" data-field="contrato">Contrato</th>
+					<th data-sortable="true" data-field="propietario">Propietario</th>
+					<th data-sortable="true" data-field="usuario">Usuario</th>
+					<th data-sortable="true" data-field="municipio">Municipio</th>
+					<th data-sortable="true" data-field="via">Via</th>
+					<th data-sortable="true" data-field="calle">Calle</th>
+					<th data-sortable="true" data-field="colonia">Colonia</th>
+					<th data-sortable="true" data-field="estatus">Estatus</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+function imprimir() {
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/imprimir',{ contratos: ids}, 'POST', '_blank'); 
+}
+
+</script>
+
+{% include 'footer.html' %}

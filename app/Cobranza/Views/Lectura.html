@@ -1,0 +1,185 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/webcodecamjquery.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/qrcodelib.js"></script>
+
+<div class="container">
+	<div class="row">
+		<h1>Lectura de medidor</h1>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<input type="text" name="contrato" data-field="contrato" class="form-control" placeholder="Contrato...">
+					<span class="input-group-btn">
+						<!--<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','contrato'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>-->
+						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row rowContrato">
+		<h4>Datos del contrato</h4>
+		<div class="row">
+			<div class="col-lg-6">
+				<label>Propiertario: <span data-field="propietario"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Usuario: <span data-field="usuario"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label>Direccion: <span data-field="direccion"></span></label>
+			</div>
+		</div>
+	</div>
+
+	<form name="imagenes">
+		<div class="row rowImagenes">
+			<h4>Lectura del medidor</h4>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<label>Lectura: <input class="form-control" data-field="lecturaMedidor"></label>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<label>Observaciones: <input class="form-control" data-field="observaciones"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Fachada</span></i>
+						<input type="file" class="upload" name="0lectura-fachada-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Medidor</span></i>
+						<input type="file" class="upload" name="0lectura-medidor-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Subir imagenes</span></i></button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'images/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	// console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	// console.log(progress);
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	// console.log(file.uniqueIdentifier);
+});
+
+uploadControl.on('uploadStart', function () {
+	// console.log('CARGANDO...');
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	// console.log('completo...')
+	loader.hide();
+	toastr.success('Imágenes guardadas.', 'Éxito');
+});
+
+$(function() {
+	$('.rowContrato').hide();
+	$('.rowImagenes').hide();
+	$('.proceso').hide();
+
+	$('.upload').change(function() {
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this.files[0], this.name);
+	});
+
+	$('#upload').click(function() {
+		uploadControl.upload();
+		loader.show();
+		var form_data = new FormData();
+		$('.upload').each(function() {
+			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		});
+		sincco.consumirAPI('POST', BASE_URL + 'api/v2/visitas/lectura', {contrato: $('[data-field=contrato]').val(), lecturaMedidor:$('[data-field=lecturaMedidor]').val(), observaciones:$('[data-field=observaciones]').val()})
+		.done(function(data) {	
+			toastr.success('Lectura almacenada.', 'Control de Cobranza');
+			location.reload();
+			loader.hide();
+		});
+	});
+});
+
+function buscarContrato() {
+	loader.show();
+	$('[data-field=propietario]').html('');
+	$('[data-field=usuario]').html('');
+	$('[data-field=direccion]').html('');
+	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/info/contrato/' + $('[name=contrato]').val())
+	.done(function(data) {
+		if (data.data.length) {
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$(data.data).each(function(){
+				$('[data-field=propietario]').html(this.propietario);
+				$('[data-field=usuario]').html(this.usuario);
+				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+			})
+		} else {
+			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
+		}
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
+		loader.hide();
+	});
+}
+
+function tagUbicacion() {
+	if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        toastr.error('Este navegador no soporta la geolocalización.', 'Error');
+    }
+}
+
+function showPosition(position) {
+	loader.show();
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
+	.done(function(data) {
+    	$('[data-field=gps]').html(position.coords.longitude + ' , ' + position.coords.latitude); 
+		toastr.success('Ubicación actualizada.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+</script>
+
+{% include 'footer.html' %}
