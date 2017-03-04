@@ -5,6 +5,7 @@
         "sincco/login": "dev-master",
         "sincco/elastic-email": ">=1.0",
         "sincco/excell": ">=1.0",
+        "symfony/process": ">=3.2.4",
         "fbourigault/composer-mkdir": "^2.0"
     },
     "scripts": {

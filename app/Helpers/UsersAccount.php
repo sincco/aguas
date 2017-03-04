@@ -73,7 +73,7 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 				);
 			}
 		}
-		if ($_SESSION['user\vendedor']) {
+		if (intval($_SESSION['user\vendedor'])>0) {
 			array_shift($response);
 			array_shift($response);
 			array_shift($response);
