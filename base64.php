@@ -1,6 +1,12 @@
 <?php
-$objects = new \RecursiveIteratorIterator(new RecursiveDirectoryIterator('./_expedientes/1000019'));
+$_fileSQL = fopen("newfile.txt", "w") or die("Unable to open file!");
+$objects = new \RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/_expedientes/3058950'));
+$dirs = [];
 foreach($objects as $name => $object){
+	$dirs[] = $name;
+}
+asort($dirs);
+foreach($dirs as $name){
 	$fileName = pathinfo($name, PATHINFO_FILENAME);
 	if (strlen($fileName) > 1) {
 		$type = pathinfo($name, PATHINFO_EXTENSION);
@@ -20,11 +26,13 @@ foreach($objects as $name => $object){
 		resize(500, $destiny, $name);
 		$content = file_get_contents($destiny);
 		$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
-		#$data = ['contrato'=>$path[2], 'imagen'=>$fileName, 'tipo'=>$type, 'data'=>$base64];
-		$data = ['contrato'=>$path[2], 'imagen'=>$fileName, 'tipo'=>$type];
-		var_dump($data);
+		$contrato = array_pop($path);
+		$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64, 'fecha'=>date('Y-m-d')];
+		echo 'PROCESANDO ' . $name . '::' . $model->insert($data, $table=false) . '\n';
+		fwrite($_fileSQL, "INSERT INTO contratosImages SET contrato='" . $data['contrato'] . "', imagen='" . $data['imagen'] . "', tipo='" . $data['tipo'] . "', fecha='" . $data['fecha'] . "', base64='" . $data['base64'] . "'");
 	}
 }
+fclose($_fileSQL);
 
 function resize($newWidth, $targetFile, $originalFile) {
 	$date = date("d M Y H:i:s.", filectime($originalFile));
@@ -88,7 +96,3 @@ function watermark($fileName, $image_create_func, $image_save_func, $text = fals
 	$image_save_func($im, $fileName);
 	imagedestroy($im);
 }
-/*
-CREATE TABLE `aguas.net`.`contratosImages` ( `contrato` CHAR(8) NOT NULL , `imagen` CHAR(20) NOT NULL , `tipo` CHAR(4) NOT NULL , `base64` MEDIUMTEXT CHARACTER SET ascii COLLATE ascii_bin NOT NULL ) ENGINE = InnoDB COMMENT = 'Imagens de proceso';
-ALTER TABLE `contratosImages` ADD `idContratoImage` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`idContratoImage`);
-*/

@@ -1,16 +1,33 @@
 {% spaceless %}
 {% include 'header.html' %}
-{% include 'menuLogin.html' %}
+<style type="text/css">
+body {
+	background-image: url("{{BASE_URL}}html/img/background1.png") !important;
+	background-repeat: repeat !important;
+}
+</style>
+<div class="container">  
+	<div class="row" id="pwd-container">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<section class="login-form">
+				<form method="post" id="acceso" role="login">
+					<img src="{{BASE_URL}}html/img/logo_adp.png" class="img-responsive" alt="" />
+					
+					<input type="text" class="form-control input-lg" placeholder="usuario" name="user" id="usuario">
+					<input type="password" class="form-control input-lg" placeholder="contraseña" name="password" id="password">
+					<input type="hidden" value="{{token('Generic')}}" name="_token">
 
-<div class="container">
-	<div class="row">
-		<div class="col-xs-3">
-			<img src="{{ constant('BASE_URL') }}{{ logo }}" width="100%">
+					<div class="pwstrength_viewport_progress"></div>
+					<button type="button" class="btn btn-lg btn-primary btn-block btn-login">Entrar</button>
+				</form>
+
+				<div class="form-links">
+					<a href="#"><img src="http://sincco.com/img/logo.png" width="100px"></a>
+				</div>
+			</section>  
 		</div>
-		<div class="col-xs-9">
-			<h1>{{constant('APP_NAME')}}
-			<p class="lead">Debes tener una cuenta para accesar al sistema</p>
-		</div>
+		<div class="col-md-4"></div>
 	</div>
 </div>
 

@@ -99,7 +99,7 @@ var login = new function() {
 			if(event.which == 13) login.accesar();
 		});
 
-		$(".btn-success").click(function(event) {
+		$(".btn-login").click(function(event) {
 			login.accesar();
 		});
 
