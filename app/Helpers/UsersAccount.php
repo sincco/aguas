@@ -84,9 +84,9 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 		if(isset($cuadrilla['cuadrilla']['cuadrilla'])) {
 			array_shift($response);
 			array_shift($response);
-			array_shift($response);
-			array_shift($response[1]['childs']);
-			array_shift($response[1]['childs']);
+			array_pop($response);
+			#array_shift($response[1]['childs']);
+			#array_shift($response[1]['childs']);
 		}
 		return $response;
 	}
