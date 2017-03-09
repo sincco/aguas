@@ -1,6 +1,6 @@
 {% spaceless %}
-{% include 'header_full.html' %}
-{% include 'menu.html' %}
+{% include 'Views/header.html' %}
+{% include 'Views/menu.html' %}
 
 <div class="container">
 	<div id="page-wrapper dashboard" style="min-height: 129px;">
@@ -234,7 +234,7 @@ function dibujaGestionadosC9() {
 </script>
 
 
-<script type="text/javascript">{{_self.getTemplateName() | replace( { '.html':'' } ) | lower }}.init();</script>
+<script type="text/javascript">{{_self.getTemplateName() | replace( { 'Views/':'' } ) | replace( { '/':'_' } ) | replace( { '.html':'' } ) | lower }}.init();</script>
 
-{% include 'footer_full.html' %}
+{% include 'Views/footer.html' %}
 {% endspaceless %}

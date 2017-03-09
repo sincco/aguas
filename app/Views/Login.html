@@ -1,5 +1,5 @@
 {% spaceless %}
-{% include 'header.html' %}
+{% include 'Views/headerLogin.html' %}
 <style type="text/css">
 body {
 	background-image: url("{{BASE_URL}}html/img/background1.png") !important;
@@ -31,7 +31,7 @@ body {
 	</div>
 </div>
 
-<script type="text/javascript">{{_self.getTemplateName() | replace( { '.html':'' } ) | lower }}.init();</script>
+<script type="text/javascript">{{initJS()}}</script>
 
-{% include 'footer.html' %}
+{% include 'Views/footerLogin.html' %}
 {% endspaceless %}
