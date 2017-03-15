@@ -1,0 +1,377 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row rowContrato">
+		<h4>Datos del contrato</h4>
+		<div class="row">
+			<div class="col-lg-6">
+				<label>Propiertario: <span data-field="propietario"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Usuario: <span data-field="usuario"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3">
+				<label>Suministro: <span data-field="suministro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>numTomas: <span data-field="numTomas"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>Giro: <span data-field="giro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>GPS: <span data-field="gps"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label>Direccion: <span data-field="direccion"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<h4>Medidor</h4>
+			<div class="col-lg-4">
+				<label>Marca: <span data-field="marca_act"></span></label>
+			</div>
+			<div class="col-lg-4">
+				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+			</div>
+			<div class="col-lg-4">
+				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
+			</div>
+		</div>
+	</div>
+
+	<form name="imagenes">
+		<div class="row rowImagenes">
+			<h4>Cargar imágenes del levantamiento</h4>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Fachada predio</span></i>
+						<input type="file" class="upload" name="1fachada-predio-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Cuadro Actual</span></i>
+						<input type="file" class="upload" name="2cuadro-actual-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Cuadro nuevo</span></i>
+						<input type="file" class="upload" name="3cuadro-nuevo-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Carátula medidor</span></i>
+						<input type="file" class="upload" name="4caratula-medidor-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
+						<input type="file" class="upload" name="5orden-trabajo-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Medidor retirado</span></i>
+						<input type="file" class="upload" name="6medidor-retirado-{{ "now"|date("Ymd") }}" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Subir imagenes</span></i></button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+
+var arg = {
+	resultFunction: function(result) {
+		$('[name=' + $("#qrResult").attr('data-destiny') + ']').val(result.code);
+		var supportsVibrate = "vibrate" in navigator;
+		navigator.vibrate(250);
+		$('#modal-qr').modal('hide');
+		decoder.stop();
+	}
+};
+
+var decoder  = $('#qrVideo').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
+decoder.buildSelectMenu('#qrCamera');
+$('#qrCamera').on('change', function(){
+	decoder.stop().play();
+});
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'images/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	// console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	// console.log(progress);
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	// console.log(file.uniqueIdentifier);
+});
+
+uploadControl.on('uploadStart', function () {
+	// console.log('CARGANDO...');
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	// console.log('completo...')
+	loader.hide();
+	toastr.success('Imágenes guardadas.', 'Éxito');
+});
+
+$(function() {
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.rowImagenes').hide();
+	$('.proceso').hide();
+
+	$('.upload').change(function() {
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this.files[0], this.name);
+	});
+
+	$('#upload').click(function() {
+		uploadControl.upload();
+		return;
+		loader.show();
+		var form_data = new FormData();
+		$('.upload').each(function() {
+			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		});
+		$.ajax({
+			url: BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val(),
+			dataType: 'text',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(response){
+				var api = JSON.parse(response);
+				if (api.respuesta) {
+					toastr.success('Imágenes guardadas.', 'Éxito');
+				} else {
+					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
+				}
+				loader.hide();
+			}
+		});
+	});
+});
+
+function buscarContrato() {
+	loader.show();
+	$('[data-field=propietario]').html('');
+	$('[data-field=usuario]').html('');
+	$('[data-field=suministro]').html('');
+	$('[data-field=numTomas]').html('');
+	$('[data-field=direccion]').html('');
+	$('[data-field=gps]').html('');
+	$('[data-field=giro]').html('');
+	$('[data-field=marca_act]').html('');
+	$('[name=serieMedidor]').val('');
+	$('[name=telemetriaMedidor]').val('');
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
+	.done(function(data) {
+		if (data.data.length) {
+			$('.proceso .btn-success').show();
+			$('.proceso .btn-primary').show();
+			$('.proceso .btn-danger').show();
+			$('.rowImagenes').hide();
+			$('.rowContrato').hide();
+			$('.rowMateriales').hide();
+			if (data.data[0].estatusId < 2) {
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+			}
+			if (data.data[0].estatusId == 2) {
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+				$('.rowImagenes').show();
+				$('.rowContrato').show();
+				$('.rowMateriales').show();
+			}
+			if (data.data[0].estatusId == 3) {
+				$('.proceso .btn-success').hide();
+				$('.proceso .btn-danger').show();
+				$('.rowImagenes').show();
+				$('.rowContrato').show();
+				$('.rowMateriales').show();
+			}
+			if (data.data[0].estatusId > 3) {
+				$('.proceso .btn-success').hide();
+				$('.proceso .btn-primary').hide();
+				$('.proceso .btn-danger').hide();
+				$('.rowContrato').show();
+			}
+			$('.proceso').show();
+
+			$(data.data).each(function(){
+				$('[data-field=propietario]').html(this.propietario);
+				$('[data-field=usuario]').html(this.usuario);
+				$('[data-field=suministro]').html(this.suministro);
+				$('[data-field=numTomas]').html(this.numTomas);
+				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-field=giro]').html(this.giro);
+				$('[data-field=marca_act]').html(this.marca_act);
+				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
+				$('[name=serieMedidor]').val(this.serieMedidor);
+				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
+			})
+		} else {
+			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
+		}
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
+		loader.hide();
+	});
+}
+
+function cambiarEstatus(estatus, motivo) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatus', {contrato:$('[name=contrato]').val(), estatus: estatus, motivo: motivo})
+	.done(function(data) {
+		if (estatus == 3) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').show();
+			$('.proceso .btn-primary').show();
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$('.rowMateriales').show();
+
+		}
+		if (estatus == 4) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').hide();
+			$('.proceso .btn-primary').hide();
+			$('.rowImagenes').hide();
+			$('.rowContrato').show();
+			$('.rowMateriales').hide();
+		}
+		if (estatus == 5) {
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').hide();
+			$('.proceso .btn-primary').hide();
+			$('.rowImagenes').hide();
+			$('.rowContrato').show();
+			$('.rowMateriales').hide();
+		}
+		if (data.respuesta) {
+			toastr.success('Estatus actualizado.', 'Hecho');
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function tagUbicacion() {
+	if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        toastr.error('Este navegador no soporta la geolocalización.', 'Error');
+    }
+}
+
+function showPosition(position) {
+	loader.show();
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
+	.done(function(data) {
+    	$('[data-field=gps]').html(position.coords.longitude + ' , ' + position.coords.latitude); 
+		toastr.success('Ubicación actualizada.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+
+}
+
+function guardarCampo(input) {
+	loader.show();
+	var elemento = $(input).parent().parent().children(':input');
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
+	.done(function(data) {
+		toastr.success('Campo actualizado.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function agregarMaterial() {
+	var idxMaterial = $('[name^=material-]').length + 1;
+	$('.materiales').append('<div class="row"><div class="col-xs-12"><div class="input-group"><input type="text" name="material-' + idxMaterial + '" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default camera" type="button" onclick="$(\'#qrResult\').attr(\'data-destiny\',\'material-' + idxMaterial + '\'); $(\'#modal-qr\').modal(\'show\');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
+}
+
+function guardarMateriales() {
+	$('form').serializeJSON()
+	loader.show()
+    sincco.consumirAPI('POST',BASE_URL + 'expedientes/index/apimateriales',{contrato:$('[name=contrato]').val(), materiales:$('[name=materiales]').serializeJSON()})
+    .done(function(data) {
+		loader.hide()
+		$('[name^=material-]').prop('disabled', true);
+		toastr.success('MAteriales guardados.', 'Éxito')
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+    	console.log(errorThrown);
+        toastr.error('Error al hacer la petición.', 'Intenta de nuevo')
+        loader.hide()
+    })
+}
+
+function asignarContratos(contrato, cuadrilla) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: contrato, cuadrilla: cuadrilla})
+	.done(function(data) {
+		toastr.success('Asignado a la cuadrilla de seguimiento.', 'Éxito');
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+	});
+}
+
+</script>
+
+{% include 'footer.html' %}
