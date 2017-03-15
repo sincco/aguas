@@ -1,6 +1,8 @@
 <?php
 
 use \Sincco\Sfphp\Response;
+use \Sincco\Sfphp\Request;
+
 
 class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller 
 {
