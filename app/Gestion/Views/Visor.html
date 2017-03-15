@@ -51,62 +51,15 @@
 				<label>Marca: <span data-field="marca_act"></span></label>
 			</div>
 			<div class="col-lg-4">
-				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie" disabled>
 			</div>
 			<div class="col-lg-4">
-				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
+				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría" disabled>
 			</div>
 		</div>
 	</div>
 
-	<form name="imagenes">
-		<div class="row rowImagenes">
-			<h4>Cargar imágenes del levantamiento</h4>
-			<div class="row">
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Fachada predio</span></i>
-						<input type="file" class="upload" name="1fachada-predio-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Cuadro Actual</span></i>
-						<input type="file" class="upload" name="2cuadro-actual-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Cuadro nuevo</span></i>
-						<input type="file" class="upload" name="3cuadro-nuevo-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Carátula medidor</span></i>
-						<input type="file" class="upload" name="4caratula-medidor-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
-						<input type="file" class="upload" name="5orden-trabajo-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Medidor retirado</span></i>
-						<input type="file" class="upload" name="6medidor-retirado-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Subir imagenes</span></i></button>
-				</div>
-			</div>
-		</div>
-	</form>
+	<div class="row rowImagenes"></div>
 </div>
 
 <script type="text/javascript">
@@ -194,7 +147,11 @@ function buscarContrato() {
 			})
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
-				console.log(data);
+				$(data).each(function(){
+					var prev = $('.rowImagenes').html();
+					prev += '<img src="' + this.base64 + '">';
+					$('.rowImagenes').html(prev);
+				});
 			});
 		} else {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
