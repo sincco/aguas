@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<h4>Medidor</h4>
+			<h4>Medidor Retirado</h4>
 			<div class="col-lg-4">
 				<label>Marca: <span data-field="marca_act"></span></label>
 			</div>
@@ -156,6 +156,7 @@ function buscarContrato() {
 			})
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
+				$('.rowImagenes').html('');
 				$(data.data).each(function(){
 					var prev = $('.rowImagenes').html();
 					prev += '<div class="row"><div class="col-xs-10"><img width="100%" src="' + this.base64 + '"></div></div>';
