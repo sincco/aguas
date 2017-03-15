@@ -6,11 +6,8 @@ class VisorController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
 		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
-		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
-		$view = $this->newView('Gestion\Levantamiento');
-		$view->cuadrilla = $cuadrilla;
-		$view->cobros = $this->getModel('Catalogos\Cobros')->getAll();
-		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view = $this->newView('Gestion\Visor');
+		#$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
 

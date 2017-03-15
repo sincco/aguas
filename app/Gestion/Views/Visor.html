@@ -3,6 +3,7 @@
 
 <div class="container">
 	<div class="row">
+		<h1>Verificación de proceso</h1>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="input-group">
@@ -110,57 +111,6 @@
 
 <script type="text/javascript">
 
-var arg = {
-	resultFunction: function(result) {
-		$('[name=' + $("#qrResult").attr('data-destiny') + ']').val(result.code);
-		var supportsVibrate = "vibrate" in navigator;
-		navigator.vibrate(250);
-		$('#modal-qr').modal('hide');
-		decoder.stop();
-	}
-};
-
-var decoder  = $('#qrVideo').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
-decoder.buildSelectMenu('#qrCamera');
-$('#qrCamera').on('change', function(){
-	decoder.stop().play();
-});
-
-var uploadControl = new Resumable({
-	target: BASE_URL + 'images/upload',
-	query: {},
-	maxChunkRetries: 2,
-	maxFiles: 10,
-	prioritizeFirstAndLastChunk: true,
-	simultaneousUploads: 4
-});
-
-uploadControl.on('fileAdded', function (file, name, event) {
-	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
-	file.fileName = name + '.' + file.fileName.split('.').pop();
-	// console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
-});
-
-uploadControl.on('fileProgress', function (file) {
-	var progress = Math.floor(file.progress() * 100);
-	// console.log(progress);
-});
-
-uploadControl.on('fileSuccess', function (file, message) {
-	// console.log(file.uniqueIdentifier);
-});
-
-uploadControl.on('uploadStart', function () {
-	// console.log('CARGANDO...');
-	loader.show();
-});
-
-uploadControl.on('complete', function () {
-	// console.log('completo...')
-	loader.hide();
-	toastr.success('Imágenes guardadas.', 'Éxito');
-});
-
 $(function() {
 	$('.rowImagenes').hide();
 	$('.rowContrato').hide();
@@ -214,7 +164,7 @@ function buscarContrato() {
 	$('[data-field=marca_act]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=telemetriaMedidor]').val('');
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
+	sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/info', {contrato:$('[name=contrato]').val()})
 	.done(function(data) {
 		if (data.data.length) {
 			$('.proceso .btn-success').show();
@@ -223,30 +173,11 @@ function buscarContrato() {
 			$('.rowImagenes').hide();
 			$('.rowContrato').hide();
 			$('.rowMateriales').hide();
-			if (data.data[0].estatusId < 2) {
-				$('.proceso .btn-primary').hide();
-				$('.proceso .btn-danger').hide();
-			}
-			if (data.data[0].estatusId == 2) {
-				$('.proceso .btn-primary').hide();
-				$('.proceso .btn-danger').hide();
-				$('.rowImagenes').show();
-				$('.rowContrato').show();
-				$('.rowMateriales').show();
-			}
-			if (data.data[0].estatusId == 3) {
-				$('.proceso .btn-success').hide();
-				$('.proceso .btn-danger').show();
-				$('.rowImagenes').show();
-				$('.rowContrato').show();
-				$('.rowMateriales').show();
-			}
-			if (data.data[0].estatusId > 3) {
-				$('.proceso .btn-success').hide();
-				$('.proceso .btn-primary').hide();
-				$('.proceso .btn-danger').hide();
-				$('.rowContrato').show();
-			}
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').show();
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$('.rowMateriales').show();
 			$('.proceso').show();
 
 			$(data.data).each(function(){
@@ -261,6 +192,10 @@ function buscarContrato() {
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
 			})
+			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/info', {contrato:$('[name=contrato]').val()})
+			.done(function(data) {
+				console.log(data);
+			});
 		} else {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
 		}

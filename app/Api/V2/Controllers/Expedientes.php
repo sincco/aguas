@@ -8,4 +8,9 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 		$model = $this->getModel('Aguas');
 		new Response('json', ['data'=>$model->contratos()->where('contrato', $this->getParams('contrato'))->getData()]);
 	}
+
+	public function imagenes() {
+		$model = $this->getModel('Aguas');
+		new Response('json', ['data'=>$model->contratosImages()->where('contrato', $this->getParams('contrato'))->getData()]);
+	}
 }
