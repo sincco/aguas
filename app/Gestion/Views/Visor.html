@@ -19,6 +19,11 @@
 	<div class="row rowContrato">
 		<h4>Datos del contrato</h4>
 		<div class="row">
+			<div class="col-lg-6">Estatus: <span data-field="status"></span></div>
+			<div class="col-lg-6">Fecha: <span data-field="fechaEstatus"></span></div>
+		</div>
+
+		<div class="row">
 			<div class="col-lg-6">
 				<label>Propiertario: <span data-field="propietario"></span></label>
 			</div>
@@ -51,10 +56,10 @@
 				<label>Marca: <span data-field="marca_act"></span></label>
 			</div>
 			<div class="col-lg-4">
-				<label>N/S: <span name="serieMedidor"></span></label>
+				<label>N/S: <span data-field="serieMedidor"></span></label>
 			</div>
 			<div class="col-lg-4">
-				<label>Telemetría: <span name="telemetriaMedidor"></span></label>
+				<label>Telemetría: <span data-field="telemetriaMedidor"></span></label>
 			</div>
 		</div>
 	</div>
@@ -115,8 +120,10 @@ function buscarContrato() {
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
 	$('[data-field=marca_act]').html('');
-	$('[name=serieMedidor]').val('');
-	$('[name=telemetriaMedidor]').val('');
+	$('[data-field=serieMedidor]').html('');
+	$('[data-field=telemetriaMedidor]').html('');
+	$('[data-field=status]').html('');
+	$('[data-field=fechaEstatus]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
@@ -142,8 +149,10 @@ function buscarContrato() {
 				$('[data-field=giro]').html(this.giro);
 				$('[data-field=marca_act]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
-				$('[name=serieMedidor]').val(this.serieMedidor);
-				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
+				$('[data-field=serieMedidor]').html(this.serieMedidor);
+				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);
+				$('[data-field=status]').html(this.status);
+				$('[data-field=fechaEstatus]').html(this.fechaEstatus);
 			})
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
