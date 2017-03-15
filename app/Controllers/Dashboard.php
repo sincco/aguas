@@ -15,6 +15,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 	 */
 	public function index() {
 		$user = unserialize($_SESSION['sincco\login\controller']);
+		var_dump(stripos($user['userName'], "region"));
 		if (stripos($user['userName'], "region")) {
 			Request::redirect('gestion/visor');
 		}
