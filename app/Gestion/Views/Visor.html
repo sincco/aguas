@@ -192,7 +192,7 @@ function buscarContrato() {
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
 			})
-			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/info', {contrato:$('[name=contrato]').val()})
+			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
 				console.log(data);
 			});
