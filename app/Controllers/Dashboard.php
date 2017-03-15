@@ -3,7 +3,7 @@
 use \Sincco\Sfphp\XML;
 use \Sincco\Sfphp\Response;
 use \Sincco\Tools\Debug;
-
+use \Sincco\Sfphp\Request;
 /**
  * Dashboard del sistema
  */
@@ -14,6 +14,10 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function index() {
+		$user = unserialize($_SESSION['sincco\login\controller']);
+		if (stripos("region", $user['userName'])) {
+			Request::redirect('gestion/visor');
+		}
 		$this->helper('UsersAccount')->checkLogin();
 		$view = $this->newView('Dashboard');
 
