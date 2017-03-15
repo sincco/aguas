@@ -149,7 +149,7 @@ function buscarContrato() {
 			.done(function(data) {
 				$(data.data).each(function(){
 					var prev = $('.rowImagenes').html();
-					prev += '<div class="col-xs-10"><img width="100%" src="' + this.base64 + '"></div><hr><br><hr>';
+					prev += '<div class="row"><div class="col-xs-10"><img width="100%" src="' + this.base64 + '"></div></div>';
 					$('.rowImagenes').html(prev);
 				});
 			});
