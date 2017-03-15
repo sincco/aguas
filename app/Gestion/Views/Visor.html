@@ -117,7 +117,7 @@ function buscarContrato() {
 	$('[data-field=marca_act]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=telemetriaMedidor]').val('');
-	sincco.consumirAPI('POST', BASE_URL + 'api/v1/contratos?filters[contrato]=' + $('[name=contrato]').val())
+	sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
 			$('.proceso .btn-success').show();
