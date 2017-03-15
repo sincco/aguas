@@ -33,7 +33,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 		foreach ($contratos as $contrato) {
 			$files = scandir(PATH_IMG . $contrato, SCANDIR_SORT_ASCENDING);
 			foreach ($files as $file) {
-				if (strlen(trim($file)) > 2) {
+				if (strlen(trim($file)) > 2 && stripos($file, "MIN") !==false ) {
 					$fotos[$contrato][] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $contrato . '/' . $file)), 'foto'=>$file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', substr($file,1)))))];
 				}
 			}
