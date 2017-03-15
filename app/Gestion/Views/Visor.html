@@ -148,9 +148,8 @@ function buscarContrato() {
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
 				$(data.data).each(function(){
-					console.log(this);
 					var prev = $('.rowImagenes').html();
-					prev += '<img src="' + this.base64 + '">';
+					prev += '<div class="col-xs-4"><img src="' + this.base64 + '"></div>';
 					$('.rowImagenes').html(prev);
 				});
 			});
