@@ -14,7 +14,6 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 	public function imagenes() {
 		$model = $this->getModel('Aguas');
 		$fotos = $model->contratosImages()->where('contrato', $this->getParams('contrato'))->getData();
-		var_dump($fotos);
 		if (count($fotos) > 0) {
 			new Response('json', ['data'=>$fotos]);
 		} else {
@@ -25,6 +24,7 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 					$fotos[] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $this->getParams('contrato') . '/' . $file)), 'foto'=>$file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', substr($file,1)))))];
 				}
 			}
+			new Response('json', ['data'=>$fotos]);
 		}
 	}
 
