@@ -73,6 +73,10 @@
 <script type="text/javascript">
 
 $(function() {
+	$("[name=contrato]").keypress(function(event) {
+		if(event.which == 13) buscarContrato();
+	});
+
 	$('.rowImagenes').hide();
 	$('.rowContrato').hide();
 	$('.rowImagenes').hide();
