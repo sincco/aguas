@@ -8,7 +8,7 @@ class FormatosController extends Sincco\Sfphp\Abstracts\Controller {
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$cuadrilla = $userData['cuadrilla']['cuadrilla'];
 		$view = $this->newView('Gestion\FormatosTabla');
-		$view->cuadrilla = $cuadrilla;
+		$view->cuadrilla = intval($cuadrilla);
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
