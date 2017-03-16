@@ -14,6 +14,7 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 	public function imagenes() {
 		$model = $this->getModel('Aguas');
 		$fotos = $model->contratosImages()->where('contrato', $this->getParams('contrato'))->getData();
+		var_dump($foto);
 		if (count($fotos) > 0) {
 			new Response('json', ['data'=>$fotos]);
 		} else {
