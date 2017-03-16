@@ -19,8 +19,9 @@
 	<div class="row rowContrato">
 		<h4>Datos del contrato</h4>
 		<div class="row">
-			<div class="col-xs-6"><h4>Estatus: <span data-field="status"></span></h4></div>
-			<div class="col-xs-6"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
+			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
+			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
 		</div>
 
 		<div class="row">
@@ -131,6 +132,7 @@ function buscarContrato() {
 	$('[data-field=telemetriaMedidor]').html('');
 	$('[data-field=status]').html('');
 	$('[data-field=fechaEstatus]').html('');
+	$('[data-field=anexo]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
@@ -160,6 +162,7 @@ function buscarContrato() {
 				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);
 				$('[data-field=status]').html(this.status);
 				$('[data-field=fechaEstatus]').html(this.fechaEstatus);
+				$('[data-field=anexo]').html(this.anexo);
 			})
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
