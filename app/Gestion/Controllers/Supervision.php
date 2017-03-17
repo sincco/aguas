@@ -13,6 +13,14 @@ class SupervisionController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->render();
 	}
 
+	public function revision() {
+		$this->helper('UsersAccount')->checkLogin();
+		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
+		$view = $this->newView('Gestion\PrimerRevision');
+		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->render();	
+	}
+
 	public function apiUpload() {
 		$contrato = $this->getParams('contrato');
 		if(!is_dir(PATH_ROOT . '/_expedientes/' . $contrato)){
