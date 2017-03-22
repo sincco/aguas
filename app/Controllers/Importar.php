@@ -65,7 +65,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			$data = $contratos->getDataBy(['statusId'=>7]);
 			foreach ($data as $_contrato) {
 				$query = "UPDATE PROVEXTERN.PADRON_COLONIAS_MEDIDORES SET BANDERA='7', WHERE NIS = '" . trim($_contrato['contrato']) . "', NUM_APA_RTN = '" . $_contrato['serieMedidor'] . ", MARCA_RTN = '', LECT_INST_RTN = '', LECT_RETIRO_RTN = '', F_INST_RTN = '" . $_contrato['fecha_ins'] . ", F_FABRIC_RTN = '" . $_contrato['fecha_ins'] . ", DIAMETRO_RTN = '" . $_contrato['DIAMETRO_CONEXION'] . ", NUM_SERIE_RTN = '" . $_contrato['serieMedidor'] . ", TELEMETRIA_RTN = '" . $_contrato['telemetriaMedidor'] . ", LATITUD_RTN = '" . $_contrato['latitud'] . ", LONGITUD_RTN = '" . $_contrato['longitud'] . "';";
-				#echo $query . "<br>";
+				echo "Actualizando estatus de contrato " . $_contrato['contrato'] . "<br>";
 				$stid = oci_parse($conn, $query);
 				oci_execute($stid);
 				oci_free_statement($stid);
