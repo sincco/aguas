@@ -54,4 +54,10 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			oci_close($conn);
 		}
 	}
+
+	public function sincronizar() {
+		$contratos = $this->getModel('Expedientes\Contratos');
+		$data = $contratos->getDataBy(['statusId'=>7]);
+		var_dump($data);
+	}
 }
