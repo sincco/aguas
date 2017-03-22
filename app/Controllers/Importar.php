@@ -78,7 +78,6 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 					print  "\n</pre>\n";					
 				}
 				oci_free_statement($stid);
-				break;
 			}
 			oci_close($conn);
 		}
