@@ -56,8 +56,21 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 	public function sincronizar() {
-		$contratos = $this->getModel('Expedientes\Contratos');
-		$data = $contratos->getDataBy(['statusId'=>7]);
-		var_dump($data);
+		$conn = oci_connect('ITRON_US','itron_us','187.217.120.218/SGCPPRO');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		} else {
+			$contratos = $this->getModel('Expedientes\Contratos');
+			$data = $contratos->getDataBy(['statusId'=>7]);
+			foreach ($data as $_contrato) {
+				$query = "UPDATE PROVEXTERN.PADRON_COLONIAS_MEDIDORES SET WHERE NIS = '" . $_contrato['contrato'] . "'";
+				echo $query . "<br>";
+				#$stid = oci_parse($conn, "SELECT * FROM PROVEXTERN.PADRON_COLONIAS_MEDIDORES WHERE BANDERA='3' ORDER BY NIS ASC");
+				#oci_execute($stid);
+				#oci_free_statement($stid);
+			}
+			oci_close($conn);
+		}
 	}
 }
