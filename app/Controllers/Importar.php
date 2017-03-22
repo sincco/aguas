@@ -70,7 +70,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 				$stid = oci_parse($conn, $query);
 				$r = oci_execute($stid);
 				if (!$r) {
-					$e = oci_error($stid);  // Para errores de oci_execute, pase el gestor de sentencia
+					$e = oci_error($stid);
 					print htmlentities($e['message']);
 					print "\n<pre>\n";
 					print htmlentities($e['sqltext']);
@@ -78,6 +78,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 					print  "\n</pre>\n";					
 				}
 				oci_free_statement($stid);
+				break;
 			}
 			oci_close($conn);
 		}
