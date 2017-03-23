@@ -36,10 +36,24 @@
 		<div class="row">
 			<h4>Medidor Retirado</h4>
 			<div class="col-xs-6">
-				<label>Marca: <span data-field="marca_act"></span></label>
+				<label>Marca: 
+				<div class="input-group">
+				<input type="text" name="marca_act" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
 			</div>
 			<div class="col-xs-6">
-				<label>Lectura Final: <span data-field="LECT_RETIRO"></span></label>
+				<label>Lectura Final: 
+				<div class="input-group">
+				<input type="text" name="LECT_RETIRO" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
 			</div>
 		</div>
 		<div class="row">
@@ -47,21 +61,42 @@
 			<div class="col-xs-3">
 				<label>N/S: 
 				<div class="input-group">
-				<input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="serieMedidor" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
 				</div>
 				</label>
 			</div>
 			<div class="col-xs-3">
-				<label>Telemetría: <span data-field="telemetriaMedidor"></span></label>
+				<label>Telemetría: 
+				<div class="input-group">
+				<input type="text" name="telemetriaMedidor" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
 			</div>
 			<div class="col-xs-3">
-				<label>Marca: <span data-field="MARCA_INS"></span></label>
+				<label>Marca: 
+				<div class="input-group">
+				<input type="text" name="MARCA_INS" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
 			</div>
 			<div class="col-xs-3">
-				<label>Lectura Inicial: <span data-field="LECT_INST"></span></label>
+				<label>Lectura Incial: 
+				<div class="input-group">
+				<input type="text" name="LECT_INST" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
 			</div>
 		</div>
 
@@ -160,27 +195,6 @@
 		</div>
 		</form>
 
-		<h4>Campos adicionales</h4>
-		<div class="row">
-			<div class="col-xs-6">
-				<label>Marca Medidor Instalado:</label>
-				<input class="form-control" type="text" name="MARCA_INS" value="ITRON">
-			</div>
-			<div class="col-xs-6">
-				<label>Lectura Medidor Instalado:</label>
-				<input class="form-control" type="text" name="LECT_INST" value="0.00">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-6">
-				<label>Lectura Medidor Retirado:</label>
-				<input class="form-control" type="text" name="LECT_RETIRO" value="0.00">
-			</div>
-			<div class="col-xs-6">
-				<button type="button" class="btn btn-success btn-xs" onclick="guardarCampo($('[name=MARCA_INS]')); guardarCampo($('[name=LECT_INST]')); guardarCampo($('[name=LECT_RETIRO]'));"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar Campos</span></i></button>
-			</div>
-		</div>
-
 		<h4>Evaluar captura</h4>
 		<div class="col-xs-6"><label>Observaciones :</label><textarea name="observaciones" class="form-control"></textarea></div>
 		<div class="col-xs-6">
@@ -261,16 +275,16 @@ function buscarContrato() {
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
-	$('[data-field=marca_act]').html('');
-	$('[data-field=serieMedidor]').val('');
-	$('[data-field=telemetriaMedidor]').html('');
+	$('[name=marca_act]').html('');
+	$('[name=serieMedidor]').val('');
+	$('[name=telemetriaMedidor]').html('');
 	$('[data-field=status]').html('');
 	$('[data-field=fechaEstatus]').html('');
 	$('[data-field=anexo]').html('');
 	$('[name=observaciones]').val('');
-	$('[data-field=LECT_RETIRO]').html('');
-	$('[data-field=LECT_INST]').html('');
-	$('[data-field=MARCA_INS]').html('');
+	$('[name=LECT_RETIRO]').html('');
+	$('[name=LECT_INST]').html('');
+	$('[name=MARCA_INS]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
@@ -286,16 +300,16 @@ function buscarContrato() {
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
-				$('[data-field=marca_act]').html(this.marca_act);
+				$('[name=marca_act]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
-				$('[data-field=serieMedidor]').val(this.serieMedidor);
-				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);
+				$('[name=serieMedidor]').val(this.serieMedidor);
+				$('[name=telemetriaMedidor]').html(this.telemetriaMedidor);
 				$('[data-field=status]').html(this.status);
 				$('[data-field=fechaEstatus]').html(this.fechaEstatus);
 				$('[data-field=anexo]').html(this.anexo);
-				$('[data-field=LECT_RETIRO]').html(this.LECT_RETIRO);
-				$('[data-field=LECT_INST]').html(this.LECT_INST);
-				$('[data-field=MARCA_INS]').html(this.MARCA_INS);
+				$('[name=LECT_RETIRO]').html(this.LECT_RETIRO);
+				$('[name=LECT_INST]').html(this.LECT_INST);
+				$('[name=MARCA_INS]').html(this.MARCA_INS);
 				sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 				.done(function(data) {
 					$('.rowImagenesGuardadas').html('');
@@ -329,9 +343,9 @@ function cambiarEstatus(estatus, motivo) {
 			$('[data-field=direccion]').html('');
 			$('[data-field=gps]').html('');
 			$('[data-field=giro]').html('');
-			$('[data-field=marca_act]').html('');
-			$('[data-field=serieMedidor]').val('');
-			$('[data-field=telemetriaMedidor]').html('');
+			$('[name=marca_act]').html('');
+			$('[name=serieMedidor]').val('');
+			$('[name=telemetriaMedidor]').html('');
 			$('[data-field=status]').html('');
 			$('[data-field=fechaEstatus]').html('');
 			$('[data-field=anexo]').html('');
@@ -358,7 +372,8 @@ function insertarEstatus(estatus, fecha, motivo) {
 
 function guardarCampo(input) {
 	loader.show();
-    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(input).attr('name'), valor:$(input).val() })
+	var elemento = $(input).parent().parent().children(':input');
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
 	.done(function(data) {
 		toastr.success('Campo actualizado.', 'Hecho');
 	    loader.hide();
@@ -367,5 +382,6 @@ function guardarCampo(input) {
 		loader.hide();
 	});
 }
+
 </script>
 
