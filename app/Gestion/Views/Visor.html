@@ -18,7 +18,7 @@
 
 	<div class="row rowContrato">
 		<div class="row">
-			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span><small><span class="label label-danger">En revisión</span></small></h4></div>
+			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span><small><span data-field="advertencia" class="label"></span></small></h4></div>
 			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
 			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
 		</div>
@@ -72,6 +72,12 @@
 	</div>
 
 	<div class="row rowImagenes"></div>
+
+	<div class="row rowEstatus">
+		<h3>Dar visto bueno a la información</h3>
+		<div class="col-xs-6"><button class="btn btn-success" type="button" onclick="cambiarEstatus(9, 'Revisado por {{ nombreUsuario }}')">Aprobar</button></div>
+		<div class="col-xs-6"><button class="btn btn-danger" type="button" onclick="cambiarEstatus(10, 'Revisado por {{ nombreUsuario }}')">Pedir Revisión</button></div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -84,6 +90,7 @@ $(function() {
 	$('.rowImagenes').hide();
 	$('.rowContrato').hide();
 	$('.rowImagenes').hide();
+	$('.rowEstatus').hide();
 	$('.proceso').hide();
 
 	$('.upload').change(function() {
@@ -123,6 +130,11 @@ $(function() {
 
 function buscarContrato() {
 	loader.show();
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.rowImagenes').hide();
+	$('.rowEstatus').hide();
+	$('.proceso').hide();	
 	$('[data-field=propietario]').html('');
 	$('[data-field=usuario]').html('');
 	$('[data-field=suministro]').html('');
@@ -136,6 +148,7 @@ function buscarContrato() {
 	$('[data-field=status]').html('');
 	$('[data-field=fechaEstatus]').html('');
 	$('[data-field=anexo]').html('');
+	$('[data-field=advertencia]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
@@ -145,6 +158,7 @@ function buscarContrato() {
 			$('.rowImagenes').hide();
 			$('.rowContrato').hide();
 			$('.rowMateriales').hide();
+			$('.rowEstatus').hide();
 			$('.proceso .btn-success').hide();
 			$('.proceso .btn-danger').show();
 			$('.rowImagenes').show();
@@ -166,6 +180,31 @@ function buscarContrato() {
 				$('[data-field=status]').html(this.status);
 				$('[data-field=fechaEstatus]').html(this.fechaEstatus);
 				$('[data-field=anexo]').html(this.anexo);
+				if (this.statusId == 7) {
+					$('[data-field=advertencia]').html('Validado');
+					$('[data-field=advertencia]').addClass('label-primary');
+					$('.rowEstatus').show();
+				}
+				if (this.statusId == 9) {
+					$('[data-field=advertencia]').html('Aprobado');
+					$('[data-field=advertencia]').addClass('label-success');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId < 7) {
+					$('[data-field=advertencia]').html('En proceso');
+					$('[data-field=advertencia]').addClass('label-warning');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId == 8) {
+					$('[data-field=advertencia]').html('En proceso');
+					$('[data-field=advertencia]').addClass('label-warning');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId == 10) {
+					$('[data-field=advertencia]').html('En revisión');
+					$('[data-field=advertencia]').addClass('label-danger');
+					$('.rowEstatus').hide();
+				}
 			})
 			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
@@ -181,7 +220,7 @@ function buscarContrato() {
 		}
 		loader.hide();
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 		loader.hide();
 	});
 }
@@ -189,101 +228,17 @@ function buscarContrato() {
 function cambiarEstatus(estatus, motivo) {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatus', {contrato:$('[name=contrato]').val(), estatus: estatus, motivo: motivo})
 	.done(function(data) {
-		if (estatus == 3) {
-			$('.proceso .btn-success').hide();
-			$('.proceso .btn-danger').show();
-			$('.proceso .btn-primary').show();
-			$('.rowImagenes').show();
-			$('.rowContrato').show();
-			$('.rowMateriales').show();
-
-		}
-		if (estatus == 4) {
-			$('.proceso .btn-success').hide();
-			$('.proceso .btn-danger').hide();
-			$('.proceso .btn-primary').hide();
-			$('.rowImagenes').hide();
-			$('.rowContrato').show();
-			$('.rowMateriales').hide();
-		}
-		if (estatus == 5) {
-			$('.proceso .btn-success').hide();
-			$('.proceso .btn-danger').hide();
-			$('.proceso .btn-primary').hide();
-			$('.rowImagenes').hide();
-			$('.rowContrato').show();
-			$('.rowMateriales').hide();
-		}
+		$('.rowImagenes').hide();
+		$('.rowContrato').hide();
+		$('.rowImagenes').hide();
+		$('.rowEstatus').hide();
+		$('.proceso').hide();
 		if (data.respuesta) {
 			toastr.success('Estatus actualizado.', 'Hecho');
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 		loader.hide();
-	});
-}
-
-function tagUbicacion() {
-	if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        toastr.error('Este navegador no soporta la geolocalización.', 'Error');
-    }
-}
-
-function showPosition(position) {
-	loader.show();
-    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
-	.done(function(data) {
-    	$('[data-field=gps]').html(position.coords.longitude + ' , ' + position.coords.latitude); 
-		toastr.success('Ubicación actualizada.', 'Hecho');
-	    loader.hide();
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
-		loader.hide();
-	});
-
-}
-
-function guardarCampo(input) {
-	loader.show();
-	var elemento = $(input).parent().parent().children(':input');
-    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
-	.done(function(data) {
-		toastr.success('Campo actualizado.', 'Hecho');
-	    loader.hide();
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
-		loader.hide();
-	});
-}
-
-function agregarMaterial() {
-	var idxMaterial = $('[name^=material-]').length + 1;
-	$('.materiales').append('<div class="row"><div class="col-xs-12"><div class="input-group"><input type="text" name="material-' + idxMaterial + '" class="form-control" aria-describedby="sizing-addon2" placeholder="Material"><span class="input-group-btn"><button class="btn btn-default camera" type="button" onclick="$(\'#qrResult\').attr(\'data-destiny\',\'material-' + idxMaterial + '\'); $(\'#modal-qr\').modal(\'show\');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button><button class="btn btn-success agregar-material" type="button"><i class="fa fa-plus" aria-hidden="true" title="Agregar otro" onclick="agregarMaterial();"></i></button></span></div></div></div>');
-}
-
-function guardarMateriales() {
-	$('form').serializeJSON()
-	loader.show()
-    sincco.consumirAPI('POST',BASE_URL + 'expedientes/index/apimateriales',{contrato:$('[name=contrato]').val(), materiales:$('[name=materiales]').serializeJSON()})
-    .done(function(data) {
-		loader.hide()
-		$('[name^=material-]').prop('disabled', true);
-		toastr.success('MAteriales guardados.', 'Éxito')
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-    	console.log(errorThrown);
-        toastr.error('Error al hacer la petición.', 'Intenta de nuevo')
-        loader.hide()
-    })
-}
-
-function asignarContratos(contrato, cuadrilla) {
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiasignar', {contratos: contrato, cuadrilla: cuadrilla})
-	.done(function(data) {
-		toastr.success('Asignado a la cuadrilla de seguimiento.', 'Éxito');
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
 	});
 }
 
