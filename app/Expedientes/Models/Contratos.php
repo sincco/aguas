@@ -292,6 +292,11 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, ['contrato'=>$contrato, 'estatusId'=>$estatus, 'motivo'=>$motivo]);
 	}
 
+	public function setEstatusFecha($contrato, $estatus, $fecha, $motivo = '') {
+		$query = 'INSERT INTO gestionContratos (contrato,estatusId,anexo,fecha) VALUES (:contrato, :estatusId, :motivo, :fecha);';
+		return $this->connector->query($query, ['contrato'=>$contrato, 'estatusId'=>$estatus, 'motivo'=>$motivo, 'fecha'=>$fecha]);
+	}
+
 	public function setGPS($contrato, $longitud, $latitud) {
 		$query = 'UPDATE contratos SET longitud = :longitud, latitud = :latitud WHERE contrato = :contrato;';
 		return $this->connector->query($query, ['contrato'=>$contrato, 'longitud'=>$longitud, 'latitud'=>$latitud]);

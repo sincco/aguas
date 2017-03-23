@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="input-group">
-					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
+					<input type="text" name="contrato" class="form-control" placeholder="Contrato..." value="1000003">
 					<span class="input-group-btn">
 						<button class="btn btn-primary" type="button" onclick="buscarContrato();">Buscar</button>
 					</span>
@@ -71,9 +71,80 @@
 		</div>
 	</div>
 
-	<div class="row rowImagenes"></div>
+	<div class="row rowEstatus">
+		<h4>Cambiar estatus</h4>
+		<div class="col-xs-5">
+			<label>a:</label>
+			<select name="nuevo-estatus" class="form-control">
+			{% for estatus in status %}
+				<option value="{{ estatus.estatusId }}">{{ estatus.descripcion }}</option>
+			{% endfor %}			
+			</select>
+		</div>
+		<div class="col-xs-5">
+			<label>en fecha:</label>
+			<div class="form-group">
+				<div class='input-group date' id='fecha-inicio'>
+				<input class="form-control" type="text" name="fecha-estatus" id="fecha-estatus">
+				<span class="input-group-addon">
+				<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-2">
+			<button type="button" class="btn btn-success btn-xs" onclick="insertarEstatus($('[name=nuevo-estatus]').val(), $('[name=fecha-estatus]').val(), 'Corrección desde pantalla de supervisión');"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar Estatus</span></i></button>
+		</div>
+	</div>
 
-	<div class="row rowProceso">
+	<div class="row rowImagenesGuardadas" style="padding-bottom: 300px;"></div>
+
+	<div class="row rowProceso" style="position: fixed; bottom: 0; background: #fff; padding-top: 1em; border-radius: 0.5em;">
+		<form name="imagenes">
+		<h4>Editar imágenes</h4>
+		<div class="row rowImagenes">
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Fachada predio</span></i>
+					<input type="file" class="upload" name="1fachada-predio-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Cuadro Actual</span></i>
+					<input type="file" class="upload" name="2cuadro-actual-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Cuadro nuevo</span></i>
+					<input type="file" class="upload" name="3cuadro-nuevo-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Carátula medidor</span></i>
+					<input type="file" class="upload" name="4caratula-medidor-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
+					<input type="file" class="upload" name="5orden-trabajo-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<div class="fileUpload btn btn-default">
+					<i class="fa fa-camera"> <span>Medidor retirado</span></i>
+					<input type="file" class="upload" name="6medidor-retirado-{{ "now"|date("Ymd") }}" />
+				</div>
+			</div>
+			<div class="col-xs-3 col-md-2">
+				<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Subir imagenes</span></i></button>
+			</div>
+		</div>
+		</form>
+
 		<h4>Evaluar captura</h4>
 		<div class="col-xs-6"><label>Observaciones :</label><textarea name="observaciones" class="form-control"></textarea></div>
 		<div class="col-xs-6">
@@ -86,22 +157,66 @@
 </div>
 
 <script type="text/javascript">
+var uploadControl = new Resumable({ target: BASE_URL + 'images/upload', query: {}, maxChunkRetries: 2, maxFiles: 10, prioritizeFirstAndLastChunk: true, simultaneousUploads: 4 });
+uploadControl.on('fileAdded', function (file, name, event) { file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name; file.fileName = name + '.' + file.fileName.split('.').pop(); });
+uploadControl.on('fileProgress', function (file) { var progress = Math.floor(file.progress() * 100); });
+uploadControl.on('uploadStart', function () { loader.show(); });
+uploadControl.on('complete', function () { loader.hide(); toastr.success('Imágenes guardadas.', 'Éxito'); });
+
+$('.upload').change(function() {
+	$(this).parent().removeClass('btn-default');
+	$(this).parent().addClass('btn-info');
+	uploadControl.addFile(this.files[0], this.name);
+});
+
 $(function() {
+	$('#fecha-estatus').datetimepicker({
+		format: 'YYYY-MM-DD'
+	});
 	$("[name=contrato]").keypress(function(event) {
 		if(event.which == 13) buscarContrato();
 	});
 
-	$('.rowImagenes').hide();
+	$('.rowImagenesGuardadas').hide();
 	$('.rowContrato').hide();
-	$('.rowImagenes').hide();
 	$('.rowProceso').hide();
+	$('.rowEstatus').hide();
+
+	$('#upload').click(function() {
+		uploadControl.upload();
+		return;
+		loader.show();
+		var form_data = new FormData();
+		$('.upload').each(function() {
+			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		});
+		$.ajax({
+			url: BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val(),
+			dataType: 'text',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(response){
+				var api = JSON.parse(response);
+				if (api.respuesta) {
+					toastr.success('Imágenes guardadas.', 'Éxito');
+				} else {
+					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
+				}
+				loader.hide();
+			}
+		});
+	});
 });
 
 function buscarContrato() {
 	loader.show();
-	$('.rowImagenes').hide();
+	$('.rowImagenesGuardadas').hide();
 	$('.rowContrato').hide();
 	$('.rowProceso').hide();
+	$('.rowEstatus').hide();
 	$('[data-field=propietario]').html('');
 	$('[data-field=usuario]').html('');
 	$('[data-field=suministro]').html('');
@@ -119,9 +234,10 @@ function buscarContrato() {
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
-			$('.rowImagenes').show();
+			$('.rowImagenesGuardadas').show();
 			$('.rowContrato').show();
-
+			$('.rowProceso').show();
+			$('.rowEstatus').show();
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
@@ -138,18 +254,13 @@ function buscarContrato() {
 				$('[data-field=anexo]').html(this.anexo);
 				sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 				.done(function(data) {
-					$('.rowImagenes').html('');
+					$('.rowImagenesGuardadas').html('');
 					$(data.data).each(function(){
-						var prev = $('.rowImagenes').html();
+						var prev = $('.rowImagenesGuardadas').html();
 						prev += '<div class="row"><div class="col-xs-10"><img width="100%" src="' + this.base64 + '"></div></div>';
-						$('.rowImagenes').html(prev);
+						$('.rowImagenesGuardadas').html(prev);
 					});
 				});
-				if (this.statusId != 5) {
-					toastr.error('El contrato no está terminado.', 'Intenta de nuevo');
-				} else {
-					$('.rowProceso').show();
-				}
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
@@ -165,9 +276,8 @@ function cambiarEstatus(estatus, motivo) {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatus', {contrato:$('[name=contrato]').val(), estatus: estatus, motivo: motivo})
 	.done(function(data) {
 		if (data.respuesta) {
-			$('.rowImagenes').hide();
+			$('.rowImagenesGuardadas').hide();
 			$('.rowContrato').hide();
-			$('.rowProceso').hide();
 			$('[data-field=propietario]').html('');
 			$('[data-field=usuario]').html('');
 			$('[data-field=suministro]').html('');
@@ -181,6 +291,19 @@ function cambiarEstatus(estatus, motivo) {
 			$('[data-field=status]').html('');
 			$('[data-field=fechaEstatus]').html('');
 			$('[data-field=anexo]').html('');
+			toastr.success('Estatus actualizado.', 'Hecho');
+			window.location.reload();
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function insertarEstatus(estatus, fecha, motivo) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatusfecha', {contrato:$('[name=contrato]').val(), estatus: estatus, fecha: fecha, motivo: motivo})
+	.done(function(data) {
+		if (data.respuesta) {
 			toastr.success('Estatus actualizado.', 'Hecho');
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {

@@ -154,6 +154,12 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['respuesta'=>$respuesta]);	
 	}
 
+	public function apiSetEstatusFecha() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$respuesta = $model->setEstatusFecha($this->getParams('contrato'), $this->getParams('estatus'), $this->getParams('fecha'), $this->getParams('motivo'));
+		new Response('json', ['respuesta'=>$respuesta]);	
+	}
+
 	public function apiGPS() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$respuesta = $model->setGPS($this->getParams('contrato'), $this->getParams('longitud'), $this->getParams('latitud'));

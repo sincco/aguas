@@ -18,6 +18,7 @@ class SupervisionController extends Sincco\Sfphp\Abstracts\Controller {
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$view = $this->newView('Gestion\PrimerRevision');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->status = $this->getModel('Aguas')->estatusProceso()->getData();
 		$view->render();	
 	}
 
