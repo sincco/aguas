@@ -17,25 +17,25 @@
 	</div>
 
 	<div class="row rowContrato">
-		<div class="row">
-			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
-			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
-			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
-		</div>
-
-		<div class="row">
-			<h4>Datos del contrato</h4>
-		</div>
-		
-		<div class="row">
-			<div class="col-lg-6">
-				<label>Propiertario: <span data-field="propietario"></span></label>
+		<div class="row" style="position: fixed; top: 150px; background: #fff; padding: 1em; border-radius: 0.5em; z-index: 99; width: 100%; border: 2px #aaa solid;">
+			<div class="row">
+				<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
+				<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+				<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
 			</div>
-			<div class="col-lg-6">
-				<label>Usuario: <span data-field="usuario"></span></label>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>Contrato: <span data-field="contrato"></span></label>
+				</div>
+				<div class="col-xs-4">
+					<label>Propiertario: <span data-field="propietario"></span></label>
+				</div>
+				<div class="col-xs-4">
+					<label>Usuario: <span data-field="usuario"></span></label>
+				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" style="padding-top: 100px;">
 			<div class="col-lg-3">
 				<label>Suministro: <span data-field="suministro"></span></label>
 			</div>
@@ -97,9 +97,9 @@
 		</div>
 	</div>
 
-	<div class="row rowImagenesGuardadas" style="padding-bottom: 300px;"></div>
+	<div class="row rowImagenesGuardadas" style="padding-bottom: 50px;"></div>
 
-	<div class="row rowProceso" style="position: fixed; bottom: 0; background: #fff; padding-top: 1em; border-radius: 0.5em;">
+	<div class="row rowProceso">
 		<form name="imagenes">
 		<h4>Editar imágenes</h4>
 		<div class="row rowImagenes">
@@ -144,6 +144,27 @@
 			</div>
 		</div>
 		</form>
+
+		<h4>Campos adicionales</h4>
+		<div class="row">
+			<div class="col-xs-6">
+				<label>Marca Medidor Instalado:</label>
+				<input class="form-control" type="text" name="MARCA_INS" value="ITRON">
+			</div>
+			<div class="col-xs-6">
+				<label>Lectura Medidor Instalado:</label>
+				<input class="form-control" type="text" name="LECT_INST" value="0.00">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6">
+				<label>Lectura Medidor Retirado:</label>
+				<input class="form-control" type="text" name="LECT_RETIRO" value="0.00">
+			</div>
+			<div class="col-xs-6">
+				<button type="button" class="btn btn-success btn-xs" onclick="guardarCampo($('[name=MARCA_INS]')); guardarCampo($('[name=LECT_INST]')); guardarCampo($('[name=LECT_RETIRO]'));"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar Campos</span></i></button>
+			</div>
+		</div>
 
 		<h4>Evaluar captura</h4>
 		<div class="col-xs-6"><label>Observaciones :</label><textarea name="observaciones" class="form-control"></textarea></div>
@@ -217,6 +238,7 @@ function buscarContrato() {
 	$('.rowContrato').hide();
 	$('.rowProceso').hide();
 	$('.rowEstatus').hide();
+	$('[data-field=contrato]').html('');
 	$('[data-field=propietario]').html('');
 	$('[data-field=usuario]').html('');
 	$('[data-field=suministro]').html('');
@@ -239,6 +261,7 @@ function buscarContrato() {
 			$('.rowProceso').show();
 			$('.rowEstatus').show();
 			$(data.data).each(function(){
+				$('[data-field=contrato]').html(this.contrato);
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
 				$('[data-field=suministro]').html(this.suministro);
@@ -308,6 +331,18 @@ function insertarEstatus(estatus, fecha, motivo) {
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function guardarCampo(input) {
+	loader.show();
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(input).attr('name'), valor:$(input).val() })
+	.done(function(data) {
+		toastr.success('Campo actualizado.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
 		loader.hide();
 	});
 }
