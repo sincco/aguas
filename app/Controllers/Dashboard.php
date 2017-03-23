@@ -15,7 +15,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 	 */
 	public function index() {
 		$user = unserialize($_SESSION['sincco\login\controller']);
-		if (stripos($user['userName'], "region") !== false) {
+		if (stripos($user['userName'], "adp") !== false) {
 			Request::redirect('gestion/visor');
 		}
 		$this->helper('UsersAccount')->checkLogin();
