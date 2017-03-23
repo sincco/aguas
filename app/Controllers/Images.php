@@ -124,7 +124,8 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			$ext = explode('.', $name);
 			$ext = end($ext);
 			$destiny = pathinfo($name, PATHINFO_DIRNAME) . '/' . $fileName . '_MIN.' . $ext;
-			unlink($destiny);
+			$del = explode(".", $destiny);
+			array_map('unlink', glob($del[0]."*"));
 			$this->resize(900, $destiny, $name);
 			$content = file_get_contents($destiny);
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
