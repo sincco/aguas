@@ -221,8 +221,7 @@ $('.upload').change(function() {
 
 $(function() {
 	$('#fecha-estatus').datetimepicker({
-		format: 'YYYY-MM-DD',
-		maxDate: "+1w"
+		format: 'YYYY-MM-DD'
 	});
 	$("[name=contrato]").keypress(function(event) {
 		if(event.which == 13) buscarContrato();
