@@ -17,49 +17,55 @@
 	</div>
 
 	<div class="row rowContrato">
-		<div class="row" style="position: fixed; top: 150px; background: #fff; padding: 1em; border-radius: 0.5em; z-index: 99; width: 100%; border: 2px #aaa solid;">
-			<div class="row">
-				<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
-				<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
-				<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
+		<div class="row">
+			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
+			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<label>Contrato: <span data-field="contrato"></span></label>
 			</div>
-			<div class="row">
-				<div class="col-xs-4">
-					<label>Contrato: <span data-field="contrato"></span></label>
-				</div>
-				<div class="col-xs-4">
-					<label>Propiertario: <span data-field="propietario"></span></label>
-				</div>
-				<div class="col-xs-4">
-					<label>Usuario: <span data-field="usuario"></span></label>
-				</div>
+			<div class="col-xs-4">
+				<label>Propiertario: <span data-field="propietario"></span></label>
 			</div>
-			<div class="row">
-				<h4>Medidor Retirado</h4>
-				<div class="col-xs-6">
-					<label>Marca: <span data-field="marca_act"></span></label>
-				</div>
-				<div class="col-xs-6">
-					<label>Lectura Final: <span data-field="LECT_RETIRO"></span></label>
-				</div>
-			</div>
-			<div class="row">
-				<h4>Medidor Instalado</h4>
-				<div class="col-xs-3">
-					<label>N/S: <span data-field="serieMedidor"></span></label>
-				</div>
-				<div class="col-xs-3">
-					<label>Telemetría: <span data-field="telemetriaMedidor"></span></label>
-				</div>
-				<div class="col-xs-3">
-					<label>Marca: <span data-field="MARCA_INS"></span></label>
-				</div>
-				<div class="col-xs-3">
-					<label>Lectura Inicial: <span data-field="LECT_INST"></span></label>
-				</div>
+			<div class="col-xs-4">
+				<label>Usuario: <span data-field="usuario"></span></label>
 			</div>
 		</div>
-		<div class="row" style="padding-top: 200px;">
+		<div class="row">
+			<h4>Medidor Retirado</h4>
+			<div class="col-xs-6">
+				<label>Marca: <span data-field="marca_act"></span></label>
+			</div>
+			<div class="col-xs-6">
+				<label>Lectura Final: <span data-field="LECT_RETIRO"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<h4>Medidor Instalado</h4>
+			<div class="col-xs-3">
+				<label>N/S: 
+				<div class="input-group">
+				<input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
+				</span>
+				</div>
+				</label>
+			</div>
+			<div class="col-xs-3">
+				<label>Telemetría: <span data-field="telemetriaMedidor"></span></label>
+			</div>
+			<div class="col-xs-3">
+				<label>Marca: <span data-field="MARCA_INS"></span></label>
+			</div>
+			<div class="col-xs-3">
+				<label>Lectura Inicial: <span data-field="LECT_INST"></span></label>
+			</div>
+		</div>
+
+		<div class="row">
 			<div class="col-lg-3">
 				<label>Suministro: <span data-field="suministro"></span></label>
 			</div>
