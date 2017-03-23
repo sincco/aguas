@@ -21,7 +21,7 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 			$files = scandir(PATH_IMG . $this->getParams('contrato'), SCANDIR_SORT_ASCENDING);
 			foreach ($files as $file) {
 				if (strlen(trim($file)) > 2 && stripos($file, "MIN") !==false ) {
-					$fotos[] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $this->getParams('contrato') . '/' . $file)), 'base64'=> BASE_URL .'_expedientes/' . $this->getParams('contrato') . '/' . $file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', substr($file,1)))))];
+					$fotos[] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $this->getParams('contrato') . '/' . $file)), 'base64'=> BASE_URL .'_expedientes/' . $this->getParams('contrato') . '/' . $file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', $file))))];
 				}
 			}
 			new Response('json', ['data'=>$fotos]);
