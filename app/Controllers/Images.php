@@ -66,6 +66,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 			}
 			$del = explode(".", PATH_IMG . $expediente . '/' . $fileName);
 			unlink($del[0]."*");
+			unlink($del[0]."*MIN*");
 			// Directorio final
 			if (($fp = fopen(PATH_IMG . $expediente . '/' . $fileName, 'w')) !== false) {
 				for ($i=1; $i<=$total_files; $i++) {
