@@ -5,9 +5,10 @@ use \Sincco\Sfphp\Response;
 class VisorController extends Sincco\Sfphp\Abstracts\Controller {
 	public function index() {
 		$this->helper('UsersAccount')->checkLogin();
-		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
+		$userData = $this->helper('UsersAccount')->getUserData();
 		$view = $this->newView('Gestion\Visor');
-		$view->nombreUsuario = $userData['cuadrilla']['nombre'];
+		$view->nombreUsuario = $userData['userName'];
+
 		$view->render();
 	}
 
