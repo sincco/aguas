@@ -14,9 +14,9 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 	public function imagenes() {
 		$model = $this->getModel('Aguas');
 		$fotos = $model->contratosImages()->where('contrato', $this->getParams('contrato'))->getData();
-		if (count($fotos) > 0) {
-			new Response('json', ['data'=>$fotos]);
-		} else {
+		#if (count($fotos) > 0) {
+		#	new Response('json', ['data'=>$fotos]);
+		#} else {
 			$fotos = [];
 			$files = scandir(PATH_IMG . $this->getParams('contrato'), SCANDIR_SORT_ASCENDING);
 			foreach ($files as $file) {
@@ -25,7 +25,7 @@ class ExpedientesController extends Sincco\Sfphp\Abstracts\Controller
 				}
 			}
 			new Response('json', ['data'=>$fotos]);
-		}
+		#}
 	}
 
 	public function resumen() {
