@@ -297,7 +297,7 @@ function buscarContrato() {
 	$('[name=LECT_RETIRO]').val('');
 	$('[name=LECT_INST]').val('');
 	$('[name=MARCA_INS]').val('');
-	$('[name=cobro]').html('');
+	$('[data-field=cobro]').html('');
 	$('[data-field=diametro_toma]').html('');
         $('[data-field=DIAMETRO_CONEXION]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
@@ -325,7 +325,7 @@ function buscarContrato() {
 				$('[name=LECT_RETIRO]').val(this.LECT_RETIRO);
 				$('[name=LECT_INST]').val(this.LECT_INST);
 				$('[name=MARCA_INS]').val(this.MARCA_INS);
-				$('[name=cobro]').html(this.cobro);
+				$('[data-field=cobro]').html(this.cobro);
 				$('[data-field=diametro_toma]').html(this.diametro_toma);
 			        $('[data-field=DIAMETRO_CONEXION]').html(this.DIAMETRO_CONEXION);
 				sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
