@@ -283,7 +283,7 @@ function buscarContrato() {
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
-	$('[name=marca_act]').html('');
+	$('[data-field=marca_act]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=telemetriaMedidor]').val('');
 	$('[data-field=status]').html('');
@@ -312,7 +312,7 @@ function buscarContrato() {
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
-				$('[name=marca_act]').html(this.marca_act);
+				$('[data-field=marca_act]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
@@ -359,7 +359,7 @@ function cambiarEstatus(estatus, motivo) {
 			$('[data-field=direccion]').html('');
 			$('[data-field=gps]').html('');
 			$('[data-field=giro]').html('');
-			$('[name=marca_act]').html('');
+			$('[data-field=marca_act]').html('');
 			$('[name=serieMedidor]').val('');
 			$('[name=telemetriaMedidor]').html('');
 			$('[data-field=status]').html('');
