@@ -84,8 +84,8 @@
 
 	<div class="row rowEstatus">
 		<h3>Dar visto bueno a la información</h3>
-		<div class="col-xs-6"><button class="btn btn-success btn-lg" type="button" onclick="cambiarEstatus(9, 'Revisado por {{ nombreUsuario }}')">Aprobar</button></div>
-		<div class="col-xs-6"><button class="btn btn-danger btn-lg" type="button" onclick="cambiarEstatus(10, 'Revisado por {{ nombreUsuario }}')">Pedir Revisión</button></div>
+		<div class="col-xs-6">Obervaciones: <textarea name="obervaciones"></textarea></div>
+		<div class="col-xs-6"><button class="btn btn-success btn-lg" type="button" onclick="cambiarEstatus(9, 'Revisado por {{ nombreUsuario }} ' + $('[name=obervaciones]').val())">Aprobar</button><button class="btn btn-danger btn-lg" type="button" onclick="cambiarEstatus(10, 'Revisado por {{ nombreUsuario }} ' + $('[name=obervaciones]').val())">Pedir Revisión</button></div>
 	</div>
 </div>
 
