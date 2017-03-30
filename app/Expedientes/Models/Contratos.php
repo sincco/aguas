@@ -195,7 +195,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getContratoHistorial($contrato) {
-		$query = 'SELECT ges.fecha, ges.estatusId, pro.descripcion, ges.anexo FROM gestionContratos ges INNER JOIN estatusProceso pro USING (estatusId) WHERE contrato = :contrato ORDER BY ges.fecha;';
+		$query = 'SELECT ges.fecha, ges.estatusId, pro.descripcion, ges.anexo FROM gestionContratos ges INNER JOIN estatusProceso pro USING (estatusId) WHERE contrato = :contrato ORDER BY ges.fecha DESC;';
 		return $this->connector->query($query, ['contrato'=>$contrato]);
 	}
 
