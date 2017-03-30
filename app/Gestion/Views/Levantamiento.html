@@ -57,7 +57,7 @@
 		<div class="row">
 			<h4>Medidor Instalado</h4>
 			<div class="col-lg-3">
-				<label>Modelo: <div class="input-group"><input type="text" name="marca_act" class="form-control" aria-describedby="sizing-addon2" placeholder="Modelo">
+				<label>Modelo: <div class="input-group"><input type="text" name="MARCA_INS" class="form-control" aria-describedby="sizing-addon2" placeholder="Modelo">
 					<span class="input-group-btn">
 						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
@@ -84,7 +84,7 @@
 		<div class="row">
 			<h4>Medidor Retirado</h4>
 			<div class="col-lg-6">
-				<label>Marca: <span data-field="MARCA_INS"></span></div></label>
+				<label>Marca: <span data-field="marca_act"></span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Lectura: <div class="input-group"><input type="text" name="LECT_RETIRO" class="form-control" aria-describedby="sizing-addon2" placeholder="Lectura"><span class="input-group-btn"><button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button></span></div></label>
