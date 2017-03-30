@@ -308,7 +308,6 @@ function buscarContrato() {
 			$('.rowProceso').show();
 			$('.rowEstatus').show();
 			$(data.data).each(function(){
-				buscarHistorial(this.contrato);
 				$('[data-field=contrato]').html(this.contrato);
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
@@ -339,6 +338,7 @@ function buscarContrato() {
 						$('.rowImagenesGuardadas').html(prev);
 					});
 				});
+				buscarHistorial(this.contrato);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
