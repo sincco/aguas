@@ -221,6 +221,34 @@ $('#qrCamera').on('change', function(){
 	decoder.stop().play();
 });
 
+var uploadControl = new Resumable({
+	target: BASE_URL + 'images/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+});
+
+uploadControl.on('uploadStart', function () {
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	loader.hide();
+	toastr.success('Imágenes guardadas.', 'Éxito');
+});
+
+
 $(function() {
 	$('#fechaInstalacion').datetimepicker({
 		useCurrent: true,
@@ -233,42 +261,27 @@ $(function() {
 	$('.upload').change(function() {
 		$(this).parent().removeClass('btn-default');
 		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this.files[0], this.name);
 	});
 
 	$('#upload').click(function() {
+		uploadControl.upload();
 		loader.show();
 		var form_data = new FormData();
 		$('.upload').each(function() {
 			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
 		});
-		$.ajax({
-			url: BASE_URL + 'ventas/visita/apiupload/contrato/' + $('[name=contrato]').val(),
-			dataType: 'text',
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(response){
-				var api = JSON.parse(response);
-				if (api.respuesta) {
-					sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/visita/apiguardar/contrato/' + $('[name=contrato]').val(),$('#datosVisita').serializeJSON())
-					.done(function(data) {
-						if (data.respuesta) {
-							toastr.success('Visita registrada');
-							location.reload();
-						} else {
-							toastr.error('Error al guardar la visita.', 'Intenta de nuevo');	
-						}
-					}).fail(function(jqXHR, textStatus, errorThrown) {
-						toastr.error('Error al guardar la visita.', 'Intenta de nuevo');
-					})
-				} else {
-					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
-				}
-				loader.hide();
+		sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/visita/apiguardar/contrato/' + $('[name=contrato]').val(),$('#datosVisita').serializeJSON())
+		.done(function(data) {
+			if (data.respuesta) {
+				toastr.success('Visita registrada');
+				location.reload();
+			} else {
+				toastr.error('Error al guardar la visita.', 'Intenta de nuevo');	
 			}
-		});
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			toastr.error('Error al guardar la visita.', 'Intenta de nuevo');
+		})
 	});
 });
 

@@ -68,12 +68,15 @@ class VentasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function setVisita($data) {
+		array_shift($data);
 		$query = "INSERT INTO ventasVisita SET contrato=:contrato, fechaVisita=CURDATE(), clienteNombre=:clienteNombre, clienteTelefono=:clienteTelefono, clienteCorreo=:clienteCorreo, fechaInstalacion=:fechaInstalacion, horarioInstalacion=:horarioInstalacion, diametroMedidor=:diametroMedidor, ubicacionMedidor=:ubicacionMedidor, materialMedidor=:materialMedidor, observaciones=:observaciones, usoToma=:usoToma;";
+		#var_dump($query,$data);
 		return $this->connector->query($query, $data);
 	}
 
 	public function setEstatus($data) {
 		$query = "UPDATE ventasContratosAsignados SET estatusId=:estatusId WHERE contrato=:contrato;";
+		#var_dump($query,$data);
 		return $this->connector->query($query, $data);
 	}
 

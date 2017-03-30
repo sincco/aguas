@@ -259,7 +259,7 @@ var uploadControl = new Resumable({
 uploadControl.on('fileAdded', function (file, name, event) {
 	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
 	file.fileName = name + '.' + file.fileName.split('.').pop();
-	// console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
 });
 
 uploadControl.on('fileProgress', function (file) {
