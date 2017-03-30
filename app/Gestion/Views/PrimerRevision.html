@@ -17,12 +17,10 @@
 	</div>
 
 	<div class="row rowContrato">
-			<!--<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
-			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
-			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>-->
 		<div class="row">
-			<h4>Flujo operativo</h4>
-			<ul class="list-group rowLogs"></ul>
+			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
+			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
@@ -338,7 +336,7 @@ function buscarContrato() {
 						$('.rowImagenesGuardadas').html(prev);
 					});
 				});
-				buscarHistorial(this.contrato);
+				// buscarHistorial(this.contrato);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
