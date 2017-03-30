@@ -48,11 +48,14 @@
 			</div>
 		</div>
 		<div class="row">
-                        <div class="col-xs-6">
-                                <label>Diametro Instalado: <span data-field="DIAMETRO_CONEXION"></span></label>
+                        <div class="col-xs-4">
+                                <label>Diametro Conexión: <span data-field="DIAMETRO_CONEXION"></span></label>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                                 <label>Diametro Toma: <span data-field="diametro_toma"></span></label>
+                        </div>
+                        <div class="col-xs-4">
+                                <label>Diametro Instalado: <span data-field="cobro"></span></label>
                         </div>
                 </div>
 		<div class="row">
@@ -294,6 +297,7 @@ function buscarContrato() {
 	$('[name=LECT_RETIRO]').val('');
 	$('[name=LECT_INST]').val('');
 	$('[name=MARCA_INS]').val('');
+	$('[name=cobro]').val('');
 	$('[data-field=diametro_toma]').html('');
         $('[data-field=DIAMETRO_CONEXION]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
@@ -321,6 +325,7 @@ function buscarContrato() {
 				$('[name=LECT_RETIRO]').val(this.LECT_RETIRO);
 				$('[name=LECT_INST]').val(this.LECT_INST);
 				$('[name=MARCA_INS]').val(this.MARCA_INS);
+				$('[name=cobro]').val(this.cobro);
 				$('[data-field=diametro_toma]').html(this.diametro_toma);
 			        $('[data-field=DIAMETRO_CONEXION]').html(this.DIAMETRO_CONEXION);
 				sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
