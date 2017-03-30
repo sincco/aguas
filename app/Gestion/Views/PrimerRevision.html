@@ -34,19 +34,27 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-3">
+			<div class="col-xs-3">
 				<label>Suministro: <span data-field="suministro"></span></label>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-xs-3">
 				<label>numTomas: <span data-field="numTomas"></span></label>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-xs-3">
 				<label>Giro: <span data-field="giro"></span></label>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-xs-3">
 				<label>GPS: <span data-field="gps"></span></label>
 			</div>
 		</div>
+		<div class="row">
+                        <div class="col-xs-6">
+                                <label>Diametro Instalado: <span data-field="DIAMETRO_CONEXION"></span></label>
+                        </div>
+                        <div class="col-xs-6">
+                                <label>Diametro Toma: <span data-field="diametro_toma"></span></label>
+                        </div>
+                </div>
 		<div class="row">
 			<div class="col-lg-12">
 				<label>Direccion: <span data-field="direccion"></span></label>
@@ -57,7 +65,7 @@
 			<div class="col-xs-6">
 				<label>Marca: 
 				<div class="input-group">
-				<input type="text" name="marca_act" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="marca_act" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Marca Retirado">
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
@@ -67,7 +75,7 @@
 			<div class="col-xs-6">
 				<label>Lectura Final: 
 				<div class="input-group">
-				<input type="text" name="LECT_RETIRO" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="LECT_RETIRO" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Lectura">
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
@@ -90,7 +98,7 @@
 			<div class="col-xs-3">
 				<label>Telemetría: 
 				<div class="input-group">
-				<input type="text" name="telemetriaMedidor" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="telemetriaMedidor" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Telemetria">
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
@@ -100,7 +108,7 @@
 			<div class="col-xs-3">
 				<label>Marca: 
 				<div class="input-group">
-				<input type="text" name="MARCA_INS" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="MARCA_INS" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Itro" value="Itron">
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
@@ -110,7 +118,7 @@
 			<div class="col-xs-3">
 				<label>Lectura Incial: 
 				<div class="input-group">
-				<input type="text" name="LECT_INST" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<input type="text" name="LECT_INST" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Lectura" value="0">
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
 				</span>
@@ -286,6 +294,8 @@ function buscarContrato() {
 	$('[name=LECT_RETIRO]').val('');
 	$('[name=LECT_INST]').val('');
 	$('[name=MARCA_INS]').val('');
+	$('[data-field=diametro_toma]').html('');
+        $('[data-field=DIAMETRO_CONEXION]').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
@@ -301,7 +311,7 @@ function buscarContrato() {
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
-				$('[name=marca_act]').html(this.marca_act);
+				$('[name=marca_act]').val(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
@@ -311,6 +321,8 @@ function buscarContrato() {
 				$('[name=LECT_RETIRO]').val(this.LECT_RETIRO);
 				$('[name=LECT_INST]').val(this.LECT_INST);
 				$('[name=MARCA_INS]').val(this.MARCA_INS);
+				$('[data-field=diametro_toma]').html(this.diametro_toma);
+			        $('[data-field=DIAMETRO_CONEXION]').html(this.DIAMETRO_CONEXION);
 				sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
 				.done(function(data) {
 					$('.rowImagenesGuardadas').html('');
