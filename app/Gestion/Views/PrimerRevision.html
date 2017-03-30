@@ -66,14 +66,7 @@
 		<div class="row">
 			<h4>Medidor Retirado</h4>
 			<div class="col-xs-4">
-				<label>Marca: 
-				<div class="input-group">
-				<input type="text" name="marca_act" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Marca Retirado">
-				<span class="input-group-btn">
-					<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
-				</span>
-				</div>
-				</label>
+				<label>Marca: <span data-field="marca_act"></span></label>
 			</div>
 			<div class="col-xs-4">
 				<label>Serie: <span data-field="num_apa"></span></label>
@@ -290,7 +283,7 @@ function buscarContrato() {
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
-	$('[name=marca_act]').val('');
+	$('[name=marca_act]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=telemetriaMedidor]').val('');
 	$('[data-field=status]').html('');
@@ -319,7 +312,7 @@ function buscarContrato() {
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
-				$('[name=marca_act]').val(this.marca_act);
+				$('[name=marca_act]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
