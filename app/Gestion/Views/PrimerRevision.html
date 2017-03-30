@@ -17,10 +17,12 @@
 	</div>
 
 	<div class="row rowContrato">
-		<div class="row">
-			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
+			<!--<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span></h4></div>
 			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
-			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
+			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>-->
+		<div class="row">
+			<h4>Flujo operativo</h4>
+			<ul class="list-group rowLogs"></ul>
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
@@ -305,6 +307,7 @@ function buscarContrato() {
 			$('.rowProceso').show();
 			$('.rowEstatus').show();
 			$(data.data).each(function(){
+				buscarHistorial(this.contrato);
 				$('[data-field=contrato]').html(this.contrato);
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
@@ -396,6 +399,21 @@ function guardarCampo(input) {
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
 		loader.hide();
+	});
+}
+
+function buscarHistorial(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratohistorial', {contrato:contrato})
+	.done(function(data) {
+		$('.rowLogs').html('');
+		$(data.data).each(function(){
+			var clase = 'list-group-item';
+			if (this.estatusId == 2) { clase = 'list-group-item-warning'; }
+			if (this.estatusId == 3) { clase = 'list-group-item-info'; }
+			if (this.estatusId == 4) { clase = 'list-group-item-danger'; }
+			if (this.estatusId == 5) { clase = 'list-group-item-success'; }
+			$('.rowLogs').html($('.rowLogs').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span><br><span class="anexo">' + this.anexo + '</span>'  + '</li>');
+		});
 	});
 }
 
