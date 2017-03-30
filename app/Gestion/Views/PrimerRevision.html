@@ -407,14 +407,16 @@ function buscarHistorial(contrato) {
 	.done(function(data) {
 		$('.rowLogs').html('');
 		$(data.data).each(function(){
-			var clase = 'list-group-item';
-			if (this.estatusId == 5) { clase = 'list-group-item-info'; }
-			if (this.estatusId == 6) { clase = 'list-group-item-info'; }
-			if (this.estatusId == 7) { clase = 'list-group-item-info'; }
-			if (this.estatusId == 8) { clase = 'list-group-item-info'; }
-			if (this.estatusId == 9) { clase = 'list-group-item-success'; }
-			if (this.estatusId == 10) { clase = 'list-group-item-danger'; }
-			$('.rowLogs').html($('.rowLogs').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span><br><span class="anexo">' + this.anexo + '</span>'  + '</li>');
+			if (this.estatusId >= 5) { 
+				var clase = 'list-group-item';
+				if (this.estatusId == 5) { clase = 'list-group-item-info'; }
+				if (this.estatusId == 6) { clase = 'list-group-item-info'; }
+				if (this.estatusId == 7) { clase = 'list-group-item-info'; }
+				if (this.estatusId == 8) { clase = 'list-group-item-info'; }
+				if (this.estatusId == 9) { clase = 'list-group-item-success'; }
+				if (this.estatusId == 10) { clase = 'list-group-item-danger'; }
+				$('.rowLogs').html($('.rowLogs').html() + '<li class="list-group-item ' + clase + '"><span class="fecha">' + this.fecha + '</span> <span class="descripcion">' + this.descripcion + '</span><br><span class="anexo">' + this.anexo + '</span>'  + '</li>');
+			}
 		});
 	});
 }
