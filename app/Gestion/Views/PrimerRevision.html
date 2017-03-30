@@ -298,7 +298,8 @@ function buscarContrato() {
 	$('[data-field=cobro]').html('');
 	$('[data-field=diametro_toma]').html('');
 	$('[data-field=num_apa]').html('');
-        $('[data-field=DIAMETRO_CONEXION]').html('');
+    $('[data-field=DIAMETRO_CONEXION]').html('');
+    $('.rowLogs').html('');
 	sincco.consumirAPI('GET', BASE_URL + 'api/v2/expedientes/resumen?filters[contrato]=' + $('[name=contrato]').val())
 	.done(function(data) {
 		if (data.data.length) {
