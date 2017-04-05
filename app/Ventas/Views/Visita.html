@@ -246,6 +246,18 @@ uploadControl.on('uploadStart', function () {
 uploadControl.on('complete', function () {
 	loader.hide();
 	toastr.success('Imágenes guardadas.', 'Éxito');
+	loader.show();
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/visita/apiguardar/contrato/' + $('[name=contrato]').val(),$('#datosVisita').serializeJSON())
+	.done(function(data) {
+		if (data.respuesta) {
+			toastr.success('Visita registrada');
+			location.reload();
+		} else {
+			toastr.error('Error al guardar la visita.', 'Intenta de nuevo');	
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al guardar la visita.', 'Intenta de nuevo');
+	})
 });
 
 
@@ -267,21 +279,10 @@ $(function() {
 	$('#upload').click(function() {
 		uploadControl.upload();
 		loader.show();
-		var form_data = new FormData();
-		$('.upload').each(function() {
-			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
-		});
-		sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/visita/apiguardar/contrato/' + $('[name=contrato]').val(),$('#datosVisita').serializeJSON())
-		.done(function(data) {
-			if (data.respuesta) {
-				toastr.success('Visita registrada');
-				location.reload();
-			} else {
-				toastr.error('Error al guardar la visita.', 'Intenta de nuevo');	
-			}
-		}).fail(function(jqXHR, textStatus, errorThrown) {
-			toastr.error('Error al guardar la visita.', 'Intenta de nuevo');
-		})
+		//var form_data = new FormData();
+		//$('.upload').each(function() {
+		//	form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		// });
 	});
 });
 
