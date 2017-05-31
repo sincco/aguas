@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <reportes>
 	<reporte1>
-		<titulo>Reporte de estatus</titulo>
+		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
 				SELECT * FROM (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp
 			]]>
 		</query>
 	</reporte1>
+
+	<reporte2>
+		<titulo>Estatus de servicio</titulo>
+		<query>
+			<![CDATA[
+				SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla," ") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)
+			]]>
+		</query>
+	</reporte2>
+
+	<reporte3>
+		<titulo>Reporte 3</titulo>
+		<query>
+			<![CDATA[
+				SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla," ") cuadrilla  FROM gestionContratos ges INNER JOIN ( SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)
+			]]>
+		</query>
+	</reporte3>
+
+	<reporte4>
+		<titulo>Reporte 4</titulo>
+		<query>
+			<![CDATA[
+				SELECT con.contrato, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.anexo, tmp.cuadrilla, DATE(tmp.fecha) fechaEstatus, cob.descripcion cobro, (SELECT COUNT(id) FROM gestionContratos WHERE estatusId=4 and contrato=con.contrato) visitas FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) LEFT JOIN cobros cob USING(cobro)
+			]]>
+		</query>
+	</reporte4>
 </reportes>
