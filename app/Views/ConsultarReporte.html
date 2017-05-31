@@ -1,0 +1,42 @@
+{% spaceless %}
+{% include 'header_full.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div id="page-wrapper dashboard" style="min-height: 129px;">
+		<div class="row">
+		    <div class="col-lg-12">
+		        <h1 class="page-header">Descargar reporte personalizado</h1>
+		    </div>
+		</div>
+	</div>
+
+{% for reporte in reportes %}
+<div class="col-lg-3 col-md-6">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-xs-3">
+					<button type="button" class="btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true" onclick="descargar('{{reporte.llave}}');"> <span>Descargar</span></i></button>
+				</div>
+				<div class="col-xs-9 text-right">
+					<div class="huge">{{ reporte.titulo|e }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+</div>
+
+<script type="text/javascript">
+	function descargar(reporte) {
+		loader.show();
+		$.redirect(BASE_URL + 'reporteador/consultar/download/formato/excel', {reporte: reporte}, 'POST', '_blank'); 
+		loader.hide();
+	}	
+</script>
+
+{% include 'footer_full.html' %}
+{% endspaceless %}
