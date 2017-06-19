@@ -123,8 +123,12 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$cuadrilla = $this->getParams('cuadrilla');
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET, $cuadrilla);
-		$count = 125000; #$model->getCount($_GET, $cuadrilla);
-		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
+		if (count($data) > 100) {
+			$count = 127486; #$model->getCount($_GET);
+		} else {
+			$count = count($data);
+		}
+		new Response('json', ['total'=>$count, 'rows'=>$data]);
 	}
 
 	public function apiAsignar() {
