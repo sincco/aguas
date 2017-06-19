@@ -48,8 +48,9 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			}
 		}
 		if (isset($data['limit'])) {
-			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] . ' OFFSET ' . $data['offset'];
 		}
+		# var_dump($query);die();
 		return $this->connector->query($query);
 	}
 
