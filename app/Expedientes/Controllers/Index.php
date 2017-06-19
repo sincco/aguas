@@ -61,7 +61,11 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function apiData() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET, 0);
-		$count = 127486; #$model->getCount($_GET);
+		if (count($data) > 100) {
+			$count = 127486; #$model->getCount($_GET);
+		} else {
+			$count = count($data);
+		}
 		new Response('json', ['total'=>$count, 'rows'=>$data]);
 	}
 
