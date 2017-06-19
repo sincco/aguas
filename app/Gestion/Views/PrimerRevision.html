@@ -65,7 +65,14 @@
                                 <label>Diametro Conexión: <span data-field="DIAMETRO_CONEXION"></span></label>
                         </div>
                         <div class="col-xs-4">
-                                <label>Diametro Toma: <span data-field="diametro_toma"></span></label>
+                                <label>Diametro Toma:
+                                	<div class="input-group">
+										<input type="text" name="diametro_toma" class="form-control input-sm" aria-describedby="sizing-addon2" placeholder="Diametro">
+										<span class="input-group-btn">
+											<button class="btn btn-default btn-sm" type="button" onclick="guardarCampo(this)">Guardar</button>
+										</span>
+									</div>
+                                </label>
                         </div>
                         <div class="col-xs-4">
                                 <label>Diametro Instalado: <span data-field="cobro"></span></label>
@@ -307,6 +314,7 @@ function buscarContrato() {
 	$('[name=LECT_RETIRO]').val('');
 	$('[name=LECT_INST]').val('');
 	$('[name=MARCA_INS]').val('');
+	$('[name=diametro_toma]').val('');
 	$('[data-field=cobro]').html('');
 	$('[data-field=diametro_toma]').html('');
 	$('[data-field=num_apa]').html('');
@@ -337,6 +345,7 @@ function buscarContrato() {
 				$('[name=LECT_RETIRO]').val(this.LECT_RETIRO);
 				$('[name=LECT_INST]').val(this.LECT_INST);
 				$('[name=MARCA_INS]').val(this.MARCA_INS);
+				$('[name=diametro_toma]').val(this.diametro_toma);
 				$('[data-field=cobro]').html(this.cobro);
 				$('[data-field=num_apa]').html(this.num_apa);
 				$('[data-field=diametro_toma]').html(this.diametro_toma);
