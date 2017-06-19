@@ -59,7 +59,35 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.cuadrilla FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) LEFT JOIN cobros cob USING(cobro) ';
+		$query = "
+			SELECT 
+			    con.*,
+			    IFNULL(tmp.descripcion, 'Sin Asignar') estatus,
+			    tmp.cuadrilla
+			FROM
+			    contratos con
+			LEFT JOIN (
+			    SELECT 
+			        ges.contrato,
+			            ges.fecha,
+			            ges.estatusId,
+			            pro.descripcion,
+			            ges.anexo,
+			            IFNULL(cua.cuadrilla, 'S/A') cuadrilla
+			    FROM
+			        gestionContratos ges
+			    INNER JOIN (
+			        SELECT 
+			            ges.contrato, MAX(ges.id) id
+			        FROM
+			            gestionContratos ges
+			        GROUP BY ges.contrato
+			    ) tmp ON (ges.contrato = tmp.contrato AND ges.id = tmp.id)
+			    INNER JOIN estatusProceso pro USING (estatusId)
+			    LEFT JOIN cuadrillasContratos cua ON (cua.contrato = tmp.contrato)
+			) tmp USING (contrato)
+			LEFT JOIN
+			    cobros cob USING (cobro) ";
 		if (!isset($data['search'])) {
 			$data['search']='';
 		}
