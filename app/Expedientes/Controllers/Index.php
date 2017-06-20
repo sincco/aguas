@@ -122,7 +122,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 	public function apiAsignados() {
 		$cuadrilla = $this->getParams('cuadrilla');
 		$model = $this->getModel('Expedientes\Contratos');
-		$data = $model->getTableFormatos($_GET, $cuadrilla);
+		$data = $model->getTable($_GET, $cuadrilla);
 		if (count($data) > 100) {
 			$count = 127486; #$model->getCount($_GET);
 		} else {
