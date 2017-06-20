@@ -92,7 +92,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 			$data['search']='';
 		}
 		if (trim($data['search']) != '') {
-			$where = 'WHERE con.contrato = "' . $data['search'] . "' ";
+			$where = 'WHERE con.contrato = ' . $data['search'] . ' ';
 			$query .= $where;
 			if ($cuadrilla > 0) {
 				$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
