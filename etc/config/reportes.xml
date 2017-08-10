@@ -4,7 +4,7 @@
 		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
-				select * from contratos where contrato = '1000003'
+				SELECT * FROM (SELECT con.contrato, (SELECT max(fecha) FROM gestionContratos WHERE estatusId=5 and contrato=con.contrato) fecha_ins, con.altaContrato, con.propietario, con.usuario, con.suministro, con.numTomas, con.giro, con.utilizacion, con.tarifa, con.servicios, con.nivelTarifario, con.asociacion, con.cveCatastral, con.municipio, con.colonia, con.via, con.calle, con.numOficial, con.longitud, con.latitud, con.serieMedidor, con.telemetriaMedidor, con.interior, con.interior2, con.marca_act, con.num_apa, con.aparato, con.tip_medicion, con.f_inst, con.anos_disp_med, con.mayores_5_anos, con.f_retiro_disp_med, con.cobro, con.mod_med_ins, con.tipo_material, con.Qmax, con.Qn, con.Qt, con.Qmin, con.caudal_max, con.num_dig_medidor, con.f_fabricacion, con.diametro_toma, con.lectura_inicial, con.region, con.estrato, con.bandera, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp
 
 			]]>
 		</query>
