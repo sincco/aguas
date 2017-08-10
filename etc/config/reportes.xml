@@ -4,7 +4,7 @@
 		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
-				select * from contratos
+				select * from contratos where contrato = '1000003'
 
 			]]>
 		</query>
