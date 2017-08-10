@@ -4,7 +4,7 @@
 		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
-				select * form contratos
+				select * from contratos
 
 			]]>
 		</query>
