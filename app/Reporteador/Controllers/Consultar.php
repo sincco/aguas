@@ -38,8 +38,8 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 
 				ini_set('memory_limit','2000M');
 				$data = $model->run($dataReporte['query']);
-				var_dump(array_keys($data[0])); die();
-				$data = $this->arrayToCsv($data);
+				$fields = $this->arrayToCsv(array_keys($data[0]));
+				$csv = $this->arrayToCsv($data);
 
 				$file = PATH_TMP . '/' . strtolower(str_replace(' ', '-', $dataReporte['titulo'])) . '.csv';
 				#file_put_contents($file, $data);
@@ -50,7 +50,8 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 				header("Expires: 0");
 				header("Content-type: text/csv");
 				header("Content-Disposition: attachment; filename=".strtolower(str_replace(' ', '-', $dataReporte['titulo'])) . '.csv');
-				echo $data;
+				echo $fields;
+				echo $csv;
 				break;
 			default:
 			new Response('json', ['data'=>false, 'extra'=>'Método ' . Request::get('method') . ' no soportado']);
