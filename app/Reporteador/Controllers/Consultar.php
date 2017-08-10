@@ -38,7 +38,8 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 
 				ini_set('memory_limit','2000M');
 				$data = $model->run($dataReporte['query']);
-				$fields = $this->arrayToCsv(array_keys($data[0]));
+				$fields = array_keys($data[0]);
+				$fields = $this->arrayToCsv($fields);
 				$csv = $this->arrayToCsv($data);
 
 				$file = PATH_TMP . '/' . strtolower(str_replace(' ', '-', $dataReporte['titulo'])) . '.csv';
