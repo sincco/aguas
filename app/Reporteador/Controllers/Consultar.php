@@ -50,7 +50,7 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 				header("Expires: 0");
 				header("Content-type: text/csv");
 				header("Content-Disposition: attachment; filename=".strtolower(str_replace(' ', '-', $dataReporte['titulo'])) . '.csv');
-				echo $fields;
+				echo $fields;echo PHP_EOL;
 				echo $csv;
 				break;
 			default:
