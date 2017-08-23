@@ -55,6 +55,9 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 }
                 $data = $contratos->getDataFiltered($filters, $pagination);
                 $total = $contratos->getTotalDataFiltered($filters);
+		#var_dump($data);
+		$data = $this->cleanArray($data);
+		#var_dump($data);
                 new Response('json', ['data'=>$data, 'registros'=>$total, 'extra'=>'']);
                 break;
             default:
@@ -86,6 +89,24 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 new Response('json', ['data'=>false, 'extra'=>'Método ' . Request::get('method') . ' no soportado']);
                 break;
         }
+    }
+
+    private function cleanArray($array) {
+        if (is_array($array))
+        {
+            foreach ($array as $key => $sub_array)
+            {
+                $result = $this->cleanArray($sub_array);
+                $array[$key] = $result;
+            }
+        }
+
+        if (empty($array))
+        {
+            return '';
+        }
+
+        return $array;
     }
 
 }
