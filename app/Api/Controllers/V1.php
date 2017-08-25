@@ -103,7 +103,7 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
 
         if (empty($array))
         {
-            return '';
+            return 0;
         }
 
         return $array;
