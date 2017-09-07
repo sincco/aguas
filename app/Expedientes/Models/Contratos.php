@@ -180,6 +180,29 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query);
 	}
 
+	public function getCountRevisados($data) {
+		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (7,9)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
+		if (isset($data['search'])) {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR tmp.descripcion like "%' . $data['search'] . '%" ';
+			$query .= $where;
+		}
+		return $this->connector->query($query);
+	}
+	public function getTableRevisados($data) {
+		if (!isset($data['sort'])) {
+			$data['sort'] = 'contrato';
+		}
+		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, IFNULL(ges.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, DATE_FORMAT(ges.fecha,"%Y-%m-%d") fecha, IFNULL(cua.cuadrilla," ") cuadrilla, cob.descripcion cobro, cob.precio FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (7,9)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
+		if (isset($data['search'])) {
+			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" ';
+			$query .= $where;
+		}
+		if (isset($data['limit'])) {
+			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] * 2 . ' OFFSET ' . $data['offset'];
+		}
+		return $this->connector->query($query);
+	}
+
 	public function getCountNoEjecutados($data) {
 		$query = 'SELECT count(*) total
 			FROM contratos con 

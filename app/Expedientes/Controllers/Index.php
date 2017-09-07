@@ -83,6 +83,14 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
 	}
 
+	public function apiDataRevisados() {
+                $model = $this->getModel('Expedientes\Contratos');
+                $data = $model->getTableRevisados($_GET);
+                $count = $model->getCountRevisados($_GET);
+                new Response('json', ['total'=>$count[0]['total'], 'rows'=>$data]);
+        }
+
+
 	public function apiDataNoEjecutados() {
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTableNoEjecutados($_GET);

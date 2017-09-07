@@ -8,6 +8,7 @@
 		<div class="col-xs-6"><h5>Acerca o aleja la región de búsqueda</h5></div>
 		<div class="col-xs-6">
 			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Terminado');"> <span>Mostrar terminados</span></i></button>
+			<button type="button" class="btn btn-default btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Validado');"> <span>Mostrar revisados</span></i></button>
 			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('En proceso');"> <span>Mostrar en proceso</span></i></button>
 			<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Asignado');"> <span>Mostrar asignados</span></i></button>
 			<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="location.reload();"> <span>Limpiar</span></i></button>
@@ -58,6 +59,15 @@ function heatMap(status) {
 			'rgba(0, 50, 0, 1)',
 		];
 	}
+	if (status == 'Validado') {
+                var gradient = [
+                        'rgba(255, 255, 102, 0)',
+                        'rgba(255, 255, 102, 1)',
+                        'rgba(0, 100, 255, 1)',
+                        'rgba(0, 70, 255, 1)',
+                        'rgba(0, 50, 255, 1)',
+                ];
+        }
 	if (status == 'En proceso') {
 		var gradient = [
 			'rgba(255, 102, 0, 0)',
