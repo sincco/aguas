@@ -1,0 +1,129 @@
+{% include 'header.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Cargar contratos</h1>
+		<button type="button" class="btn btn-info" onclick="$('#modal-carga').modal('show');"><i class="fa fa-upload" aria-hidden="true"> <span>Cargar</span></i></button>
+	</div>
+</div>
+
+<div id="modal-carga" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Carga de layout</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+  						<div class="fileUpload btn btn-default">
+							<label>Archivo</label><input type="file" class="upload" name="carga-contratos-{{ "now"|date("Ymd") }}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	loader.show();
+	$('.modal-title span').html(element.contrato);
+	$('.adjuntos').html('');
+	buscarContrato(element.contrato);
+	buscarAdjuntos(element.contrato);
+	loader.hide();
+	$('#modal-info').modal('show');
+});
+var uploadControl = new Resumable({
+	target: BASE_URL + 'files/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	console.log(progress);
+});
+uploadControl.on('fileSuccess', function (file, message) {
+	console.log(file.uniqueIdentifier);
+});
+uploadControl.on('uploadStart', function () {
+	console.log('CARGANDO...');
+	loader.show();
+});
+uploadControl.on('complete', function () {
+	console.log('completo...')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/contratos/procesararchivo')
+	.done(function(data) {
+		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al procesar el archivo.', 'Intenta de nuevo');
+	})
+	loader.hide();
+});
+$('#upload').click(function() {
+	uploadControl.upload();
+});
+$('.upload').change(function() {
+	$(this).parent().removeClass('btn-default');
+	$(this).parent().addClass('btn-info');
+	uploadControl.addFile(this.files[0], this.name);
+});
+function asignarContratos() {
+	sincco.consumirAPI('POST', BASE_URL + 'ventas/contratos/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), vendedor: $('[name=vendedor]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-vendedores').modal('hide');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+}
+function buscarAdjuntos(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntosventas', {contrato:contrato})
+	.done(function(data) {
+		if(data.respuesta > 0){
+			var index = 0;
+			data.adjuntos.forEach(function(adjunto){
+				index++;
+				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
+				if(extension(adjunto).toLowerCase() == 'pdf') {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+				} else {
+					var titulo = adjunto.substring(1,100).replace('-',' ');
+					var imagen = '<div class="col-xs-12 col-md-4"><div class="thumbnail"><img src="' + url + '" alt="' + adjunto + '"><div class="caption"><h5 style="text-transform: capitalize;">' + titulo.replace('.jpg','').replace('.gif','').replace('.png','').replace('.jpeg','') + '</h5><p><a href="' + url + '" target="_blank" class="btn btn-primary" role="button"><i class="fa fa-eye" aria-hidden="true"></i> Ver</a> <a href="' + url + '" download="' + contrato + '-' + titulo + '" class="btn btn-default" role="button"><i class="fa fa-download" aria-hidden="true"></i> Descargar</a></p></div></div></div>';
+				}
+				$('.adjuntos').html($('.adjuntos').html() + imagen);
+			});
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
+	});
+}
+function extension(filename) {
+	return filename.split('.').pop();
+}
+function imprimir() {
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'ventas/visita/formatos', {contratos: ids}, 'POST', '_blank'); 
+}
+</script>
+
+{% include 'footer.html' %}
