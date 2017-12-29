@@ -1,4 +1,4 @@
-{% include 'header_full.html' %}
+{% include 'header.html' %}
 
 <div class="container">
 	<div class="row">
@@ -65,7 +65,7 @@ uploadControl.on('uploadStart', function () {
 });
 uploadControl.on('complete', function () {
 	console.log('completo...')
-	sincco.consumirAPI('POST','{{constant('BASE_URL')}}ventas/contratos/procesararchivo')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}importar/procesar')
 	.done(function(data) {
 		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
 		location.reload();
@@ -91,38 +91,6 @@ function asignarContratos() {
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
 	});
-}
-function buscarAdjuntos(contrato) {
-	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntosventas', {contrato:contrato})
-	.done(function(data) {
-		if(data.respuesta > 0){
-			var index = 0;
-			data.adjuntos.forEach(function(adjunto){
-				index++;
-				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
-				if(extension(adjunto).toLowerCase() == 'pdf') {
-					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
-				} else {
-					var titulo = adjunto.substring(1,100).replace('-',' ');
-					var imagen = '<div class="col-xs-12 col-md-4"><div class="thumbnail"><img src="' + url + '" alt="' + adjunto + '"><div class="caption"><h5 style="text-transform: capitalize;">' + titulo.replace('.jpg','').replace('.gif','').replace('.png','').replace('.jpeg','') + '</h5><p><a href="' + url + '" target="_blank" class="btn btn-primary" role="button"><i class="fa fa-eye" aria-hidden="true"></i> Ver</a> <a href="' + url + '" download="' + contrato + '-' + titulo + '" class="btn btn-default" role="button"><i class="fa fa-download" aria-hidden="true"></i> Descargar</a></p></div></div></div>';
-				}
-				$('.adjuntos').html($('.adjuntos').html() + imagen);
-			});
-		}
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
-	});
-}
-function extension(filename) {
-	return filename.split('.').pop();
-}
-function imprimir() {
-	var contratos = $('#contratos').bootstrapTable('getSelections');
-	var ids = [];
-	$(contratos).each(function(){
-		ids.push(this.contrato);
-	})
-	$.redirect(BASE_URL + 'ventas/visita/formatos', {contratos: ids}, 'POST', '_blank'); 
 }
 </script>
 
