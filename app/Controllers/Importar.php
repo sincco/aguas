@@ -42,6 +42,6 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 			}
 			unlink($file);
 		}
-		echo "<h3>Se procesaron " . $total . " registros con " . $errores . "</h3>";
+		echo json_encode(['total'=>$total, 'insertados'=>$total-$errores]);
 	}
 }
