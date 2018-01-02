@@ -68,7 +68,7 @@ uploadControl.on('complete', function () {
 	sincco.consumirAPI('POST','{{constant('BASE_URL')}}importar/procesar')
 	.done(function(data) {
 		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
-		location.reload();
+		//location.reload();
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al procesar el archivo.', 'Intenta de nuevo');
 	})
