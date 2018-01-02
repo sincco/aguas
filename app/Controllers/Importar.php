@@ -13,6 +13,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 	}
 
 	public function procesar() {
+		total = 0;
 		foreach (glob(PATH_TMP . '/carga-contratos-*') as $file) {
 			$data = $this->helper('ExcelParser')->read($file);
 			$total += count($data);
