@@ -32,7 +32,7 @@ class ImportarController extends Sincco\Sfphp\Abstracts\Controller {
 				if (!isset($row['COLONIA'])) {
 					$row['COLONIA'] = '';
 				}
-				$query = "INSERT INTO `contratos`(`contrato`,  `propietario`, `usuario`,  `municipio`, `region`, `via`, `calle`, `numOficial`, `interior`, `colonia`) VALUES ('" . $row["NIS"] . "','" . $row["PROPIETARIO"] . "','" . str_replace("'", '', $row["USUARIO"]) . "','" . str_replace("'", '', $row["MUNICIPIO"]) . "','" . str_replace("'", '', $row["REGION"]) . "','" . str_replace("'", '', $row["VIA"]) . "','" . str_replace("'", '', $row["CALLE"]) . "','" . str_replace("'", '', $row["NUM_OFICIAL"]) . "','" . str_replace("'", '', $row["INTERIOR"]) . "','" . str_replace("'", '', $row["COLONIA"]) . "');";
+				$query = "INSERT INTO `contratos`(`contrato`,  `propietario`, `usuario`,  `municipio`, `region`, `via`, `calle`, `numOficial`, `interior`, `colonia`) VALUES ('" . $row["NIS"] . "','" . $row["PROPIETARIO"] . "','" . str_replace("'", '', $row["USUARIO"]) . "','" . str_replace("'", '', $row["MUNICIPIO"]) . "','" . str_replace("'", '', $row["REGION"]) . "','" . str_replace("'", '', $row["VIA"]) . "','" . str_replace("'", '', $row["CALLE"]) . "','" . str_replace("'", '', $row["NUM_OFICIAL"]) . "','" . str_replace("'", '', $row["INTERIOR"]) . "','" . str_replace("'", '', $row["COLONIA"]) . "') ON DUPLICATE KEY UPDATE via='" . str_replace("'", '', $row["VIA"]) . "';";
 				var_dump($query);
 				try {
 					$modelo->execute($query);
