@@ -19,7 +19,12 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 			Request::redirect('gestion/visor');
 		}
 		$this->helper('UsersAccount')->checkLogin();
-		$view = $this->newView('Dashboard');
+		$cuadrilla = unserialize($_SESSION['user\extra']);
+		if (isset($cuadrilla['cuadrilla'])) {
+			$view = $this->newView('DashboardCuadrilla');
+		} else {
+			$view = $this->newView('Dashboard');
+		}
 
 		$fechaInicio = (is_null($this->getParams('fechaInicio')) ? date('d/m/Y') : $this->getParams('fechaInicio'));
 		$fechaFin = (is_null($this->getParams('fechaFin')) ? date('d/m/Y') : $this->getParams('fechaFin'));
@@ -35,19 +40,22 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->completados = $this->getModel('Dashboard')->completadosCuadrillas($params);
 		$view->gestiones = $this->getModel('Dashboard')->gestiones($params);
 
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>1];
-		$view->gestionesCuadrilla1 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>2];
-		$view->gestionesCuadrilla2 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>3];
-		$view->gestionesCuadrilla3 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>4];
-		$view->gestionesCuadrilla4 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>8];
-		$view->gestionesCuadrilla8 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>9];
-		$view->gestionesCuadrilla9 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
-		
+		if (isset($cuadrilla['cuadrilla'])) {
+
+		} else { 
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>1];
+			$view->gestionesCuadrilla1 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>2];
+			$view->gestionesCuadrilla2 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>3];
+			$view->gestionesCuadrilla3 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>4];
+			$view->gestionesCuadrilla4 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>8];
+			$view->gestionesCuadrilla8 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+			$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin, 'cuadrilla'=>9];
+			$view->gestionesCuadrilla9 = $this->getModel('Dashboard')->gestionesCuadrilla($params);
+		}
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}

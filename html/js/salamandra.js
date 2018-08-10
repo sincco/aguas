@@ -87,6 +87,74 @@ var dashboard = new function() {
 
 }
 
+// dashboardcuadrilla.html
+var dashboardcuadrilla = new function() {
+
+	this.filtrar = function() {
+		jQuery.redirect(BASE_URL + 'dashboard', { 'fechaInicio': $('#fechaInicio').val(), 'fechaFin': $('#fechaFin').val() });
+	}
+
+	this.muestraDetalle = function( panel, titulo ) {
+		var cols = false;
+		var data = false;
+		
+		loader.show();
+
+		$( '#panel-detalle' ).bootstrapTable( 'destroy' );
+		$( '#modal-titulo' ).html( 'Detalle ' + titulo );
+		
+		jQuery.ajax({
+			url: BASE_URL + 'dashboard/apidetallepanelcols',
+			data: { panel:panel },
+			method: 'POST',
+			async: false,
+			success: function (result) {
+				cols = result
+			},
+			async: false
+		});
+
+		$( '#panel-detalle' ).bootstrapTable({
+			method: 'get',
+			url: BASE_URL + 'dashboard/apidetallepanel/panel/' + panel,
+			columns: cols,
+			height: 600,
+			striped: true,
+			pagination: true,
+			pageSize: 25,
+			pageList: [10, 25, 50, 100, 200],
+			search: true,
+			showColumns: true,
+			showRefresh: true,
+			showExport: true,
+			mobileResponsive: true,
+			minimumCountColumns: 2
+		});
+
+		$( '#modal' ).modal('show');
+
+		loader.hide();
+	}
+
+	this.init = function() {
+		$('#fecha-fin').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+		$('#fecha-inicio').datetimepicker({
+			useCurrent: true,
+			format: 'DD/MM/YYYY'
+		});
+		$("#fecha-inicio").on("dp.change", function (e) {
+			$('#fecha-fin').data("DateTimePicker").minDate(e.date);
+			$('#fecha-fin').data("DateTimePicker").date(e.date);
+		});
+		$("#fecha-fin").on("dp.change", function (e) {
+			$('#fecha-inicio').data("DateTimePicker").maxDate(e.date);
+		});
+	}
+
+}
+
 //login.html
 var login = new function() {
 

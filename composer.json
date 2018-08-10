@@ -1,6 +1,6 @@
 {
     "require": {
-        "sincco/sfphp": "dev-master",
+        "sincco/sfphp": "1.0.1",
         "sincco/tokenizer": ">=1.0",
         "sincco/login": "dev-master",
         "sincco/elastic-email": ">=1.0",
