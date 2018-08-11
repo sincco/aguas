@@ -5,7 +5,7 @@ use \Sincco\Sfphp\Response;
 class VisitaController extends Sincco\Sfphp\Abstracts\Controller 
 {
 	public function index() {
-		$estatus = $this->getModel('Catalogos\Estatus')->getAll();
+		$estatus = $this->getModel('Catalogos\Avanzada')->getAll();
 		array_shift($estatus);
 		array_shift($estatus);
 		$view = $this->newView('Avanzada\Visita');
