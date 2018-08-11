@@ -1,0 +1,336 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/webcodecamjquery.js"></script>
+<script type="text/javascript" src="{{ constant('BASE_URL') }}html/js/qrbc/qrcodelib.js"></script>
+
+<div class="container">
+	<div class="row">
+		<h1>Visita de avanzada</h1>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
+					<span class="input-group-btn">
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','contrato'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row rowContrato">
+		<h4>Datos del contrato</h4>
+		<div class="row">
+			<div class="col-lg-6">
+				<label>Propiertario: <span data-field="propietario"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Usuario: <span data-field="usuario"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3">
+				<label>Suministro: <span data-field="suministro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>numTomas: <span data-field="numTomas"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>Giro: <span data-field="giro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>GPS: <span data-field="gps"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label>Direccion: <span data-field="direccion"></span></label>
+			</div>
+		</div>
+		<form id="datosVisita">
+			<div class="row">
+				<h4>Estatus Visita</h4>
+				<div class="col-lg-12">
+					<select class="form-control col-lg-10" name="estatus">
+						{% for opcion in estatus %}
+						<option value="{{ opcion.estatusId|e }}">{{ opcion.descripcion|e }}</option>
+						{%endfor %}
+					</select>
+				</div>
+			</div>
+			<!--
+			<div class="row">
+				<h4>Medidor</h4>
+				<div class="col-md-4">
+					<label>Diametro: <select class="form-control col-lg-10" name="diametroMedidor">
+						<option value="13mm">13 mm</option>
+						<option value="19mm">19 mm</option>
+						<option value="25mm">25 mm</option>
+					</select></label>
+				</div>
+				<div class="col-md-4">
+					<label>Ubicación: <select class="form-control col-lg-10" name="ubicacionMedidor">
+						<option value="Interior">Interior</option>
+						<option value="Exterior">Exterior</option>
+					</select></label>
+				</div>
+				<div class="col-md-4">
+					<label>Material: <select class="form-control col-lg-10" name="materialMedidor">
+						<option value="Cobre">Cobre</option>
+						<option value="Galvanizado">Galvanizado</option>
+						<option value="PVC">PVC</option>
+						<option value="CPVC">CPVC</option>
+						<option value="TuboPlus">TuboPlus</option>
+					</select></label>
+				</div>
+				<div class="col-md-4">
+					<label>Uso de la toma: <select class="form-control col-lg-10" name="usoToma">
+						<option value="Domestico::Habitado">DOMÉSTICO Habitado</option>
+						<option value="Domestico::Deshabitado">DÓMESTICO Deshabitado</option>
+						<option value="Comercial::Operando">COMERCIAL Operando</option>
+						<option value="Comercial::No Operando">COMERCIAL No Operando</option>
+						<option value="Mixto::Habitado Operando">MIXTO Habitado y Operando</option>
+						<option value="Mixto::Habitado No Operando">MIXTO Habitado y NO Operando</option>
+						<option value="Mixto::Deshabitado Operando">MIXTO Deshabitado y Operando</option>
+						<option value="Mixto::Deshabitado No Operando">MIXTO Deshabitado NO Operando</option>
+						<option value="Industrial::Operando">INDUSTRIAL Operando</option>
+						<option value="Industrial::No Operando">INDUSTRIAL No Operando</option>
+						<option value="Sin Toma::Vivienda">SIN TOMA Vivienda</option>
+						<option value="Sin Toma::Comercio">SIN TOMA Comercio</option>
+						<option value="Sin Toma::En Construccion">SIN TOMA En Construcción</option>
+						<option value="Sin Toma::Obra Negra">SIN TOMA Obra Negra</option>
+						<option value="Sin Toma::Terreno Valdio">SIN TOMA Terreno Valdio</option>
+
+					</select></label>
+				</div>
+			</div>
+			-->
+			<div class="row">
+				<h4>Observaciones</h4>
+				<div class="col-md-4">
+					<textarea name="observaciones"></textarea>
+				</div>
+			</div>
+			<!--
+			<div class="row">
+				<h4>Cliente</h4>
+				<div class="col-md-4">
+					<label>Nombre: <input type="text" name="clienteNombre" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Atendió"></label>
+				</div>
+				<div class="col-md-4">
+					<label>Telefono: <input type="text" name="clienteTelefono" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Teléfono"></label>
+				</div>
+				<div class="col-md-4">
+					<label>Correo electrónico: <input type="text" name="clienteCorreo" class="form-control col-md-4" aria-describedby="sizing-addon2" placeholder="Correo"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<label>Fecha preferida de instalación: <div class="form-group">
+					<div class="input-group date" id="fechaInstalacion">
+					<input type="text" class="form-control" name="fechaInstalacion"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					</div>
+					</div></label>
+				</div>
+				<div class="col-md-6">
+					<label>Horario preferido de instalación: <select class="form-control col-lg-10" name="horarioInstalacion">
+						<option value="Matutino">Matutino</option>
+						<option value="Vespertino">Vespertino</option>
+					</select></label>
+				</div>
+			</div>
+			-->
+		</form>
+	</div>
+
+	<form name="imagenes">
+		<div class="row rowImagenes">
+			<h4>Cargar imágenes de visita</h4>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Fachada</span></i>
+						<input type="file" class="upload" name="avanzada-1-fachada" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Cuadro</span></i>
+						<input type="file" class="upload" name="avanzada-2-cuadro" />
+					</div>
+				</div>
+				<!--
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>Formato</span></i>
+						<input type="file" class="upload" name="avanzada-3-formato" />
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<div class="fileUpload btn btn-default">
+						<i class="fa fa-camera"> <span>IFE</span></i>
+						<input type="file" class="upload" name="avanzada-4-ife" />
+					</div>
+				</div>
+				-->
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-4 col-lg-2">
+					<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar Visita</span></i></button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div id="modal-qr" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="decoder.stop();">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Leer QR</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div id="mainbody">
+							<select id="qrCamera" class="form-control center-block"></select>
+							<canvas id="qrVideo" class="center-block"></canvas>
+							<ul></ul>
+							<input type="hidden" id="qrResult" data-destiny="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var arg = {
+	resultFunction: function(result) {
+		$('[name=' + $("#qrResult").attr('data-destiny') + ']').val(result.code);
+		var supportsVibrate = "vibrate" in navigator;
+		navigator.vibrate(250);
+		$('#modal-qr').modal('hide');
+		decoder.stop();
+	}
+};
+var decoder  = $('#qrVideo').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
+decoder.buildSelectMenu('#qrCamera');
+$('#qrCamera').on('change', function(){
+	decoder.stop().play();
+});
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'images/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.uniqueIdentifier = $('[name=contrato]').val() + '-' + name;
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+});
+
+uploadControl.on('uploadStart', function () {
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	loader.hide();
+	toastr.success('Imágenes guardadas.', 'Éxito');
+	loader.show();
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}avanzada/visita/apiguardar/contrato/' + $('[name=contrato]').val(),$('#datosVisita').serializeJSON())
+	.done(function(data) {
+		if (data.respuesta) {
+			toastr.success('Visita registrada');
+			location.reload();
+		} else {
+			toastr.error('Error al guardar la visita.', 'Intenta de nuevo');	
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al guardar la visita.', 'Intenta de nuevo');
+	})
+});
+
+
+$(function() {
+	$('#fechaInstalacion').datetimepicker({
+		useCurrent: true,
+		format: 'YYYY-MM-DD'
+	});
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.proceso').hide();
+
+	$('.upload').change(function() {
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this.files[0], this.name);
+	});
+
+	$('#upload').click(function() {
+		uploadControl.upload();
+		loader.show();
+		//var form_data = new FormData();
+		//$('.upload').each(function() {
+		//	form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		// });
+	});
+});
+
+function buscarContrato() {
+	loader.show();
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('[data-field=propietario]').html('');
+	$('[data-field=usuario]').html('');
+	$('[data-field=suministro]').html('');
+	$('[data-field=numTomas]').html('');
+	$('[data-field=direccion]').html('');
+	$('[data-field=gps]').html('');
+	$('[data-field=giro]').html('');
+	sincco.consumirAPI('POST', BASE_URL + 'avanzada/visita/apigetcontrato', {contrato:$('[name=contrato]').val()})
+	.done(function(data) {
+		if (data.total) {
+			if (data.rows[0].estatus != 'Asignado') {
+				alert('Este contrato ya fue gestionado');
+				location.reload();
+			}
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$(data.rows).each(function(){
+				$('[data-field=propietario]').html(this.propietario);
+				$('[data-field=usuario]').html(this.usuario);
+				$('[data-field=suministro]').html(this.suministro);
+				$('[data-field=numTomas]').html(this.numTomas);
+				$('[data-field=direccion]').html(this.direccion + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-field=giro]').html(this.giro);
+				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
+			})
+		} else {
+			toastr.error('El contrato no existe o no está asignado a tu cuenta.', 'Intenta de nuevo');
+		}
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
+		loader.hide();
+	});
+}
+
+</script>
+
+{% include 'footer.html' %}

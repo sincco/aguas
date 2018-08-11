@@ -1,0 +1,127 @@
+{% include 'header.html' %}
+<style type="text/css">
+  .row {outline: 1px solid orange; padding: 1em;}
+  .container { font-size: 16px; }
+</style>
+
+<div class="container">
+{% for contrato in contratos %}
+
+  <div class="row">
+    <div class="col-xs-2">
+      <img src="{{constant('BASE_URL')}}html/img/logo_adp.png" width=230 height=50 hspace=3 vspace=4>
+    </div>
+    <div class="col-xs-8">
+      <strong>SOLICITUD DE INSTALACIÓN Y/O SUSTITUCIÓN DE DISPOSITIVOS DE MEDICIÓN</strong>
+    </div>
+    <div class="col-xs-2">
+      <img src='https://chart.googleapis.com/chart?cht=qr&chl={{contrato.contrato}}&chs=150x150&choe=UTF-8&chld=L|2' rel='nofollow' alt='qr code'>
+    </div>
+    <div class="col-xs-6">
+      Fecha: __ / __ / ____
+    </div>
+    <div class="col-xs-6">
+      NIS: <strong>{{contrato.contrato}}</strong>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-8">
+      Nombre del usuario y/o propietario: <strong>{{contrato.propietario}}</strong><br>
+      Calle: {{contrato.via}} {{contrato.calle}} #{{contrato.numOficial}}<br>
+      Colonia: {{contrato.colonia}}, {{contrato.municipio}} <br>
+      Giro: {{contrato.giro}}
+    </div>
+    <div class="col-xs-4">
+      <span style="font-size:0.75em;">
+        GPS: {{contrato.latitud}},{{contrato.longitud}}<br>
+        Serie de Medidor:{{contrato.num_apa}}<br>
+        Diámetro: {{contrato.diametro_toma}}<br>
+        Uso: {{contrato.utilizacion}}<br>
+        Marca: {{contrato.marca_act}}
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      Nombre de la persona que atiende: _________________________________________________________________<br>
+      Identificación: _______________   No. Identificación: ______________ E-mail:_______________________
+    </div>
+    <div class="col-xs-6">
+      Tel. Local: ________________ <br>
+      Cel: __________________
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      1.-  ¿Cuenta con el sistema de agua potable?<br>
+      Si (    )  No (    )<br>
+      2.- Número de tomas de agua potable<br>
+      0(   )   1(   )   2(   )   3(   )   Otro_______<br>
+      3.- ¿Cuenta con medidor?<br>
+      Si (    )   No (    )<br>
+      4.- Diámetro del medidor:<br>
+      13mm – ½”(   )     19mm –¾”(   )     25mm – 1”(   )     Otro_______<br>
+      5.- Ubicación de la adecuación:<br>
+      Interior(   )  Exterior(   )   Otro_______<br>
+    </div>
+    <div class="col-xs-6">
+      6.- Material de la adecuación:<br>
+      Cobre(   )  Galvanizado(   )  PVC(   )  CPVC(   )  Tubo plus(   ) Otro________<br>
+      7.- Diámetro de la adecuación:<br>
+      13mm – ½”(   )     19mm – ¾”(   )     25mm – 1”(   )     Otro_______<br>
+      8.-Uso de la toma<br>
+      <span style="font-size:0.95em;">Doméstico(   )   Comercial(   )   Mixto(   )   Industrial(   )    Sin toma(    )</span><br>
+      9.- Estatus del predio<br>
+      <span style="font-size:0.95em;">Habitada(   )   Deshabitada(   )   Operando(   )   No operando(   )   En construcción(   )   En obra negra(   )   Terreno baldío(   )</span>
+      OBSERVACIONES;______________________________________________<br>__________________________________________________________________<br>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      10.- Preferencia de visita de instalación<br>
+      Día: Lunes(   )   Martes(   )   Miércoles(   )   Jueves(   )   Viernes(   )   Sábado(   )   Domingo(   )<br>
+      Horario: Matutino[08:00-14:00](   )   Vespertino[14:00-19:00](   )<br> 
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+    <table class="table" border=1>
+      <tr><td>Visita no ejecutada</td><td>Visita 1</td><td>Visita 2</td><td>Visita 3</td></tr>
+      <tr><td>Negativa del usuario</td><td></td><td></td><td></td></tr>
+      <tr><td>No atienden</td><td></td><td></td><td></td></tr>
+      <tr><td>No acceso</td><td></td><td></td><td></td></tr>
+      <tr><td>No se ubica predio</td><td></td><td></td><td></td></tr>
+    </table>
+    </div>
+  </div>
+<div class="row">
+    <div class="col-xs-12">
+  Acepto la sustitución y/o instalación del medidor, así como el cargo que corresponda diferido a 18 meses el cual se aplicará en los subsecuentes recibos. Dichos importes no generarán ningún cargo adicional por concepto de intereses. Los precios están sujetos a cambio dependiendo las condiciones de sus instalaciones.<br>
+<br>
+Con el presente se hace constar que estará correctamente instalado y operando el dispositivo de medición, lo anterior con base al artículo 59 de la Ley de Agua para el Estado de Puebla; además, se obliga a el pago de contribuciones por este servicio según el artículo 104, fracción VI de la Ley de Agua para el Estado de Puebla, así como el artículo 10, fracción I y II de la estructura tarifaria para 2016. Es necesario mencionar que conforme al artículo 60 de la Ley de Agua para el Estado de Puebla, el dispositivo de medición queda bajo su cuidado y conservación ya que en caso de daño o alteración del mismo se obliga al usuario a cubrir un costo de reposición conforme al costo señalado en el artículo 10 del decreto de la estructura tarifaria para el 2016.
+ </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-6">
+      Nombre y Firma del Trabajador Agua de Puebla
+    </div>
+    <div class="col-xs-6">
+      Nombre y Firma del Propietario y/o Usuario
+    </div>
+  </div>
+  <div class="center"> Quejas o sugerencias al teléfono: (222) 5-70-07-21</div>
+  <div style="page-break-after: always;"></div>
+
+{% endfor %}
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Contratos Asignados</h1>
+		<button type="button" class="btn btn-info" onclick="$('#modal-carga').modal('show');"><i class="fa fa-upload" aria-hidden="true"> <span>Cargar</span></i></button>
+		<button type="button" class="btn btn-primary" onclick="$.redirect(BASE_URL + 'avanzada/contratos/zonas');"><i class="fa fa-map" aria-hidden="true"> <span>Asignar zonas a revisores</span></i></button>
+		<button type="button" class="btn btn-warning" onclick="imprimir();"><i class="fa fa-map" aria-hidden="true"> <span>Imprimir formatos</span></i></button>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th><th data-field="contrato" data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Visita</th><th data-sortable="true">Usuario</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for contrato in contratos %}
+				<tr>
+					<td></td>
+					<td>{{ contrato.contrato|e }}</td>
+					<td>{{ contrato.altaContrato|e }}</td>
+					<td>{{ contrato.propietario|e }}</td>
+					<td>{{ contrato.suministro|e }}</td>
+					<td>{{ contrato.tarifa|e }}</td>
+					<td>{{ contrato.direccion|e }}</td>
+					<td>{{ contrato.colonia|e }}</td>
+					<td>{{ contrato.municipio|e }}</td>
+					<td>{{ contrato.fechaAsignacion|e }}</td>
+					<td>{{ contrato.estatus|e }}</td>
+					<td>{{ contrato.nombre|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="modal-carga" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Carga de layout</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+  						<div class="fileUpload btn btn-default">
+							<label>Archivo</label><input type="file" class="upload" name="carga-contratos-{{ "now"|date("Ymd") }}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="upload" type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-revisores" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la revisor</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>revisor 
+							<select class="form-control col-lg-8" name="revisor">
+								{% for revisor in revisores %}
+								<option value="{{ revisor.revisorId|e }}">{{ revisor.nombre|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-info" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="modal-titulo" class="modal-title">Contrato <span></span></h3>
+			</div>
+			<div class="modal-body">
+
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Datos del contrato</h4>
+						<div class="row">
+							<div class="col-lg-6">
+								<label>Propiertario: <span data-fields="propietario"></span></label>
+							</div>
+							<div class="col-lg-6">
+								<label>Usuario: <span data-fields="usuario"></span></label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<label>Suministro: <span data-fields="suministro"></span></label>
+							</div>
+							<div class="col-lg-4">
+								<label>numTomas: <span data-fields="numTomas"></span></label>
+							</div>
+							<div class="col-lg-4">
+								<label>GPS: <span data-fields="gps"></span></label><button type="button" class="btn btn-warning"><i class="fa fa-map" aria-hidden="true" onclick=""> <span>Ubicar</span></i></button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<label>Direccion: <span data-fields="direccion"></span></label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<h4>Visita</h4>
+								<div class="row">
+									<div class="col-md-6">
+										<label>Fecha de visita: <span data-fields="fechaVisita"></span></label>
+									</div>
+									<div class="col-md-6">
+										<label>Observaciones: <span data-fields="observaciones"></span></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Imágenes de visita</h4>
+						<div class="row adjuntos"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	loader.show();
+	$('.modal-title span').html(element.contrato);
+	$('.adjuntos').html('');
+	buscarContrato(element.contrato);
+	buscarAdjuntos(element.contrato);
+	loader.hide();
+	$('#modal-info').modal('show');
+});
+
+var uploadControl = new Resumable({
+	target: BASE_URL + 'files/upload',
+	query: {},
+	maxChunkRetries: 2,
+	maxFiles: 10,
+	prioritizeFirstAndLastChunk: true,
+	simultaneousUploads: 4
+});
+
+uploadControl.on('fileAdded', function (file, name, event) {
+	file.fileName = name + '.' + file.fileName.split('.').pop();
+	console.log('IMAGEN AGREGADA',file.uniqueIdentifier, file.fileName, file.file.type)
+});
+
+uploadControl.on('fileProgress', function (file) {
+	var progress = Math.floor(file.progress() * 100);
+	console.log(progress);
+});
+
+uploadControl.on('fileSuccess', function (file, message) {
+	console.log(file.uniqueIdentifier);
+});
+
+uploadControl.on('uploadStart', function () {
+	console.log('CARGANDO...');
+	loader.show();
+});
+
+uploadControl.on('complete', function () {
+	console.log('completo...')
+	sincco.consumirAPI('POST','{{constant('BASE_URL')}}avanzada/contratos/procesararchivo')
+	.done(function(data) {
+		toastr.success('Archivo cargado insertados ' + data.insertados + ' de ' + data.total, 'Éxito');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al procesar el archivo.', 'Intenta de nuevo');
+	})
+	loader.hide();
+});
+
+$('#upload').click(function() {
+	uploadControl.upload();
+});
+
+$('.upload').change(function() {
+	$(this).parent().removeClass('btn-default');
+	$(this).parent().addClass('btn-info');
+	uploadControl.addFile(this.files[0], this.name);
+});
+
+function asignarContratos() {
+	sincco.consumirAPI('POST', BASE_URL + 'avanzada/contratos/apiasignar', {contratos: $('#contratos').bootstrapTable('getSelections'), revisor: $('[name=revisor]').val()})
+	.done(function(data) {
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-revisores').modal('hide');
+		location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+	});
+}
+
+function buscarContrato(contrato) {
+	$('[data-fields=propietario]').html('');
+	$('[data-fields=usuario]').html('');
+	$('[data-fields=suministro]').html('');
+	$('[data-fields=numTomas]').html('');
+	$('[data-fields=direccion]').html('');
+	$('[data-fields=gps]').html('');
+	$('[data-fields=serieMedidor]').html('');
+	$('[data-fields=telemetriaMedidor]').html('');
+	$('[data-fields=clienteCorreo]').html('');
+	$('[data-fields=clienteTelefono]').html('');
+	$('[data-fields=clienteNombre]').html('');
+	$('[data-fields=fechaVisita]').html('');
+	$('[data-fields=fechaInstalacion]').html('');
+	$('[data-fields=horarioInstalacion]').html('');
+	$('[data-fields=diametroMedidor]').html('');
+	$('[data-fields=ubicacionMedidor]').html('');
+	$('[data-fields=materialMedidor]').html('');
+	$('[data-fields=usoToma]').html('');
+	$('[data-fields=observaciones]').html('');
+	sincco.consumirAPI('POST', BASE_URL + 'avanzada/visita/apigetcontrato', {contrato:contrato})
+	.done(function(data) {
+		if (data.total) {
+			$(data.rows).each(function(){
+				$('[data-fields=propietario]').html(this.propietario);
+				$('[data-fields=usuario]').html(this.usuario);
+				$('[data-fields=suministro]').html(this.suministro);
+				$('[data-fields=numTomas]').html(this.numTomas);
+				$('[data-fields=direccion]').html(this.direccion + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-fields=serieMedidor]').html(this.serieMedidor);
+				$('[data-fields=telemetriaMedidor]').html(this.telemetriaMedidor);
+				$('[data-fields=clienteCorreo]').html(this.clienteCorreo);
+				$('[data-fields=clienteTelefono]').html(this.clienteTelefono);
+				$('[data-fields=clienteNombre]').html(this.clienteNombre);
+				$('[data-fields=fechaVisita]').html(this.fechaVisita);
+				$('[data-fields=fechaInstalacion]').html(this.fechaInstalacion);
+				$('[data-fields=horarioInstalacion]').html(this.horarioInstalacion);
+				$('[data-fields=diametroMedidor]').html(this.diametroMedidor);
+				$('[data-fields=ubicacionMedidor]').html(this.ubicacionMedidor);
+				$('[data-fields=materialMedidor]').html(this.materialMedidor);
+				$('[data-fields=usoToma]').html(this.usoToma);
+				$('[data-fields=observaciones]').html(this.observaciones);
+			})
+		} else {
+			toastr.error('El contrato no existe.', 'Intenta de nuevo');
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer obtener los datos del contrato.', 'Intenta de nuevo');
+	});
+}
+
+function buscarAdjuntos(contrato) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apiadjuntosavanzada', {contrato:contrato})
+	.done(function(data) {
+		if(data.respuesta > 0){
+			var index = 0;
+			data.adjuntos.forEach(function(adjunto){
+				index++;
+				var url = BASE_URL + '_expedientes/' + contrato + '/' + adjunto;
+				if(extension(adjunto).toLowerCase() == 'pdf') {
+					var imagen = '<div class="col-xs-4"><a href="' + url + '" target="_blank" style="font-size:2em;" class="thumbnail"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></div>';
+				} else {
+					var titulo = adjunto.substring(1,100).replace('-',' ');
+					var imagen = '<div class="col-xs-12 col-md-4"><div class="thumbnail"><img src="' + url + '" alt="' + adjunto + '"><div class="caption"><h5 style="text-transform: capitalize;">' + titulo.replace('.jpg','').replace('.gif','').replace('.png','').replace('.jpeg','') + '</h5><p><a href="' + url + '" target="_blank" class="btn btn-primary" role="button"><i class="fa fa-eye" aria-hidden="true"></i> Ver</a> <a href="' + url + '" download="' + contrato + '-' + titulo + '" class="btn btn-default" role="button"><i class="fa fa-download" aria-hidden="true"></i> Descargar</a></p></div></div></div>';
+				}
+				$('.adjuntos').html($('.adjuntos').html() + imagen);
+			});
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.warning('Este contrato aún no tiene imagenes cargadas.', '');
+	});
+}
+
+function extension(filename) {
+	return filename.split('.').pop();
+}
+
+function imprimir() {
+	var contratos = $('#contratos').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'avanzada/visita/formatos', {contratos: ids}, 'POST', '_blank'); 
+}
+
+</script>
+
+{% include 'footer.html' %}

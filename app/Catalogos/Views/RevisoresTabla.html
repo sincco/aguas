@@ -1,0 +1,123 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Usuarios de avanzada</h1>
+		<button type="button" class="btn btn-primary" onclick="nuevarevisor()"><i class="fa fa-plus-circle" aria-hidden="true"> <span>Nuevo</span></i></button>
+		<table id='revisor' data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Id</th><th data-sortable="true">Nombre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for revisor in revisores %}
+				<tr>
+					<td>{{ revisor.revisorId|e }}</td>
+					<td>{{ revisor.nombre|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<input type="hidden" name="revisorActual">
+	</div>
+</div>
+
+<div id="modal-contratos" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Contratos Asignados</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<table id="asignados" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/ventas/contratos/apiAsignados/revisor/" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+							<thead>
+								<tr>
+									<th data-checkbox="true"></th><th data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Venta</th><th data-sortable="true">Revisor</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true" onclick="window.location = BASE_URL + 'expedientes'"> <span>Asignar más contratos</span></i></button>
+				<button type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true" onclick="imprimirFormatos()"> <span>Imprimir Formato</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-nueva" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Crear usuario de avanzada</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<form role="form">
+	  						<div class="form-group">
+								<label>Nombre <input type="text" class="form-control col-lg-3" name="nombre"></label>
+								<label>Usuario <input type="text" class="form-control col-lg-3" name="usuario"></label>
+								<label>Password <input type="text" class="form-control col-lg-3" name="password"></label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="guardarrevisor($('form').serializeJSON())"><i class="fa fa-cloud" aria-hidden="true"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	if($(this).attr('id') == 'revisor') {
+		//$('#asignados').bootstrapTable('refresh', { url: '{{constant('BASE_URL')}}/expedientes/index/apiAsignados/revisor/' + element[0] });
+		//$('#modal-contratos').modal('show');
+	}
+});
+
+function nuevarevisor() {
+	$('#modal-nueva').modal('show');
+}
+
+function guardarrevisor(form) {
+	loader.show();
+	sincco.consumirAPI('POST',BASE_URL + 'catalogos/revisores/api',{revisor:form})
+	.done(function(data) {
+		loader.hide();
+		if (data.respuesta) {
+			window.location = BASE_URL + 'catalogos/revisores';
+		} else {
+			toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo');
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+		toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo');
+		loader.hide();
+	})
+}
+
+function imprimirFormatos() {
+	var contratos = $('#asignados').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/imprimir',{ contratos: ids}, 'POST', '_blank'); 
+}
+
+</script>
+
+{% include 'footer.html' %}

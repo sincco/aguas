@@ -315,29 +315,6 @@ $(function() {
 	$('#upload').click(function() {
 		uploadControl.upload();
 		return;
-		loader.show();
-		var form_data = new FormData();
-		$('.upload').each(function() {
-			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
-		});
-		$.ajax({
-			url: BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val(),
-			dataType: 'text',
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(response){
-				var api = JSON.parse(response);
-				if (api.respuesta) {
-					toastr.success('Imágenes guardadas.', 'Éxito');
-				} else {
-					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
-				}
-				loader.hide();
-			}
-		});
 	});
 });
 

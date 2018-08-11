@@ -1,0 +1,212 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-xs-6"><h5>Selecciona la región de búsqueda</h5></div>
+		<div class="col-xs-6">
+			<button type="button" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true" onclick="cargarContratos();"> <span>Buscar contratos</span></i></button>
+			<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-sign-in" aria-hidden="true" onclick="$('#modal-revisores').modal('show');"> <span>Asignar contratos</span></i></button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-6">
+			<div id="map" style="width: 100%; height: 300px;"></div>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<table id="table-contratos" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+
+<div id="modal-revisores" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Asignar contratos a la revisor</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<label>revisor 
+							<select class="form-control col-lg-8" name="revisor">
+								{% for revisor in revisores %}
+								<option value="{{ revisor.revisorId|e }}">{{ revisor.nombre|e }}</option>
+								{%endfor %}
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud " aria-hidden="true" onclick="asignarContratos()"> <span>Asignar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+var rectangle;
+var map;
+var infoWindow;
+var marker;
+var heatmap;
+
+var bounds = {
+	north: 19.042758566473278,
+	south: 19.03979813966975,
+	east: -98.20334594726563,
+	west: -98.20878469848634
+};
+
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 19.03979813966975, lng: -98.20878469848634},
+		zoom: 15
+	});
+
+	rectangle = new google.maps.Rectangle({
+		bounds: bounds,
+		editable: true,
+		draggable: true
+	});
+
+	rectangle.setMap(map);
+
+	rectangle.addListener('bounds_changed', showNewRect);
+
+	infoWindow = new google.maps.InfoWindow();
+}
+
+function showNewRect(event) {
+	var ne = rectangle.getBounds().getNorthEast();
+	var sw = rectangle.getBounds().getSouthWest();
+
+	var contentString = '<b>Nuevas coordenadas.</b><br>' +
+	'NE: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+	'SO: ' + sw.lat() + ', ' + sw.lng();
+
+	bounds = {
+		north: ne.lat(),
+		south: sw.lat(),
+		east: ne.lng(),
+		west: sw.lng()
+	};
+
+	// Set the info window's content and position.
+	//infoWindow.setContent(contentString);
+	//infoWindow.setPosition(ne);
+
+	//infoWindow.open(map);
+}
+
+function cargarContratos() {
+	loader.show();
+	if (typeof marker !== 'undefined') {
+		marker.setMap(null);
+	}
+	$('#table-contratos').bootstrapTable('destroy');
+	$('#table-contratos').bootstrapTable({
+		method: 'post',
+		url: BASE_URL + 'avanzada/contratos/getbyzone',
+		queryParams: function (p) {
+			return { limites: bounds };
+		},
+		mobileResponsive: true,
+		minWidth: 1200,
+		columnsHidden: ['longitud', 'latitud'],
+		height: 400,
+		striped: true,
+		pagination: true,
+		pageSize: 50,
+		pageList: [10, 25, 50, 100, 200],
+		search: false,
+		showColumns: false,
+		showRefresh: false,
+		minimumCountColumns: 2,
+		columns: [{
+			field: 'state',
+			checkbox: true
+		}, {
+			field: 'contrato',
+			title: 'Contrato',
+			sortable: true
+		}, {
+			field: 'propietario',
+			title: 'Propietario',
+			sortable: true
+		}, {
+			field: 'colonia',
+			title: 'Colonia',
+			sortable: true
+		}, {
+			field: 'municipio',
+			title: 'Municipio',
+			sortable: true
+		}, {
+			field: 'longitud',
+			title: 'Longitud',
+			sortable: true
+		}, {
+			field: 'latitud',
+			title: 'Latitud',
+			sortable: true
+		}]
+	});
+}
+
+$('#table-contratos').on('dbl-click-row.bs.table', function ( row, element ) {
+	if (typeof marker !== 'undefined') {
+		marker.setMap(null);
+	}
+	marker = new google.maps.Marker({
+		position: new google.maps.LatLng(element.latitud,element.longitud),
+		title: element.contrato,
+		animation: google.maps.Animation.DROP
+	});
+	var infowindow = new google.maps.InfoWindow({
+		content: element.contrato + '\n' + element.propietario
+	});
+	marker.addListener('click', function() {
+		infowindow.open(map, marker);
+	});
+	marker.setMap(map);
+});
+
+$('#table-contratos').on('load-success.bs.table' , function(data){
+	if ($( window ).width() < 990){
+		var offset = $('#table-contratos').offset();
+		window.scrollTo(0, offset.top);
+	}
+	loader.hide();
+});
+
+$('#table-contratos').on('load-error.bs.table' , function(status,res){
+	loader.hide();
+});
+
+$('#table-contratos').on('refresh.bs.table' , function(params){
+	loader.show();
+});
+
+function asignarContratos() {
+	loader.show();
+	sincco.consumirAPI('POST', BASE_URL + 'avanzada/contratos/apiasignarmasivo', {contratos: $('#table-contratos').bootstrapTable('getSelections'), revisorId: $('[name=revisor]').val()})
+	.done(function(data) {
+		loader.hide();
+		toastr.success('Contratos asignados.', 'Éxito');
+		$('#modal-revisores').modal('hide');
+		//location.reload();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ohKB-kNxrrToEjNUIMgT_Y_A2Gcx3Zk&libraries=visualization&callback=initMap&signed_in=true" async defer>
+</script>
+
+{% include 'footer.html' %}
