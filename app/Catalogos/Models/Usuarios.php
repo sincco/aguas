@@ -22,6 +22,11 @@ class UsuariosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, $data);
 	}
 
+	public function esAvanzada($data) {
+		$query = 'SELECT COUNT(revisorId) revisor FROM revisores WHERE revisorId=:userId;';
+		return $this->connector->query( $query, $data);
+	}
+
 	public function insert( $data, $table = false ) {
 		$query = 'INSERT INTO usuariosExtra 
 			SET userId = :userId, nombre = :nombre, cuadrilla = :cuadrilla;';
