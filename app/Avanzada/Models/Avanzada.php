@@ -12,7 +12,7 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 			FROM avanzadaContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN avanzadaEstatus est USING (estatusId)
-			LEFT JOIN avanzadavisita vis USING (contrato)
+			LEFT JOIN avanzadaVisita vis USING (contrato)
 			LEFT JOIN revisores ven USING (revisorId)";
 		if ($where != false) {
 			$query .= $where;
