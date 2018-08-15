@@ -10,7 +10,7 @@
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" id="contratos">
 			<thead>
 				<tr>
-					<th data-checkbox="true"></th><th data-field="contrato" data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Visita</th><th data-sortable="true">Usuario</th>
+					<th data-checkbox="true"></th><th data-field="contrato" data-sortable="true">Contrato</th><th data-sortable="false">Alta</th><th data-sortable="false">Propietario</th><th data-sortable="false">Suministro</th><th data-sortable="false">Tarifa</th><th data-sortable="false">Direccion</th><th data-sortable="true">Colonia</th><th data-sortable="true">Municipio</th><th data-sortable="true">Fecha Asignacion</th><th data-sortable="false">Estatus Visita</th><th data-sortable="true">Usuario</th><th data-sortable="false">Obs</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -28,6 +28,7 @@
 					<td>{{ contrato.fechaAsignacion|e }}</td>
 					<td>{{ contrato.estatus|e }}</td>
 					<td>{{ contrato.nombre|e }}</td>
+					<td>{{ contrato.observaciones|e }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -113,7 +114,7 @@
 								<label>numTomas: <span data-fields="numTomas"></span></label>
 							</div>
 							<div class="col-lg-4">
-								<label>GPS: <span data-fields="gps"></span></label><button type="button" class="btn btn-warning"><i class="fa fa-map" aria-hidden="true" onclick=""> <span>Ubicar</span></i></button>
+								<label>GPS: <span data-fields="gps"></span></label>
 							</div>
 						</div>
 						<div class="row">
@@ -261,6 +262,7 @@ function buscarContrato(contrato) {
 				$('[data-fields=materialMedidor]').html(this.materialMedidor);
 				$('[data-fields=usoToma]').html(this.usoToma);
 				$('[data-fields=observaciones]').html(this.observaciones);
+				$('[data-fields=gps]').html(this.longitud + ',' + this.latitud);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
