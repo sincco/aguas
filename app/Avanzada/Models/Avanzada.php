@@ -3,12 +3,21 @@
 class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre
+		$where = false;
+		if (intval($_SESSION['user\revisor']) > 0) {
+			$user = unserialize($_SESSION['sincco\login\controller']);
+			$where = ' WHERE ven.revisorId = ' . $user['userId'];
+		}
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.observaciones
 			FROM avanzadaContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN avanzadaEstatus est USING (estatusId)
-			LEFT JOIN revisores ven USING (revisorId)
-			ORDER BY asg.fechaAsignacion DESC, con.contrato ASC";
+			LEFT JOIN avanzadavisita vis USING (contrato)
+			LEFT JOIN revisores ven USING (revisorId)";
+		if ($where != false) {
+			$query .= $where;
+		}
+		$query .= " ORDER BY asg.fechaAsignacion DESC, con.contrato ASC";
 		return $this->connector->query($query);
 	}
 
@@ -56,7 +65,7 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getContrato($contrato) {
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.*
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.suministro, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.longitud,con.latitud, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.*
 			FROM avanzadaContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN avanzadaEstatus est USING (estatusId)
