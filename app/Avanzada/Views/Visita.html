@@ -41,6 +41,7 @@
 			</div>
 			<div class="col-lg-3">
 				<label>GPS: <span data-field="gps"></span></label>
+				<button type="button" class="btn btn-info"><i class="fa fa-map-pin " aria-hidden="true" onclick="tagUbicacion()"> <span>Marcar GPS</span></i></button>
 			</div>
 		</div>
 		<div class="row">
@@ -329,6 +330,28 @@ function buscarContrato() {
 		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');2439812
 		loader.hide();
 	});
+}
+
+function tagUbicacion() {
+	if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        toastr.error('Este navegador no soporta la geolocalización.', 'Error');
+    }
+}
+
+function showPosition(position) {
+	loader.show();
+    sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigps', {contrato:$('[name=contrato]').val(), longitud: position.coords.longitude, latitud: position.coords.latitude })
+	.done(function(data) {
+    	$('[data-field=gps]').html(position.coords.longitude + ' , ' + position.coords.latitude); 
+		toastr.success('Ubicación actualizada.', 'Hecho');
+	    loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
+		loader.hide();
+	});
+
 }
 
 </script>
