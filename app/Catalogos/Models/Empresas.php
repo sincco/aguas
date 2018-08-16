@@ -1,6 +1,6 @@
 <?php
 
-class CuadrillasModel extends Sincco\Sfphp\Abstracts\Model {
+class EmpresasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
 		$query = 'SELECT * FROM empresas;';

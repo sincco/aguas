@@ -6,12 +6,12 @@ class EmpresasController extends Sincco\Sfphp\Abstracts\Controller {
 		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Catalogos\Empresas');
 		$view = $this->newView('Catalogos\EmpresasTabla');
-		$view->cuadrillas = $model->getAll();
+		$view->empresas = $model->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}
 	public function api() {
-		$cuadrilla = $this->getParams('empresa');
+		$empresa = $this->getParams('empresa');
 		$model = $this->getModel('Catalogos\Empresas');
 		$cuadrillaId = $model->insert($empresa);
 		new Response('json', ['respuesta'=>$cuadrillaId]);

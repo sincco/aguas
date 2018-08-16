@@ -7,6 +7,7 @@ class CuadrillasController extends Sincco\Sfphp\Abstracts\Controller {
 		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Catalogos\Cuadrillas');
 		$view = $this->newView('Catalogos\CuadrillasTabla');
+		$view->empresas = $this->getModel('Catalogos\Empresas')->getAll();
 		$view->cuadrillas = $model->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();

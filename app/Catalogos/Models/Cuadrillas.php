@@ -3,7 +3,7 @@
 class CuadrillasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
-		$query = 'SELECT * FROM cuadrillas;';
+		$query = 'SELECT cua.cuadrilla, cua.idEmpresa, cua.descripcion, emp.descripcion empresa FROM cuadrillas cua INNER JOIN empresas emp USING (idEmpresa);';
 		return $this->connector->query( $query );
 	}
 
@@ -18,7 +18,7 @@ class CuadrillasModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function insert($data, $table=false) {
 		$query = 'INSERT INTO cuadrillas 
-			SET descripcion=:descripcion';
+			SET descripcion=:descripcion, idEmpresa=:idEmpresa';
 		return $this->connector->query($query, $data);
 	}
 

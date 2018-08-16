@@ -8,13 +8,14 @@
 		<table id='cuadrilla' data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
 			<thead>
 				<tr>
-					<th data-sortable="true">Id</th><th data-sortable="true">Descripción</th>
+					<th data-sortable="true">Id</th><th data-sortable="true">Empresa</th><th data-sortable="true">Descripción</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for cuadrilla in cuadrillas %}
 				<tr>
 					<td>{{ cuadrilla.cuadrilla|e }}</td>
+					<td>{{ cuadrilla.empresa|e }}</td>
 					<td>{{ cuadrilla.descripcion|e }}</td>
 				</tr>
 				{% endfor %}
@@ -74,6 +75,14 @@
 						<form role="form">
 	  						<div class="form-group">
 								<label>Descripción <input type="text" class="form-control col-lg-3" name="descripcion"></label>
+							</div>
+							<div class="form-group">
+								<label>Empresas 
+								<select class="form-control col-lg-6" name="idEmpresa">
+									{% for empresa in empresas %}
+									<option value="{{empresa.idEmpresa}}">{{empresa.descripcion}}</option>
+									{% endfor %}
+								</select>
 							</div>
 						</form>
 					</div>
