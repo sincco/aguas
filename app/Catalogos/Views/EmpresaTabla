@@ -1,0 +1,126 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Cuadrillas</h1>
+		<button type="button" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true" onclick="nuevaCuadrilla()"> <span>Nueva</span></i></button>
+		<table id='cuadrilla' data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Id</th><th data-sortable="true">Descripción</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for cuadrilla in cuadrillas %}
+				<tr>
+					<td>{{ cuadrilla.cuadrilla|e }}</td>
+					<td>{{ cuadrilla.descripcion|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<input type="hidden" name="cuadrillaActual">
+	</div>
+</div>
+
+<div id="modal-contratos" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Contratos Asignados</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<table id="asignados" data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/expedientes/index/apiAsignados/cuadrilla/" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true">
+							<thead>
+								<tr>
+									<th data-checkbox="true"></th>
+									<th data-sortable="true" data-field="contrato">Contrato</th>
+									<th data-sortable="true" data-field="propietario">Propietario</th>
+									<th data-sortable="true" data-field="usuario">Usuario</th>
+									<th data-sortable="true" data-field="municipio">Municipio</th>
+									<th data-sortable="true" data-field="via">Via</th>
+									<th data-sortable="true" data-field="calle">Calle</th>
+									<th data-sortable="true" data-field="colonia">Colonia</th>
+									<th data-sortable="true" data-field="estatus">Estatus</th>
+									<th data-sortable="true" data-field="cuadrilla">Cuadrilla</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true" onclick="window.location = BASE_URL + 'expedientes'"> <span>Asignar más contratos</span></i></button>
+				<button type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true" onclick="imprimirFormatos()"> <span>Imprimir Formato</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-nueva" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Crear Cuadrilla</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<form role="form">
+	  						<div class="form-group">
+								<label>Descripción <input type="text" class="form-control col-lg-3" name="descripcion"></label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true" onclick="guardarCuadrilla($('form').serializeJSON())"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$('table').on('dbl-click-row.bs.table', function ( row, element ) {
+	if($(this).attr('id') == 'cuadrilla') {
+		$('#asignados').bootstrapTable('refresh', { url: '{{constant('BASE_URL')}}/expedientes/index/apiAsignados/cuadrilla/' + element[0] });
+		$('#modal-contratos').modal('show');
+	}
+});
+function nuevaCuadrilla() {
+	$('#modal-nueva').modal('show');
+}
+function guardarCuadrilla(form) {
+	loader.show();
+	sincco.consumirAPI('POST',BASE_URL + 'catalogos/cuadrillas/api',{cuadrilla:form})
+	.done(function(data) {
+		loader.hide();
+		if (data.respuesta) {
+			window.location = BASE_URL + 'catalogos/cuadrillas';
+		} else {
+			toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo');
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+		toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo');
+		loader.hide();
+	})
+}
+function imprimirFormatos() {
+	var contratos = $('#asignados').bootstrapTable('getSelections');
+	var ids = [];
+	$(contratos).each(function(){
+		ids.push(this.contrato);
+	})
+	$.redirect(BASE_URL + 'gestion/formatos/imprimir',{ contratos: ids}, 'POST', '_blank'); 
+}
+</script>
+
+{% include 'footer.html' %}
