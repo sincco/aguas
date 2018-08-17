@@ -3,7 +3,7 @@
 class RevisoresModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getAll() {
-		$query = 'SELECT * FROM revisores;';
+		$query = 'SELECT revisorId, nombre, emp.descripcion FROM revisores INNER JOIN empresas emp USING (idEmpresa);';
 		return $this->connector->query( $query );
 	}
 
@@ -18,7 +18,7 @@ class RevisoresModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function insert($data, $table=false) {
 		$query = 'INSERT INTO revisores 
-			SET nombre=:nombre, revisorId=:revisorId';
+			SET nombre=:nombre, revisorId=:revisorId, idEmpresa=:idEmpresa';
 		return $this->connector->query($query, $data);
 	}
 

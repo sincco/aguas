@@ -16,6 +16,7 @@
 				<tr>
 					<td>{{ revisor.revisorId|e }}</td>
 					<td>{{ revisor.nombre|e }}</td>
+					<td>{{ revisor.empresa|e }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -67,6 +68,14 @@
 								<label>Nombre <input type="text" class="form-control col-lg-3" name="nombre"></label>
 								<label>Usuario <input type="text" class="form-control col-lg-3" name="usuario"></label>
 								<label>Password <input type="text" class="form-control col-lg-3" name="password"></label>
+							</div>
+							<div class="form-group">
+								<label>Empresas 
+								<select class="form-control col-lg-6" name="idEmpresa">
+									{% for empresa in empresas %}
+									<option value="{{empresa.idEmpresa}}">{{empresa.descripcion}}</option>
+									{% endfor %}
+								</select>
 							</div>
 						</form>
 					</div>

@@ -7,6 +7,7 @@ class RevisoresController extends Sincco\Sfphp\Abstracts\Controller {
 		$this->helper('UsersAccount')->checkLogin();
 		$model = $this->getModel('Catalogos\Revisores');
 		$view = $this->newView('Catalogos\RevisoresTabla');
+		$view->empresas = $this->getModel('Catalogos\Empresas')->getAll();
 		$view->revisores = $model->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
