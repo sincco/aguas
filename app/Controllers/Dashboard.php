@@ -37,8 +37,8 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		$fechaFin = $fechaFin[2] . '-' . $fechaFin[1] . '-' . $fechaFin[0];
 		$params = ['desde'=>$fechaInicio, 'hasta'=>$fechaFin];
 
-		$view->completados = $this->getModel('Dashboard')->completadosCuadrillas($params);
-		$view->gestiones = $this->getModel('Dashboard')->gestiones($params);
+		$view->completados = []; #$this->getModel('Dashboard')->completadosCuadrillas($params);
+		$view->gestiones = []; #$this->getModel('Dashboard')->gestiones($params);
 
 		if (isset($cuadrilla['cuadrilla'])) {
 
