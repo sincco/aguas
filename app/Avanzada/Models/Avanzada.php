@@ -99,7 +99,7 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.utilizacion, con.tarifa,con.interior, CONCAT(con.via, ' ', con.calle) direccion, con.numOficial, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.observaciones, ven.nombre,est.descripcion,vis.observaciones
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.utilizacion, con.tarifa,con.interior, CONCAT(con.via, ' ', con.calle) direccion, con.numOficial, con.colonia, con.municipio, con.region, con.estrato, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.observaciones, ven.nombre,est.descripcion,vis.observaciones
 			FROM avanzadaContratosAsignados asg
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN avanzadaEstatus est USING (estatusId)
