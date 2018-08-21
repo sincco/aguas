@@ -198,7 +198,7 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 		imagedestroy($im);
 	}
 	
-	private function reprocess() {
+	public function reprocess() {
 		$archivos = file_get_contents('./archivos.txt');
 		$archivos = explode(PHP_EOL, $archivos);
 		var_dump($archivos);die();
