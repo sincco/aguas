@@ -201,34 +201,35 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 	public function reprocess() {
 		$archivos = file_get_contents('./archivos.txt');
 		$archivos = explode(PHP_EOL, $archivos);
-		var_dump($archivos);die();
-		$model = $this->getModel('Aguas');
-		$model->init();
-		$model->contratosImages();
-		$fileName = pathinfo($name, PATHINFO_FILENAME);
-		if (strlen($fileName) > 1) {
-			$type = pathinfo($name, PATHINFO_EXTENSION);
-			$path = pathinfo($name, PATHINFO_DIRNAME);
-			$path = explode('/', $path);
-			if (strrpos($fileName, 'venta') !== false) {
-				$_file = explode('-', $fileName);
-				$fileName = $_file[0] . '-' . $_file[2];
-			} else {
-				$fileName = substr($fileName, 1);
-				$_file = explode('-', $fileName);
-				$fileName = $_file[0] . '-' . $_file[1];
+		foreach($archivos as $name) {
+			$model = $this->getModel('Aguas');
+			$model->init();
+			$model->contratosImages();
+			$fileName = pathinfo($name, PATHINFO_FILENAME);
+			if (strlen($fileName) > 1) {
+				$type = pathinfo($name, PATHINFO_EXTENSION);
+				$path = pathinfo($name, PATHINFO_DIRNAME);
+				$path = explode('/', $path);
+				if (strrpos($fileName, 'venta') !== false) {
+					$_file = explode('-', $fileName);
+					$fileName = $_file[0] . '-' . $_file[2];
+				} else {
+					$fileName = substr($fileName, 1);
+					$_file = explode('-', $fileName);
+					$fileName = $_file[0] . '-' . $_file[1];
+				}
+				$ext = explode('.', $name);
+				$ext = end($ext);
+				$destiny = pathinfo($name, PATHINFO_DIRNAME) . '/' . $fileName . '_MIN.' . $ext;
+				$del = explode(".", $destiny);
+				array_map('unlink', glob($del[0]."*"));
+				$this->resize(900, $destiny, $name);
+				$content = file_get_contents($destiny);
+				$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
+				$contrato = array_pop($path);
+				$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64, 'fecha'=>date('Y-m-d')];
+				$model->insert($data, $table=false);
 			}
-			$ext = explode('.', $name);
-			$ext = end($ext);
-			$destiny = pathinfo($name, PATHINFO_DIRNAME) . '/' . $fileName . '_MIN.' . $ext;
-			$del = explode(".", $destiny);
-			array_map('unlink', glob($del[0]."*"));
-			$this->resize(900, $destiny, $name);
-			$content = file_get_contents($destiny);
-			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($content);
-			$contrato = array_pop($path);
-			$data = ['contrato'=>$contrato, 'imagen'=>$fileName, 'tipo'=>$type, 'base64'=>$base64, 'fecha'=>date('Y-m-d')];
-			$model->insert($data, $table=false);
 		}
 	}
 }
