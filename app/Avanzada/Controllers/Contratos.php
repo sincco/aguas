@@ -6,7 +6,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 {
 	public function index() {
 		$view = $this->newView('Avanzada\Contratos');
-		$view->contratos = $this->getModel('Avanzada\Avanzada')->getAll();
+		//$view->contratos = $this->getModel('Avanzada\Avanzada')->getAll();
 		$view->revisores = $this->getModel('Catalogos\Revisores')->getAll();
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
@@ -77,7 +77,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 	}
 
 	public function apiData() {
-		$model = $this->getModel('Avanzada\Contratos');
+		$model = $this->getModel('Avanzada\Avanzada');
 		$data = $model->getTable($_GET, 0);
 		if (count($data) > 100) {
 			$count = 127486; #$model->getCount($_GET);
