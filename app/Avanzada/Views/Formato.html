@@ -11,7 +11,7 @@
     <div class="col-xs-2">
       <img src="{{constant('BASE_URL')}}html/img/logo_adp.png" width=230 height=50 hspace=3 vspace=4>
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-8" align="center">
       <strong>INSTALACIÓN Y/O SUSTITUCIÓN DE DISPOSITIVOS DE MEDICIÓN</strong>
     </div>
     <div class="col-xs-2">
@@ -21,7 +21,7 @@
       Fecha: __ / __ / ____
     </div>
     <div class="col-xs-6">
-      NIS: <strong>{{contrato.contrato}}</strong>
+      CONTRATO: <strong>{{contrato.contrato}}</strong>
     </div>
   </div>
 
@@ -37,7 +37,7 @@
         GPS: {{contrato.latitud}},{{contrato.longitud}}<br>
         Serie de Medidor:{{contrato.num_apa}}<br>
         Diámetro: {{contrato.diametro_toma}}<br>
-        Uso: {{contrato.utilizacion}}<br>
+        Clave SIAPA: {{contrato.utilizacion}}<br>
         Marca: {{contrato.marca_act}}
       </span>
     </div>
