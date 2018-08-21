@@ -252,6 +252,7 @@ function buscarContrato(contrato) {
 				$('[data-fields=usoToma]').html(this.usoToma);
 				$('[data-fields=observaciones]').html(this.observaciones);
 				$('[data-fields=gps]').html(this.longitud + ',' + this.latitud);
+				$('[data-fields=via]').html(this.via);
 			})
 		} else {
 			toastr.error('El contrato no existe.', 'Intenta de nuevo');
