@@ -129,7 +129,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 
 	public function apiAdjuntosAvanzada() {
 		$contrato = $this->getParams('contrato');
-		$files = glob(PATH_ROOT . '/_expedientes/' . $contrato . '/vanzada*');
+		$files = glob(PATH_ROOT . '/_expedientes/' . $contrato . '/avanzada*');
 		$adjuntos = array();
 		foreach ($files as $adjunto) {
 			array_push($adjuntos, str_replace(PATH_ROOT . '/_expedientes/' . $contrato . '/', '', str_replace(' ', '%20', $adjunto)));
