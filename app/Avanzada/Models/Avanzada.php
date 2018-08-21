@@ -93,4 +93,41 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 		$query = 'SELECT con.* FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp ON (con.contrato=tmp.contrato AND tmp.estatusId != 5) WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND con.contrato NOT IN (SELECT contrato FROM avanzadaContratosAsignados);';
 		return $this->connector->query($query, $data);
 	}
+
+	public function getTable($data, $cuadrilla = 0) {
+		$modCuadrilla = '';
+		if (!isset($data['sort'])) {
+			$data['sort'] = 'contrato';
+		}
+		$query = "SELECT asg.contrato, con.altaContrato, con.propietario, con.utilizacion, con.tarifa, CONCAT(con.via, ' ', con.calle, ' ', con.numOficial) direccion, con.colonia, con.municipio, asg.fechaAsignacion, est.descripcion estatus, ven.nombre, vis.observaciones
+			FROM avanzadaContratosAsignados asg
+			INNER JOIN contratos con USING (contrato)
+			INNER JOIN avanzadaEstatus est USING (estatusId)
+			LEFT JOIN avanzadaVisita vis USING (contrato)
+			LEFT JOIN revisores ven USING (revisorId)";
+		if ($where != false) {
+			$query .= $where;
+		}
+		if (!isset($data['search'])) {
+			$data['search']='';
+		}
+		if (trim($data['search']) != '') {
+			$where = ' con.contrato = ' . $data['search'] . ' ';
+			$query .= $where;
+			if (intval($_SESSION['user\revisor']) > 0) {
+				$user = unserialize($_SESSION['sincco\login\controller']);
+				$query .= ' AND ven.revisorId = ' . $user['userId'];
+			}
+		} else {
+			if (intval($_SESSION['user\revisor']) > 0) {
+				$user = unserialize($_SESSION['sincco\login\controller']);
+				$query .= ' WHERE ven.revisorId = ' . $user['userId'];
+			}
+		}
+		if (isset($data['limit'])) {
+			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] . ' OFFSET ' . $data['offset'];
+		}
+		# var_dump($query);die();
+		return $this->connector->query($query);
+	}
 }

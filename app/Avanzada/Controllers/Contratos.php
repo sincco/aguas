@@ -75,4 +75,15 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 		$data = $this->getModel('Avanzada\Avanzada')->getByZone($this->getParams('limites'));
 		new Response('json', ['total'=>count($data), 'data'=>$data]);
 	}
+
+	public function apiData() {
+		$model = $this->getModel('Expedientes\Contratos');
+		$data = $model->getTable($_GET, 0);
+		if (count($data) > 100) {
+			$count = 127486; #$model->getCount($_GET);
+		} else {
+			$count = count($data);
+		}
+		new Response('json', ['total'=>$count, 'rows'=>$data]);
+	}
 }
