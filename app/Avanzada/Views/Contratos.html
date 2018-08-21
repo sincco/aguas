@@ -4,8 +4,10 @@
 <div class="container">
 	<div class="row">
 		<h1>Contratos Asignados</h1>
+		<!--
 		<button type="button" class="btn btn-info" onclick="$('#modal-carga').modal('show');"><i class="fa fa-upload" aria-hidden="true"> <span>Cargar</span></i></button>
 		<button type="button" class="btn btn-primary" onclick="$.redirect(BASE_URL + 'avanzada/contratos/zonas');"><i class="fa fa-map" aria-hidden="true"> <span>Asignar zonas a revisores</span></i></button>
+		-->
 		<button type="button" class="btn btn-warning" onclick="imprimir();"><i class="fa fa-map" aria-hidden="true"> <span>Imprimir formatos</span></i></button>
 		<table id="contratos" data-toggle="table" data-search="true" data-show-export="true" data-page-size="100" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true" data-url="{{constant('BASE_URL')}}/avanzada/contratos/apiData" data-side-pagination="server" data-pagination-loop="true" data-search-on-enter-key="true" data-show-refresh="true" id="contratos">
 			<thead>
