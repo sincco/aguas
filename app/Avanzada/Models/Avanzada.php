@@ -105,14 +105,12 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 			INNER JOIN avanzadaEstatus est USING (estatusId)
 			LEFT JOIN avanzadaVisita vis USING (contrato)
 			LEFT JOIN revisores ven USING (revisorId)";
-		if ($where != false) {
-			$query .= $where;
-		}
+		
 		if (!isset($data['search'])) {
 			$data['search']='';
 		}
 		if (trim($data['search']) != '') {
-			$where = ' con.contrato = ' . $data['search'] . ' ';
+			$where = ' WHERE con.contrato = ' . $data['search'] . ' ';
 			$query .= $where;
 			if (intval($_SESSION['user\revisor']) > 0) {
 				$user = unserialize($_SESSION['sincco\login\controller']);
