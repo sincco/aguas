@@ -119,7 +119,7 @@
 										<label>Fecha de visita: <span data-fields="fechaVisita"></span></label>
 									</div>
 									<div class="col-md-6">
-										<label>Observaciones: <span data-fields="observaciones"></span></label>
+										<label>Observaciones: <span data-fields="obs"></span></label>
 									</div>
 								</div>
 							</div>
@@ -228,7 +228,9 @@ function buscarContrato(contrato) {
 	$('[data-fields=ubicacionMedidor]').html('');
 	$('[data-fields=materialMedidor]').html('');
 	$('[data-fields=usoToma]').html('');
-	$('[data-fields=observaciones]').html('');
+	$('[data-fields=obs]').html('');
+	$('[data-fields=via]').html('');
+
 	sincco.consumirAPI('POST', BASE_URL + 'avanzada/visita/apigetcontrato', {contrato:contrato})
 	.done(function(data) {
 		if (data.total) {
@@ -250,7 +252,7 @@ function buscarContrato(contrato) {
 				$('[data-fields=ubicacionMedidor]').html(this.ubicacionMedidor);
 				$('[data-fields=materialMedidor]').html(this.materialMedidor);
 				$('[data-fields=usoToma]').html(this.usoToma);
-				$('[data-fields=observaciones]').html(this.observaciones);
+				$('[data-fields=obs]').html(this.observaciones);
 				$('[data-fields=gps]').html(this.longitud + ',' + this.latitud);
 				$('[data-fields=via]').html(this.via);
 			})
