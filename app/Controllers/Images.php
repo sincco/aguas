@@ -231,5 +231,6 @@ class ImagesController extends Sincco\Sfphp\Abstracts\Controller
 				$model->insert($data, $table=false);
 			}
 		}
+		echo "TERMINADO";
 	}
 }
