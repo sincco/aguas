@@ -47,6 +47,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 			$view->graficas = $graficas;
 		}
 		
+		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->desde = $fechaInicio;
 		$view->hasta = $fechaFin;
 
