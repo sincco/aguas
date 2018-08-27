@@ -1,0 +1,237 @@
+{% include 'header.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Verificación de barrido</h1>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<input type="text" name="contrato" class="form-control" placeholder="Contrato...">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" onclick="buscarContrato()">Buscar</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row rowContrato">
+		<div class="row">
+			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span><small><span data-field="advertencia" class="label"></span></small></h4></div>
+			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
+		</div>
+
+		<div class="row">
+			<h4>Datos del contrato</h4>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-6">
+				<label>Propiertario: <span data-field="propietario"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Usuario: <span data-field="usuario"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3">
+				<label>Suministro: <span data-field="suministro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>numTomas: <span data-field="numTomas"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>Giro: <span data-field="giro"></span></label>
+			</div>
+			<div class="col-lg-3">
+				<label>GPS: <span data-field="gps"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label>Direccion: <span data-field="direccion"></span></label>
+			</div>
+		</div>
+	</div>
+
+	<div class="row rowImagenes"></div>
+
+	<div class="row rowEstatus">
+		<h3>Dar visto bueno a la información</h3>
+		<div class="col-xs-6">Obervaciones: <textarea name="obervaciones"></textarea></div>
+		<div class="col-xs-6"><button class="btn btn-success btn-lg" type="button" onclick="cambiarEstatus(9, 'Revisado por {{ nombreUsuario }} ' + $('[name=obervaciones]').val())">Aprobar</button><button class="btn btn-danger btn-lg" type="button" onclick="cambiarEstatus(10, 'Revisado por {{ nombreUsuario }} ' + $('[name=obervaciones]').val())">Pedir Revisión</button></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$(function() {
+	$("[name=contrato]").keypress(function(event) {
+		if(event.which == 13) buscarContrato();
+	});
+
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.rowImagenes').hide();
+	$('.rowEstatus').hide();
+	$('.proceso').hide();
+
+	$('.upload').change(function() {
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-info');
+		uploadControl.addFile(this.files[0], this.name);
+	});
+
+	$('#upload').click(function() {
+		uploadControl.upload();
+		return;
+		loader.show();
+		var form_data = new FormData();
+		$('.upload').each(function() {
+			form_data.append('file[' + $(this).attr('name') + ']', $(this).prop('files')[0]);
+		});
+		$.ajax({
+			url: BASE_URL + 'gestion/levantamiento/apiupload/contrato/' + $('[name=contrato]').val(),
+			dataType: 'text',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(response){
+				var api = JSON.parse(response);
+				if (api.respuesta) {
+					toastr.success('Imágenes guardadas.', 'Éxito');
+				} else {
+					toastr.error('Error al subir imagenes.', 'Intenta de nuevo');
+				}
+				loader.hide();
+			}
+		});
+	});
+});
+
+function buscarContrato() {
+	loader.show();
+	$('.rowImagenes').hide();
+	$('.rowContrato').hide();
+	$('.rowEstatus').hide();
+	$('.rowImagenes').html('');
+	$('.proceso').hide();	
+	$('[data-field=propietario]').html('');
+	$('[data-field=usuario]').html('');
+	$('[data-field=suministro]').html('');
+	$('[data-field=numTomas]').html('');
+	$('[data-field=direccion]').html('');
+	$('[data-field=gps]').html('');
+	$('[data-field=giro]').html('');
+	$('[data-field=marca_act]').html('');
+	$('[data-field=serieMedidor]').html('');
+	$('[data-field=telemetriaMedidor]').html('');
+	$('[data-field=status]').html('');
+	$('[data-field=fechaEstatus]').html('');
+	$('[data-field=anexo]').html('');
+	$('[data-field=advertencia]').html('');
+	$('[data-field=LECT_RETIRO]').html('');
+	$('[data-field=LECT_INST]').html('');
+	$('[data-field=MARCA_INS]').html('');
+	sincco.consumirAPI('GET', BASE_URL + 'api/v1/avanzada?filters[contrato]=' + $('[name=contrato]').val())
+	.done(function(data) {
+		if (data.data.length) {
+			$('.proceso .btn-success').show();
+			$('.proceso .btn-primary').show();
+			$('.proceso .btn-danger').show();
+			$('.rowImagenes').hide();
+			$('.rowContrato').hide();
+			$('.rowMateriales').hide();
+			$('.rowEstatus').hide();
+			$('.proceso .btn-success').hide();
+			$('.proceso .btn-danger').show();
+			$('.rowImagenes').show();
+			$('.rowContrato').show();
+			$('.rowMateriales').show();
+			$('.proceso').show();
+
+			$(data.data).each(function(){
+				$('[data-field=propietario]').html(this.propietario);
+				$('[data-field=usuario]').html(this.usuario);
+				$('[data-field=suministro]').html(this.suministro);
+				$('[data-field=numTomas]').html(this.numTomas);
+				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
+				$('[data-field=giro]').html(this.giro);
+				$('[data-field=marca_act]').html(this.marca_act);
+				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
+				$('[data-field=serieMedidor]').html(this.serieMedidor);
+				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);
+				$('[data-field=status]').html(this.status);
+				$('[data-field=fechaEstatus]').html(this.fechaEstatus);
+				$('[data-field=anexo]').html(this.anexo);
+				$('[data-field=LECT_RETIRO]').html(this.LECT_RETIRO);
+				$('[data-field=LECT_INST]').html(this.LECT_INST);
+				$('[data-field=MARCA_INS]').html(this.MARCA_INS);
+				if (this.statusId == 7) {
+					$('[data-field=advertencia]').html('Validado');
+					$('[data-field=advertencia]').addClass('label-primary');
+					$('.rowEstatus').show();
+				}
+				if (this.statusId == 9) {
+					$('[data-field=advertencia]').html('Aprobado');
+					$('[data-field=advertencia]').addClass('label-success');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId < 7) {
+					$('[data-field=advertencia]').html('En proceso');
+					$('[data-field=advertencia]').addClass('label-warning');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId == 8) {
+					$('[data-field=advertencia]').html('En proceso');
+					$('[data-field=advertencia]').addClass('label-warning');
+					$('.rowEstatus').hide();
+				}
+				if (this.statusId == 10) {
+					$('[data-field=advertencia]').html('En revisión');
+					$('[data-field=advertencia]').addClass('label-danger');
+					$('.rowEstatus').hide();
+				}
+			})
+			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
+			.done(function(data) {
+				$('.rowImagenes').html('');
+				$(data.data).each(function(){
+					var prev = $('.rowImagenes').html();
+					prev += '<div class="row"><div class="col-xs-10"><img width="100%" src="' + this.base64 + '"></div></div>';
+					$('.rowImagenes').html(prev);
+				});
+			});
+		} else {
+			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
+		}
+		loader.hide();
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+function cambiarEstatus(estatus, motivo) {
+	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apisetestatus', {contrato:$('[name=contrato]').val(), estatus: estatus, motivo: motivo})
+	.done(function(data) {
+		$('.rowImagenes').hide();
+		$('.rowContrato').hide();
+		$('.rowImagenes').hide();
+		$('.rowEstatus').hide();
+		$('.proceso').hide();
+		if (data.respuesta) {
+			toastr.success('Estatus actualizado.', 'Hecho');
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		toastr.error('Error al hacer la petición del código.', 'Intenta de nuevo');
+		loader.hide();
+	});
+}
+
+</script>
+
