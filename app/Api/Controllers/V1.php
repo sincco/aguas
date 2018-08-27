@@ -121,7 +121,7 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 if (isset($_GET['filters'])) {
                     $filters = $_GET['filters'];
                 }
-                $data = $contratos->getDataFiltered($filters, $pagination);
+                $data = $contratos->getAvanzadaFiltered($filters, $pagination);
                 $total = $contratos->getTotalDataFiltered($filters);
                 new Response('json', ['data'=>$data, 'registros'=>$total, 'extra'=>'']);
                 break;
@@ -130,5 +130,23 @@ class V1Controller extends Sincco\Sfphp\Abstracts\Controller
                 break;
         }
     }
+
+    public function avanzadaImagenes() {
+        $model = $this->getModel('Aguas');
+        #$fotos = $model->contratosImages()->where('contrato', $this->getParams('contrato'))->getData();
+        #if (count($fotos) > 0) {
+        #   new Response('json', ['data'=>$fotos]);
+        #} else {
+            $fotos = [];
+            $files = scandir(PATH_IMG . $this->getParams('contrato'), SCANDIR_SORT_ASCENDING);
+            foreach ($files as $file) {
+                if (strlen(trim($file)) > 2 && stripos($file, "MIN") !==false ) {
+                    $fotos[] = ['fecha'=>date ("Y-m-d", filemtime(PATH_IMG . $this->getParams('contrato') . '/' . $file)), 'base64'=> BASE_URL .'_expedientes/' . $this->getParams('contrato') . '/' . $file, 'nombre'=>ucwords(str_replace('-', ' ', str_replace('.jpg', '', str_replace('.png', '', $file))))];
+                }
+            }
+            new Response('json', ['data'=>$fotos]);
+        #}
+    }
+
 
 }

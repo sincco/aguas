@@ -18,9 +18,8 @@
 
 	<div class="row rowContrato">
 		<div class="row">
-			<div class="col-xs-4"><h4>Estatus: <span data-field="status"></span><small><span data-field="advertencia" class="label"></span></small></h4></div>
+			<div class="col-xs-4"><h4>Estatus: <span data-field="estatusDes"></span><small><span data-field="advertencia" class="label"></span></small></h4></div>
 			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
-			<div class="col-xs-4"><h4>Fecha: <span data-field="fechaEstatus"></span></h4></div>
 		</div>
 
 		<div class="row">
@@ -36,9 +35,6 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-3">
-				<label>Suministro: <span data-field="suministro"></span></label>
-			</div>
 			<div class="col-lg-3">
 				<label>numTomas: <span data-field="numTomas"></span></label>
 			</div>
@@ -121,6 +117,7 @@ function buscarContrato() {
 	$('.rowImagenes').html('');
 	$('.proceso').hide();	
 	$('[data-field=propietario]').html('');
+	$('[data-field=estatusDes]').html('');
 	$('[data-field=usuario]').html('');
 	$('[data-field=suministro]').html('');
 	$('[data-field=numTomas]').html('');
@@ -157,6 +154,7 @@ function buscarContrato() {
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
+				$('[data-field=estatusDes]').html(this.estatusDes);
 				$('[data-field=suministro]').html(this.suministro);
 				$('[data-field=numTomas]').html(this.numTomas);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
@@ -197,7 +195,7 @@ function buscarContrato() {
 					$('.rowEstatus').hide();
 				}
 			})
-			sincco.consumirAPI('POST', BASE_URL + 'api/v2/expedientes/imagenes', {contrato:$('[name=contrato]').val()})
+			sincco.consumirAPI('POST', BASE_URL + 'api/v1/avanzadaimagenes', {contrato:$('[name=contrato]').val()})
 			.done(function(data) {
 				$('.rowImagenes').html('');
 				$(data.data).each(function(){

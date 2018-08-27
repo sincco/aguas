@@ -343,7 +343,12 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getAvanzadaFiltered($where, $pagination = [0]) {
-		$query = 'SELECT * FROM (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp ';
+		$query = "SELECT con.*, IFNULL(est.descripcion, 'Sin Asignar') estatusDes, vis.observaciones
+			FROM avanzadaContratosAsignados avz
+			INNER JOIN revisores rev USING (revisorId)
+			INNER JOIN contratos con USING (contrato)
+			LEFT JOIN avanzadaVisita vis USING (contrato)
+			LEFT JOIN avanzadaEstatus est USING (estatusId) ";
 		$condicion = [];
 		if (count($where)) {
 			foreach ( $where as $campo => $valor ) {
@@ -358,7 +363,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query($query, $where);
 	}
 
-	public function getAvanzadaFiltered($where) {
+	public function getAvanzadaFilteredTotal($where) {
 		$query = 'SELECT COUNT(*) FROM (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp';
 		$condicion = [];
 		if (count($where)) {
