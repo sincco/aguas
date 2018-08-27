@@ -17,6 +17,14 @@ class UsuariosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, ['userName'=>$data] );
 	}
 
+	public function getUsuarioEmpresa( $data ) {
+		$query = 'SELECT usr.userId, usr.userName, emp.descripcion, emp.idEmpresa FROM __usersControl usr
+		INNER JOIN usuariosEmpresas uem USING (userId)
+		INNER JOIN empresas emp USING (idEmpresa)
+		WHERE usr.userName = :userName;';
+		return $this->connector->query( $query, ['userName'=>$data] );
+	}
+
 	public function esVendedor($data) {
 		$query = 'SELECT COUNT(vendedorId) vendedor FROM vendedores WHERE vendedorId=:userId;';
 		return $this->connector->query( $query, $data);
