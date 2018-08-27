@@ -200,7 +200,7 @@ function buscarContrato() {
 				$('.rowImagenes').html('');
 				$(data.data).each(function(){
 					var prev = $('.rowImagenes').html();
-					prev += '<div class="row"><div class="col-xs-12 col-md-4"><img width="100%" src="' + this.base64 + '"></div></div>';
+					prev += '<div class="col-xs-12 col-md-4"><img width="100%" src="' + this.base64 + '"></div>';
 					$('.rowImagenes').html(prev);
 				});
 			});
