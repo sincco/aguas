@@ -62,7 +62,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET, 0);
 		if (count($data) > 98) {
-			$count = 127486; #$model->getCount($_GET);
+			$count = 500000; #$model->getCount($_GET);
 		} else {
 			$count = count($data);
 		}
