@@ -3,7 +3,7 @@
 
 <div class="container">
 	<div class="row">
-		<h1>Verificación de barrido</h1>
+		<h1>Verificación de Avanzada</h1>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="input-group">
@@ -19,7 +19,7 @@
 	<div class="row rowContrato">
 		<div class="row">
 			<div class="col-xs-4"><h4>Estatus: <span data-field="estatusDes"></span><small><span data-field="advertencia" class="label"></span></small></h4></div>
-			<div class="col-xs-4"><h4>Observaciones: <span data-field="anexo"></span></h4></div>
+			<div class="col-xs-4"><h4>Observaciones: <span data-field="marca_act"></span></h4></div>
 		</div>
 
 		<div class="row">
@@ -30,16 +30,18 @@
 			<div class="col-lg-6">
 				<label>Propiertario: <span data-field="propietario"></span></label>
 			</div>
+			<!--
 			<div class="col-lg-6">
 				<label>Usuario: <span data-field="usuario"></span></label>
 			</div>
+		-->
 		</div>
 		<div class="row">
 			<div class="col-lg-3">
-				<label>numTomas: <span data-field="numTomas"></span></label>
+				<label>Clave SIAPA: <span data-field="utilizacion"></span></label>
 			</div>
 			<div class="col-lg-3">
-				<label>Giro: <span data-field="giro"></span></label>
+				<label>Serie Medidor: <span data-field="serieMedidor"></span></label>
 			</div>
 			<div class="col-lg-3">
 				<label>GPS: <span data-field="gps"></span></label>
@@ -124,6 +126,7 @@ function buscarContrato() {
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
+	$('[data-field=utilizacion]').html('');
 	$('[data-field=marca_act]').html('');
 	$('[data-field=serieMedidor]').html('');
 	$('[data-field=telemetriaMedidor]').html('');
@@ -160,6 +163,7 @@ function buscarContrato() {
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
 				$('[data-field=marca_act]').html(this.marca_act);
+				$('[data-field=utilizacion]').html(this.utilizacion);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[data-field=serieMedidor]').html(this.serieMedidor);
 				$('[data-field=telemetriaMedidor]').html(this.telemetriaMedidor);

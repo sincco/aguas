@@ -6,17 +6,24 @@
 <div class="jumbotron">
 	<div class="row">
 		<div class="col-xs-6"><h5>Acerca o aleja la región de búsqueda</h5></div>
-		<div class="col-xs-6">
-			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Terminado');"> <span>Mostrar terminados</span></i></button>
-			<button type="button" class="btn btn-default btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Validado');"> <span>Mostrar revisados</span></i></button>
-			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('En proceso');"> <span>Mostrar en proceso</span></i></button>
-			<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('Asignado');"> <span>Mostrar asignados</span></i></button>
+		<div class="col-xs-7">
+			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('SIN MEDIDOR NI TOMA VISIBLE');"> <span>Sin Medidor</span></i></button>
+			<button type="button" class="btn btn-default btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO Y MEDIDOR AL INTERIOR');"> <span>Medidor al interior</span></i></button>
+			<button type="button" class="btn btn-warning btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('OTRO MEDIDOR');"> <span>Otro Medidor</span></i></button>
+			<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MEDIDOR FUNCIONANDO, OK');"> <span>Medidor OK</span></i></button>
+			<button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('TOMA VISIBLE, SIN MARCO NI MEDIDOR');"> <span>Sin Marco</span></i></button>
+			<button type="button" class="btn btn-info btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO SIN MEDIDOR, CUOTA FIJA');"> <span>Sin Medidor C F</span></i></button>
+			<button type="button" class="btn btn-dark btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO SIN MEDIDOR, SERVICIO MEDIDO');"> <span>Sin Medidor S M</span></i></button>
+			<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO CON MEDIDOR, NF, MD, MI');"> <span>Medidor NF, MD, MI</span></i></button>
+			<button type="button" class="btn btn-info btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO EN COBRE, C PVC, THERMOFUSION');"> <span>Medidor c PVC</span></i></button>
+			<button type="button" class="btn btn-success btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO HORIZONTAL');"> <span>Marco Horizontal</span></i></button>
+			<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="heatMap('MARCO VERTICAL');"> <span>Marco Vertical</span></i></button>
 			<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-map" aria-hidden="true" onclick="location.reload();"> <span>Limpiar</span></i></button>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<div id="map" style="width: 100%; height: 300px;"></div>
+			<div id="map" style="width: 100%; height: 500px;"></div>
 		</div>
 		<div class="col-sm-12">
 			<table id="table-contratos" data-mobile-responsive="true"></table>
@@ -32,25 +39,24 @@ var marker;
 var heatmap;
 
 var bounds = {
-	north: 19.042758566473278,
-	south: 19.03979813966975,
-	east: -98.20334594726563,
-	west: -98.20878469848634
+	north: 20.6451689,
+	south: 20.6451689,
+	east: -103.3246266,
+	west: -103.3246266
 };
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: 19.03979813966975, lng: -98.20878469848634},
-		zoom: 15
+		center: {lat: 20.6451689, lng: -103.3246266},
+		zoom: 12
 	});
-
 
 	infoWindow = new google.maps.InfoWindow();
 }
 
 function heatMap(status) {
 	loader.show();
-	if (status == 'Terminado') {
+	if (status == 'SIN MEDIDOR NI TOMA VISIBLE') {
 		var gradient = [
 			'rgba(102, 255, 102, 0)',
 			'rgba(102, 255, 102, 1)',
@@ -59,7 +65,7 @@ function heatMap(status) {
 			'rgba(0, 50, 0, 1)',
 		];
 	}
-	if (status == 'Validado') {
+	if (status == 'MARCO Y MEDIDOR AL INTERIOR') {
                 var gradient = [
                         'rgba(255, 255, 102, 0)',
                         'rgba(255, 255, 102, 1)',
@@ -68,7 +74,7 @@ function heatMap(status) {
                         'rgba(0, 50, 255, 1)',
                 ];
         }
-	if (status == 'En proceso') {
+	if (status == 'OTRO MEDIDOR') {
 		var gradient = [
 			'rgba(255, 102, 0, 0)',
 			'rgba(255, 102, 0, 1)',
@@ -77,7 +83,70 @@ function heatMap(status) {
 			'rgba(255, 60, 0, 1)',
 		];
 	}
-	if (status == 'Asignado') {
+	if (status == 'MEDIDOR FUNCIONANDO, OK') {
+		var gradient = [
+			'rgba(255, 102, 0, 0)',
+			'rgba(255, 102, 0, 1)',
+			'rgba(255, 153, 0, 1)',
+			'rgba(255, 120, 0, 1)',
+			'rgba(255, 90, 10, 1)',
+		];
+	}
+	if (status == 'TOMA VISIBLE, SIN MARCO NI MEDIDOR') {
+		var gradient = [
+			'rgba(255, 102, 0, 0)',
+			'rgba(255, 102, 0, 1)',
+			'rgba(255, 153, 0, 1)',
+			'rgba(255, 120, 0, 1)',
+			'rgba(255, 160, 50, 1)',
+		];
+	}
+	if (status == 'MARCO SIN MEDIDOR, CUOTA FIJA') {
+		var gradient = [
+			'rgba(255, 102, 0, 0)',
+			'rgba(255, 102, 0, 1)',
+			'rgba(255, 153, 0, 1)',
+			'rgba(255, 170, 0, 1)',
+			'rgba(255, 100, 40, 1)',
+		];
+	}
+	if (status == 'MARCO SIN MEDIDOR, SERVICIO MEDIDO') {
+		var gradient = [
+			'rgba(255, 102, 0, 0)',
+			'rgba(255, 102, 0, 1)',
+			'rgba(255, 153, 0, 1)',
+			'rgba(255, 170, 60, 1)',
+			'rgba(255, 70, 10, 1)',
+		];
+	}
+	if (status == 'MARCO CON MEDIDOR, NF, MD, MI') {
+		var gradient = [
+			'rgba(128, 0, 0, 0)',
+			'rgba(128, 0, 0, 1)',
+			'rgba(255, 0, 0, 1)',
+			'rgba(255, 20, 20, 1)',
+			'rgba(255, 77, 77, 1)',
+		];
+	}
+	if (status == 'MARCO VERTICAL') {
+		var gradient = [
+			'rgba(128, 0, 0, 0)',
+			'rgba(128, 0, 0, 1)',
+			'rgba(255, 0, 0, 1)',
+			'rgba(255, 20, 20, 1)',
+			'rgba(255, 77, 77, 1)',
+		];
+	}
+	if (status == 'MARCO EN COBRE, C PVC, THERMOFUSION') {
+		var gradient = [
+			'rgba(128, 0, 0, 0)',
+			'rgba(128, 0, 0, 1)',
+			'rgba(255, 0, 0, 1)',
+			'rgba(255, 20, 20, 1)',
+			'rgba(255, 77, 77, 1)',
+		];
+	}
+	if (status == 'MARCO HORIZONTAL') {
 		var gradient = [
 			'rgba(128, 0, 0, 0)',
 			'rgba(128, 0, 0, 1)',

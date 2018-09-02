@@ -446,10 +446,27 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $this->connector->query( $query, $parametros );
 	}
 
-	public function getByZone($status, $limites) {
+/*	public function getByZone($status, $limites) {
 		//ini_set('memory_limit', '1536M');
 		$limites['status']  = $status;
 		$query = 'SELECT * FROM (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND status=:status;';
+		return $this->connector->query($query, $limites);
+	}
+*/
+	public function getByZone($status, $limites) {
+		//ini_set('memory_limit', '1536M');
+		$limites['status']  = $status;
+		$query = 'SELECT * FROM 
+ (SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status 
+  FROM contratos con 
+  LEFT JOIN 
+  (SELECT ges.contrato, ges.estatusId, pro.descripcion
+   FROM avanzadaContratosAsignados ges 
+   INNER JOIN 
+   (SELECT ges.contrato, MAX(ges.id) id FROM avanzadaContratosAsignados ges 
+    GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id)
+   INNER JOIN avanzadaEstatus pro USING (estatusId)) tmp USING (contrato)) tmp 
+   WHERE (longitud BETWEEN :east AND :west) AND (latitud BETWEEN :south AND :north) AND status=:status;';
 		return $this->connector->query($query, $limites);
 	}
 

@@ -4,36 +4,195 @@
 		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
-				SELECT * FROM (SELECT con.contrato, (SELECT max(fecha) FROM gestionContratos WHERE estatusId=5 and contrato=con.contrato) fecha_ins, con.altaContrato, con.propietario, con.usuario, con.suministro, con.numTomas, con.giro, con.utilizacion, con.tarifa, con.servicios, con.nivelTarifario, con.asociacion, con.cveCatastral, con.municipio, con.colonia, con.via, con.calle, con.numOficial, con.longitud, con.latitud, con.serieMedidor, con.telemetriaMedidor, con.interior, con.interior2, con.marca_act, con.num_apa, con.aparato, con.tip_medicion, con.f_inst, con.anos_disp_med, con.mayores_5_anos, con.f_retiro_disp_med, con.cobro, con.mod_med_ins, con.tipo_material, con.Qmax, con.Qn, con.Qt, con.Qmin, con.caudal_max, con.num_dig_medidor, con.f_fabricacion, con.diametro_toma, con.lectura_inicial, con.region, con.estrato, con.bandera, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) statusId, IFNULL(tmp.descripcion,"Sin Asignar") status, tmp.anexo, tmp.cuadrilla equipoInstalador, DATE(tmp.fecha) fechaEstatus, con.LECT_INST, con.LECT_RETIRO FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato)) tmp
-
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2
+				ORDER BY EMP.descripcion,  STA.descripcion
 			]]>
 		</query>
+
 	</reporte1>
 
 	<reporte2>
-		<titulo>Estatus de servicio</titulo>
+		<titulo>Const. Hidraulicas Gdl</titulo>
 		<query>
 			<![CDATA[
-				SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla," ") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 1
+				ORDER BY EMP.descripcion,  STA.descripcion
 			]]>
 		</query>
 	</reporte2>
 
 	<reporte3>
-		<titulo>Reporte 3</titulo>
+		<titulo>Elecon Naciona</titulo>
 		<query>
 			<![CDATA[
-				SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla," ") cuadrilla  FROM gestionContratos ges INNER JOIN ( SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 2
+				ORDER BY EMP.descripcion,  STA.descripcion
 			]]>
 		</query>
 	</reporte3>
 
 	<reporte4>
-		<titulo>Reporte 4</titulo>
+		<titulo>Constructura Grina</titulo>
 		<query>
 			<![CDATA[
-				SELECT con.contrato, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(tmp.descripcion,"Sin Asignar") estatus, tmp.anexo, tmp.cuadrilla, DATE(tmp.fecha) fechaEstatus, cob.descripcion cobro, (SELECT COUNT(id) FROM gestionContratos WHERE estatusId=4 and contrato=con.contrato) visitas FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) LEFT JOIN cobros cob USING(cobro)
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 3
+				ORDER BY EMP.descripcion,  STA.descripcion
 			]]>
 		</query>
 	</reporte4>
+
+	<reporte5>
+		<titulo>Gpo Const. Nvo Prog</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 4
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte5>
+
+	<reporte6>
+		<titulo>Emporio Const. Occte</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 5
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte6>
+
+	<reporte7>
+		<titulo>Edificaciones Hervi</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 6
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte7>
+
+	<reporte8>
+		<titulo>Constructora SBF</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 7
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte8>
+
+	<reporte9>
+		<titulo>Kalmani Constructora</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 8
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte9>
+
+	<reporte10>
+		<titulo>Const y Maqu RC</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 9
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte10>
+
+	<reporte11>
+		<titulo>Ing en Sist de Infra</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 10
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte11>
+
+	<reporte12>
+		<titulo>Forza  Ing Aplicada</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 11
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte12>
+
+	<reporte13>
+		<titulo>J de Dios de la Torre T</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where CON.estatusId != 2 AND EMP.idEmpresa = 12
+				ORDER BY EMP.descripcion,  STA.descripcion
+			]]>
+		</query>
+	</reporte13>
 </reportes>

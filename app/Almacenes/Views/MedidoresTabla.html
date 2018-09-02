@@ -8,23 +8,19 @@
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
 			<thead>
 				<tr>
-					<th data-sortable="true">Serie</th><th data-sortable="false">qMax</th><th data-sortable="false">qN</th><th data-sortable="false">qT</th><th data-sortable="false">qMin</th><th data-sortable="false">Diametro</th><th data-sortable="false">Modelo</th><th data-sortable="false">Digitos Lectura</th><th data-sortable="false">Banca</th><th data-sortable="false">Usuario</th><th data-sortable="false">Fabricación</th>
+					<th data-sortable="true">Serie</th><th data-sortable="false">Diametro</th><th data-sortable="false">Modelo</th><th data-sortable="false">Digitos Lectura</th><th data-sortable="false">Empresa Asignada</th><th data-sortable="false">Marca</th><th data-sortable="false">Fecha Asignación</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for medidor in medidores %}
 				<tr>
 					<td>{{ medidor.serie|e }}</td>
-					<td>{{ medidor.qMax|e }}</td>
-					<td>{{ medidor.qN|e }}</td>
-					<td>{{ medidor.qT|e }}</td>
-					<td>{{ medidor.qMin|e }}</td>
 					<td>{{ medidor.diametro|e }}</td>
 					<td>{{ medidor.modelo|e }}</td>
 					<td>{{ medidor.digitosLectura|e }}</td>
-					<td>{{ medidor.banca|e }}</td>
-					<td>{{ medidor.usuario|e }}</td>
-					<td>{{ medidor.fechaFabricacion|e }}</td>
+					<td>{{ medidor.empresaId|e }}</td>
+					<td>{{ medidor.marca|e }}</td>
+					<td>{{ medidor.fechaAsignacion|e }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

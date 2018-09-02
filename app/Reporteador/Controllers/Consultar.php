@@ -36,7 +36,7 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 				$dataReporte = $xml->data;
 				$dataReporte = $dataReporte[$reporte];
 
-				ini_set('memory_limit','2000M');
+				ini_set('memory_limit','5000M');
 				$data = $model->run($dataReporte['query']);
 				$fields = implode(',', array_keys($data[0]));
 				$csv = $this->arrayToCsv($data);
