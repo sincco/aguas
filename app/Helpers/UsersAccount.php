@@ -87,8 +87,7 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 		}
 		$cuadrilla = unserialize($_SESSION['user\extra']);
 		if(isset($cuadrilla['cuadrilla']['cuadrilla'])) {
-			var_dump($response);
-			$response = $response[3];
+			$response = $response[7];
 			#array_shift($response);
 			#array_shift($response);
 			#array_pop($response);
