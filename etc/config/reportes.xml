@@ -4,11 +4,12 @@
 		<titulo>Reporte general</titulo>
 		<query>
 			<![CDATA[
-				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus
+				SELECT EMP.descripcion Empresa, CON.contrato , STA.descripcion Estatus, c.utilizacion as Cve_SIAPA
 				FROM `avanzadaContratosAsignados` CON 
 				INNER JOIN revisores REV USING (`revisorId`) 
 				inner join avanzadaEstatus STA USING (estatuSId)
 				LEFT JOIN empresas EMP USING (idEmpresa)
+                left join contratos c using (contrato)
 				where CON.estatusId != 2
 				ORDER BY EMP.descripcion,  STA.descripcion
 			]]>
@@ -195,4 +196,20 @@
 			]]>
 		</query>
 	</reporte13>
+
+	<reporte14>
+		<titulo>Retrase Angelopolis</titulo>
+		<query>
+			<![CDATA[
+				SELECT EMP.descripcion Empresa, CON.contrato ,c.colonia, STA.descripcion Estatus
+				FROM `avanzadaContratosAsignados` CON 
+				INNER JOIN revisores REV USING (`revisorId`) 
+				inner join avanzadaEstatus STA USING (estatuSId)
+                inner join contratos c using(contrato)
+				LEFT JOIN empresas EMP USING (idEmpresa)
+				where EMP.idEmpresa = 13
+				ORDER BY EMP.descripcion,c.colonia,  STA.descripcion
+			]]>
+		</query>
+	</reporte14>
 </reportes>
