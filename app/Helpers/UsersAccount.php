@@ -90,7 +90,8 @@ class UsersAccountHelper extends Sincco\Sfphp\Abstracts\Helper {
 			array_shift($response);
 			array_shift($response);
 			array_shift($response);
-			array_pop($response);
+			#array_pop($response);
+			var_dump($response);
 		}
 		return $response;
 	}
