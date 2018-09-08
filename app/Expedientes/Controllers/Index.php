@@ -199,9 +199,9 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 			$cuadrilla = array_pop($cuadrilla);
 			if ($cuadrilla['idEmpresa'] == $medidores['empresaId']) {
 				$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
-				new Response('json', ['respuesta'=>true]);
+				new Response('json', ['respuesta'=>true, 'modelo'=>$medidores['modelo']]);
 			} else {
-				new Response('json', ['respuesta'=>false]);
+				new Response('json', ['respuesta'=>false, 'modelo'=>$medidores['modelo']]);
 			}
 		} else {
 			$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
