@@ -194,8 +194,8 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$model = $this->getModel('Expedientes\Contratos');
 		if ($this->getParams('campo') == 'telemetriaMedidor') {
 			$medidores = $this->getModel('Almacenes\Medidores')->getTable()->where('serie', $this->getParams('valor'))->getData();
-			$cuadrilla = $this->getModel('Catalogos\Cuadrillas')->getById($cuadrillaUsuario['cuadrilla']);
-			var_dump($medidores, $cuadrillaUsuario, $cuadrilla);
+			$cuadrilla = $this->getModel('Catalogos\Cuadrillas')->getById($cuadrillaUsuario['cuadrilla'][['cuadrilla']);
+			var_dump($medidores, $cuadrillaUsuario['cuadrilla'][['cuadrilla'], $cuadrilla);
 		}
 		$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
 		new Response('json', ['respuesta'=>$respuesta]);
