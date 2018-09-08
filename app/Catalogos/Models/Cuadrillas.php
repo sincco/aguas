@@ -8,12 +8,7 @@ class CuadrillasModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getById( $data ) {
-		return $this->connector->query( 'SELECT cot.cotizacion, cot.fecha, cot.razonSocial, cot.estatus,
-			det.producto, det.descripcion, det.unidad, det.cantidad, det.precio, det.cantidad * det.precio AS subtotal
-			FROM cotizaciones cot
-			INNER JOIN cotizacionesDetalle det USING( cotizacion )
-			WHERE cotizacion = :Cotizacion
-			ORDER BY det.descripcion', [ 'Cotizacion'=>$data ] );
+		return $this->connector->query( 'SELECT cua.cuadrilla, cua.idEmpresa, cua.descripcion, emp.descripcion empresa FROM cuadrillas cua INNER JOIN empresas emp USING (idEmpresa) WHERE cua.cuadrilla=:cuadrilla;', [ 'cuadrilla'=>$data ] );
 	}
 
 	public function insert($data, $table=false) {
