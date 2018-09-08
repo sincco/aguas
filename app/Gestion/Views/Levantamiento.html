@@ -460,7 +460,7 @@ function guardarCampo(input) {
 	.done(function(data) {
 		if (data.respuesta) {
 			toastr.success('Campo actualizado.', 'Hecho');
-			$('[data-field=MARCA_INS]').html(data.modelo);
+			$('[data-field=MARCA_INS]').value(data.modelo);
 		    loader.hide();
 		} else {
 			toastr.error('Error al hacer la petición o dato no existente.', 'Intenta de nuevo');
