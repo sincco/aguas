@@ -194,11 +194,18 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$model = $this->getModel('Expedientes\Contratos');
 		if ($this->getParams('campo') == 'telemetriaMedidor') {
 			$medidores = $this->getModel('Almacenes\Medidores')->getTable()->where('serie', $this->getParams('valor'))->getData();
+			$medidores = array_pop($medidores);
 			$cuadrilla = $this->getModel('Catalogos\Cuadrillas')->getById($cuadrillaUsuario['cuadrilla']['cuadrilla']);
-			var_dump($medidores, $cuadrillaUsuario['cuadrilla']['cuadrilla'], $cuadrilla);
-		}
-		$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
-		new Response('json', ['respuesta'=>$respuesta]);
+			$cuadrilla = array_pop($cuadrilla);
+			if ($cuadrilla['idEmpresa'] == $medidores['empresaId']) {
+				$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
+				new Response('json', ['respuesta'=>$respuesta]);
+			} else {
+				new Response('json', ['respuesta'=>0]);
+			}
+		} else {
+			$respuesta = $model->setCampo($this->getParams('contrato'), $this->getParams('campo'), $this->getParams('valor'));
+			new Response('json', ['respuesta'=>$respuesta]);		}
 	}
 
 	public function apiMateriales() {
