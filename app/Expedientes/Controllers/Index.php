@@ -141,8 +141,8 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller
 		$cuadrilla = $this->getParams('cuadrilla');
 		$model = $this->getModel('Expedientes\Contratos');
 		$data = $model->getTable($_GET, $cuadrilla);
-		$count = $model->getTable([], $cuadrilla);
-		$count = count($count);
+		//$count = $model->getTable([], $cuadrilla);
+		$count = count($data);
 		new Response('json', ['total'=>$count, 'rows'=>$data]);
 	}
 
