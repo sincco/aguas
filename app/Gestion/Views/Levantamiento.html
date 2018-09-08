@@ -321,7 +321,7 @@ function buscarContrato() {
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
 	$('[name=marca_act]').val('');
-	$('[data-field=MARCA_INS]').html('');
+	$('[name=MARCA_INS]').html('');
 	$('[name=serieMedidor]').val('');
 	$('[name=tip_medicion]').val('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
@@ -379,7 +379,7 @@ function buscarContrato() {
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
 				$('[name=marca_act]').val(this.marca_act);
-				$('[data-field=MARCA_INS]').html(this.marca_act);
+				$('[name=MARCA_INS]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
 				$('[name=tip_medicion]').val(this.tip_medicion);
@@ -460,7 +460,7 @@ function guardarCampo(input) {
 	.done(function(data) {
 		if (data.respuesta) {
 			toastr.success('Campo actualizado.', 'Hecho');
-			$('[data-field=MARCA_INS]').val(data.modelo);
+			$('[name=MARCA_INS]').val(data.modelo);
 		    loader.hide();
 		} else {
 			toastr.error('Error al hacer la petición o dato no existente.', 'Intenta de nuevo');
