@@ -458,8 +458,13 @@ function guardarCampo(input) {
 	var elemento = $(input).parent().parent().children(':input');
     sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apicampo', {contrato:$('[name=contrato]').val(), campo:$(elemento).attr('name'), valor:$(elemento).val() })
 	.done(function(data) {
-		toastr.success('Campo actualizado.', 'Hecho');
-	    loader.hide();
+		if (data.respuesta) {
+			toastr.success('Campo actualizado.', 'Hecho');
+		    loader.hide();
+		} else {
+			toastr.error('Error al hacer la petición o dato no existente.', 'Intenta de nuevo');
+			loader.hide();	
+		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		toastr.error('Error al hacer la petición.', 'Intenta de nuevo');
 		loader.hide();
