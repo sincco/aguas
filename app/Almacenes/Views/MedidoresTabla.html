@@ -8,7 +8,7 @@
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
 			<thead>
 				<tr>
-					<th data-sortable="true">Serie</th><th data-sortable="false">Diametro</th><th data-sortable="false">Modelo</th><th data-sortable="false">Digitos Lectura</th><th data-sortable="false">Empresa Asignada</th><th data-sortable="false">Marca</th><th data-sortable="false">Fecha Asignación</th>
+					<th data-sortable="true">Serie</th><th data-sortable="false">Diametro</th><th data-sortable="false">Modelo</th><th data-sortable="false">Empresa Asignada</th><th data-sortable="false">Marca</th><th data-sortable="false">Fecha Asignación</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -17,8 +17,7 @@
 					<td>{{ medidor.serie|e }}</td>
 					<td>{{ medidor.diametro|e }}</td>
 					<td>{{ medidor.modelo|e }}</td>
-					<td>{{ medidor.digitosLectura|e }}</td>
-					<td>{{ medidor.empresaId|e }}</td>
+					<td>{{ medidor.descripcion|e }}</td>
 					<td>{{ medidor.marca|e }}</td>
 					<td>{{ medidor.fechaAsignacion|e }}</td>
 				</tr>

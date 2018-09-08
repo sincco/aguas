@@ -32,18 +32,18 @@
 				<label>Propiertario: <span data-field="propietario"></span></label>
 			</div>
 			<div class="col-lg-6">
-				<label>Usuario: <span data-field="usuario"></span></label>
+				<label>Clave SIAPA: <span data-field="utilizacion"></span></label>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-lg-3">
-				<label>Suministro: <span data-field="suministro"></span></label>
+				<label>Colonia: <span data-field="colonia"></span></label>
 			</div>
 			<div class="col-lg-3">
-				<label>numTomas: <span data-field="numTomas"></span></label>
+				<label>Medidor: <span data-field="tip_medicion"></span></label>
 			</div>
 			<div class="col-lg-3">
-				<label>Giro: <span data-field="giro"></span></label>
+				<label>Serie Medidor: <span data-field="serieMedidor"></span></label>
 			</div>
 			<div class="col-lg-3">
 				<label>GPS: <span data-field="gps"></span></label>
@@ -59,17 +59,18 @@
 			<div class="col-lg-3">
 				<label>Modelo: <div class="input-group"><input type="text" name="MARCA_INS" class="form-control" aria-describedby="sizing-addon2" placeholder="Modelo">
 					<span class="input-group-btn">
-						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
 			<div class="col-lg-3">
-				<label>N/S: <div class="input-group"><input type="text" name="serieMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
+				<label>N/S: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="# Serie">
 					<span class="input-group-btn">
-						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','serieMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
+						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
+			<!--
 			<div class="col-lg-3">
 				<label>Telemetría: <div class="input-group"><input type="text" name="telemetriaMedidor" class="form-control" aria-describedby="sizing-addon2" placeholder="Telemetría">
 					<span class="input-group-btn">
@@ -77,6 +78,7 @@
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
+		-->
 			<div class="col-lg-3">
 				<label>Lectura: <div class="input-group"><input type="text" name="LECT_INST" class="form-control" aria-describedby="sizing-addon2" placeholder="Lectura" value="0"><span class="input-group-btn"><button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button></span></div></label>
 			</div>
@@ -118,12 +120,6 @@
 			<div class="row">
 				<div class="col-xs-6 col-md-4 col-lg-2">
 					<div class="fileUpload btn btn-default">
-						<i class="fa fa-camera"> <span>Fachada predio</span></i>
-						<input type="file" class="upload" name="1fachada-predio-{{ "now"|date("Ymd") }}" />
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-2">
-					<div class="fileUpload btn btn-default">
 						<i class="fa fa-camera"> <span>Cuadro Actual</span></i>
 						<input type="file" class="upload" name="2cuadro-actual-{{ "now"|date("Ymd") }}" />
 					</div>
@@ -140,6 +136,7 @@
 						<input type="file" class="upload" name="4caratula-medidor-{{ "now"|date("Ymd") }}" />
 					</div>
 				</div>
+				<!--
 				<div class="col-xs-6 col-md-4 col-lg-2">
 					<div class="fileUpload btn btn-default">
 						<i class="fa fa-camera"> <span>Orden de trabajo</span></i>
@@ -152,6 +149,7 @@
 						<input type="file" class="upload" name="6medidor-retirado-{{ "now"|date("Ymd") }}" />
 					</div>
 				</div>
+			-->
 			</div>
 			<div class="row">
 				<div class="col-xs-6 col-md-4 col-lg-2">
@@ -197,14 +195,9 @@
 					<div class="col-xs-12">
 						<div id="mainbody">
 							<select name="motivo" class="form-control center-block">
-								<option value="DESHABITADO">DESHABITADO</option>
 								<option value="NO PERMITIERON ACCESO">NO PERMITIERON ACCESO</option>
 								<option value="NO ATIENDEN">NO ATIENDEN</option>
-								<option value="SIN CUADRO">SIN CUADRO</option>
-								<option value="NO SE UBICA PREDIO">NO SE UBICA PREDIO</option>
-								<option value="LOTE BALDIO">LOTE BALDIO</option>
-								<option value="MEDIDOR NUEVO">MEDIDOR NUEVO</option>
-								<option value="NO SE UBICO TOMA">NO SE UBICO TOMA</option>
+								<option value="NO SE UBICO TOMA">USUARIO AGRESIVO</option>
 							</select>
 						</div>
 					</div>
@@ -322,15 +315,15 @@ function buscarContrato() {
 	loader.show();
 	$('[data-field=propietario]').html('');
 	$('[data-field=usuario]').html('');
-	$('[data-field=suministro]').html('');
-	$('[data-field=numTomas]').html('');
+	$('[data-field=utilizacion]').html('');
+	$('[data-field=colonia]').html('');
 	$('[data-field=direccion]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
 	$('[name=marca_act]').val('');
 	$('[data-field=MARCA_INS]').html('');
 	$('[name=serieMedidor]').val('');
-	$('[name=telemetriaMedidor]').val('');
+	$('[name=tip_medicion]').val('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
@@ -381,15 +374,15 @@ function buscarContrato() {
 			$(data.data).each(function(){
 				$('[data-field=propietario]').html(this.propietario);
 				$('[data-field=usuario]').html(this.usuario);
-				$('[data-field=suministro]').html(this.suministro);
-				$('[data-field=numTomas]').html(this.numTomas);
+				$('[data-field=utilizacion]').html(this.utilizacion);
+				$('[data-field=colonia]').html(this.colonia);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
 				$('[name=marca_act]').val(this.marca_act);
 				$('[data-field=MARCA_INS]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
 				$('[name=serieMedidor]').val(this.serieMedidor);
-				$('[name=telemetriaMedidor]').val(this.telemetriaMedidor);
+				$('[name=tip_medicion]').val(this.tip_medicion);
 			})
 		} else {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
