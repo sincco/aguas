@@ -40,13 +40,13 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (trim($data['search']) != '') {
 			$where = 'WHERE con.contrato = ' . $data['search'] . ' ';
 			$query .= $where;
-			if ($cuadrilla > 0) {
-				$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
-			}
+			#if ($cuadrilla > 0) {
+			#	$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
+			#}
 		} else {
-			if ($cuadrilla > 0) {
-				$query .= ' WHERE tmp.cuadrilla = ' . $cuadrilla . ' ';
-			}
+			#if ($cuadrilla > 0) {
+			#	$query .= ' WHERE tmp.cuadrilla = ' . $cuadrilla . ' ';
+			#}
 		}
 		if (isset($data['limit'])) {
 			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] . ' OFFSET ' . $data['offset'];
