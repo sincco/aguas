@@ -10,7 +10,7 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 	
 	public function index() {
 		$empresa = unserialize($_SESSION['user\empresa']);
-		# $empresa = $empresa['empresa'];
+		$empresa = $empresa['idEmpresa'];
 		$user = unserialize($_SESSION['sincco\login\controller']);
 		if (stripos($user['userName'], "adp") !== false) {
 			Request::redirect('gestion/visor');
@@ -23,9 +23,10 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 		$reportes = [];
 		foreach ($xml->data as $key => $reporte) {
 			$idEmpresa = str_replace('reporte', '', $key);
-			var_dump($idEmpresa, $empresa);die();
-			$reporte['llave'] = $key;
-			$reportes[] = $reporte;
+			if ($idEmpresa == $empresa) {
+				$reporte['llave'] = $key;
+				$reportes[] = $reporte;
+			}
 		}
 		$view->reportes = $reportes;
 		$view->render();
