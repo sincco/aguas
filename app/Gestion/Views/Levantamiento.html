@@ -40,11 +40,9 @@
 				<label>Colonia: <span data-field="colonia"></span></label>
 			</div>
 			<div class="col-lg-3">
-				<label>Medidor: <span data-field="tip_medicion"></span></label>
+				<label>Interior: <span data-field="interior"></span></label>
 			</div>
-			<div class="col-lg-3">
-				<label>Serie Medidor: <span data-field="serieMedidor"></span></label>
-			</div>
+			
 			<div class="col-lg-3">
 				<label>GPS: <span data-field="gps"></span></label>
 			</div>
@@ -59,7 +57,6 @@
 			<div class="col-lg-3">
 				<label>Modelo: <div class="input-group"><input type="text" name="MARCA_INS" class="form-control" aria-describedby="sizing-addon2" placeholder="Modelo">
 					<span class="input-group-btn">
-						<button class="btn btn-default camera" type="button" onclick="$('#qrResult').attr('data-destiny','telemetriaMedidor'); $('#modal-qr').modal('show');decoder.play();"><i class="fa fa-camera" aria-hidden="true"> <span></span></i></button>
 						<button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button>
 					</span></div></label>
 			</div>
@@ -86,7 +83,13 @@
 		<div class="row">
 			<h4>Medidor Retirado</h4>
 			<div class="col-lg-6">
-				<label>Marca: <span data-field="marca_act"></span></div></label>
+				<label>Serie Medidor: <span data-field="serieMedidor"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Medidor: <span data-field="tip_medicion"></span></label>
+			</div>
+			<div class="col-lg-6">
+				<label>Ubicacion Medidor: <span data-field="marca_act"></span></div></label>
 			</div>
 			<div class="col-lg-6">
 				<label>Lectura: <div class="input-group"><input type="text" name="LECT_RETIRO" class="form-control" aria-describedby="sizing-addon2" placeholder="Lectura" value="0"><span class="input-group-btn"><button class="btn btn-default" type="button" onclick="guardarCampo(this)">Guardar</button></span></div></label>
@@ -318,12 +321,13 @@ function buscarContrato() {
 	$('[data-field=utilizacion]').html('');
 	$('[data-field=colonia]').html('');
 	$('[data-field=direccion]').html('');
+	$('[data-field=interior]').html('');
 	$('[data-field=gps]').html('');
 	$('[data-field=giro]').html('');
-	$('[name=marca_act]').val('');
+	$('[data-field=marca_act]').html('');
 	$('[name=MARCA_INS]').html('');
-	$('[name=serieMedidor]').val('');
-	$('[name=tip_medicion]').val('');
+	$('[data-field=serieMedidor]').html('');
+	$('[data-field=tip_medicion]').html('');
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
@@ -378,11 +382,12 @@ function buscarContrato() {
 				$('[data-field=colonia]').html(this.colonia);
 				$('[data-field=direccion]').html(this.via + ' ' + this.calle + ' ' + this.numOficial + ', ' + this.colonia + ' ' + this.municipio);
 				$('[data-field=giro]').html(this.giro);
-				$('[name=marca_act]').val(this.marca_act);
+				$('[data-field=interior]').html(this.interior);
+				$('[data-field=marca_act]').html(this.marca_act);
 				$('[name=MARCA_INS]').html(this.marca_act);
 				$('[data-field=gps]').html(this.longitud + ' , ' + this.latitud);
-				$('[name=serieMedidor]').val(this.serieMedidor);
-				$('[name=tip_medicion]').val(this.tip_medicion);
+				$('[data-field=serieMedidor]').html(this.serieMedidor);
+				$('[data-field=tip_medicion]').html(this.tip_medicion);
 			})
 		} else {
 			toastr.error('El contrato no existe o no está asignado a tu cuadrilla.', 'Intenta de nuevo');
