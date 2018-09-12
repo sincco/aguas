@@ -104,7 +104,7 @@ class AvanzadaModel extends Sincco\Sfphp\Abstracts\Model {
 			INNER JOIN contratos con USING (contrato)
 			INNER JOIN avanzadaEstatus est USING (estatusId)
 			
-			LEFT JOIN revisores ven USING (revisorId)";
+			INNER JOIN revisores ven USING (revisorId)";
 		
 		if (!isset($data['search'])) {
 			$data['search']='';
