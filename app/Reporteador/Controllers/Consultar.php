@@ -23,6 +23,7 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 		$reportes = [];
 		foreach ($xml->data as $key => $reporte) {
 			$idEmpresa = str_replace('reporte', '', $key);
+			var_dump($idEmpresa, $empresa);
 			if ($idEmpresa == $empresa) {
 				$reporte['llave'] = $key;
 				$reportes[] = $reporte;
