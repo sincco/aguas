@@ -10,7 +10,7 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 	
 	public function index() {
 		$empresa = unserialize($_SESSION['user\empresa']);
-		$empresa = $empresa['empresa'];
+		# $empresa = $empresa['empresa'];
 		$user = unserialize($_SESSION['sincco\login\controller']);
 		if (stripos($user['userName'], "adp") !== false) {
 			Request::redirect('gestion/visor');
