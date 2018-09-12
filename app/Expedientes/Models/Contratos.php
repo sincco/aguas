@@ -33,7 +33,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, tmp.anexo, '' cuadrilla, DATE(tmp.fecha) fechaEstatus, '' cobro, 0 precio, 1 visitas FROM contratos con LEFT JOIN gestionContratos tmp USING (contrato) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cobros cob USING(cobro) ';
+		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, tmp.anexo, "" cuadrilla, DATE(tmp.fecha) fechaEstatus, "" cobro, 0 precio, 1 visitas FROM contratos con LEFT JOIN gestionContratos tmp USING (contrato) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cobros cob USING(cobro) ';
 		if (!isset($data['search'])) {
 			$data['search']='';
 		}
@@ -51,7 +51,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (isset($data['limit'])) {
 			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] . ' OFFSET ' . $data['offset'];
 		}
-		var_dump($query);die();
+		// var_dump($query);die();
 		return $this->connector->query($query);
 	}
 
