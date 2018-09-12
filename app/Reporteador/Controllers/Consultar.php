@@ -9,6 +9,8 @@ use \Sincco\Sfphp\Response;
 class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 	
 	public function index() {
+		$empresa = unserialize($_SESSION['user\empresa']);
+		$empresa = $empresa['empresa'];
 		$user = unserialize($_SESSION['sincco\login\controller']);
 		if (stripos($user['userName'], "adp") !== false) {
 			Request::redirect('gestion/visor');
@@ -20,6 +22,8 @@ class ConsultarController extends Sincco\Sfphp\Abstracts\Controller {
 		$xml = new XML('etc/config/reportes.xml');
 		$reportes = [];
 		foreach ($xml->data as $key => $reporte) {
+			$idEmpresa = str_replace('reporte', '', $key);
+			var_dump($idEmpresa, $empresa);die();
 			$reporte['llave'] = $key;
 			$reportes[] = $reporte;
 		}
