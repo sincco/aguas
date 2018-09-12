@@ -33,20 +33,20 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 		if (!isset($data['sort'])) {
 			$data['sort'] = 'contrato';
 		}
-		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, tmp.anexo, "" cuadrilla, DATE(tmp.fecha) fechaEstatus, "" cobro, 0 precio, 1 visitas FROM contratos con LEFT JOIN gestionContratos tmp USING (contrato) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cobros cob USING(cobro) ';
+		$query = 'SELECT con.*, CONCAT(con.longitud,",",con.latitud) gps, tmp.fecha, IFNULL(tmp.estatusId,1) estatusId, IFNULL(pro.descripcion,"Sin Asignar") estatus, tmp.anexo, cua.descripcion as cuadrilla, DATE(tmp.fecha) fechaEstatus, "" cobro, 0 precio, 1 visitas FROM contratos con INNER JOIN gestionContratos tmp USING (contrato) INNER JOIN estatusProceso pro USING (estatusId) INNER JOIN cuadrillasContratos cco USING (contrato) INNER JOIN cuadrillas cua ON (cco.cuadrilla = cua.cuadrilla) ';
 		if (!isset($data['search'])) {
 			$data['search']='';
 		}
 		if (trim($data['search']) != '') {
 			$where = 'WHERE con.contrato = ' . $data['search'] . ' ';
 			$query .= $where;
-			#if ($cuadrilla > 0) {
-			#	$query .= ' AND (tmp.cuadrilla = ' . $cuadrilla . ') ';
-			#}
+			if ($cuadrilla > 0) {
+				$query .= ' AND (cua.cuadrilla = ' . $cuadrilla . ') ';
+			}
 		} else {
-			#if ($cuadrilla > 0) {
-			#	$query .= ' WHERE tmp.cuadrilla = ' . $cuadrilla . ' ';
-			#}
+			if ($cuadrilla > 0) {
+				$query .= ' WHERE cua.cuadrilla = ' . $cuadrilla . ' ';
+			}
 		}
 		if (isset($data['limit'])) {
 			$query .= 'ORDER BY ' . $data['sort'] . ' ' . $data['order'] . ' LIMIT ' . $data['limit'] . ' OFFSET ' . $data['offset'];
