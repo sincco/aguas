@@ -82,7 +82,7 @@ class ContratosController extends Sincco\Sfphp\Abstracts\Controller
 		if (count($data) > 100) {
 			$count = 500000; #$model->getCount($_GET);
 		} else {
-			$count = 500000;count($data);
+			$count = 500000;
 		}
 		new Response('json', ['total'=>$count, 'rows'=>$data]);
 	}
