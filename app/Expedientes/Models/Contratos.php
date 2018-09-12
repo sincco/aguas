@@ -9,6 +9,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getCount($data, $cuadrilla = 0) {
 		$modCuadrilla = '';
+		return 500000;
 		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.id) id FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.id=tmp.id) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) LEFT JOIN cobros cob USING(cobro) ';
 		if (!isset($data['search'])) {
 			$data['search']='';
@@ -111,6 +112,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 	public function getCountUrgentes($data, $cuadrilla = 0) {
 		$modCuadrilla = '';
+		return 500000;
 		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT ges.contrato, ges.fecha, ges.estatusId, pro.descripcion, ges.anexo, IFNULL(cua.cuadrilla,"S/A") cuadrilla  FROM gestionContratos ges INNER JOIN (SELECT ges.contrato, MAX(ges.fecha) fecha FROM gestionContratos ges GROUP BY ges.contrato) tmp ON (ges.contrato=tmp.contrato AND ges.fecha=tmp.fecha) INNER JOIN estatusProceso pro USING (estatusId) LEFT JOIN cuadrillasContratos cua ON (cua.contrato=tmp.contrato)) tmp USING (contrato) WHERE con.bandera=3 AND IFNULL(tmp.estatusId,1) NOT IN (5) ';
 		if (!isset($data['search'])) {
 			$data['search']='';
@@ -157,6 +159,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 
 
 	public function getCountTerminados($data) {
+		return 500000;
 		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (5,6)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
 		if (isset($data['search'])) {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR tmp.descripcion like "%' . $data['search'] . '%" ';
@@ -181,6 +184,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getCountRevisados($data) {
+		return 500000;
 		$query = 'SELECT COUNT(*) total FROM contratos con LEFT JOIN (SELECT MAX(contrato) contrato, MAX(estatusId) estatusId, MAX(fecha) fecha FROM gestionContratos  GROUP BY contrato) ges USING (contrato) INNER JOIN estatusProceso pro ON (ges.estatusId = pro.estatusId AND pro.estatusId IN (7,9)) LEFT JOIN cuadrillasContratos cua USING(contrato) LEFT JOIN cobros cob USING(cobro) ';
 		if (isset($data['search'])) {
 			$where = 'WHERE con.contrato like "%' . $data['search'] . '%" OR con.propietario like "%' . $data['search'] . '%" OR con.usuario like "%' . $data['search'] . '%" OR con.municipio like "%' . $data['search'] . '%" OR con.colonia like "%' . $data['search'] . '%" OR con.suministro like "%' . $data['search'] . '%" OR con.contrato like "%' . $data['search'] . '%" OR con.calle like "%' . $data['search'] . '%" OR tmp.descripcion like "%' . $data['search'] . '%" ';
@@ -204,6 +208,7 @@ class ContratosModel extends Sincco\Sfphp\Abstracts\Model {
 	}
 
 	public function getCountNoEjecutados($data) {
+		return 500000;
 		$query = 'SELECT count(*) total
 			FROM contratos con 
 			LEFT JOIN gestionContratos ges ON (con.contrato = ges.contrato AND ges.estatusId IN (4)) 
