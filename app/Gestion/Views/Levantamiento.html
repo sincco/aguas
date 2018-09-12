@@ -331,18 +331,18 @@ function buscarContrato() {
 	sincco.consumirAPI('POST', BASE_URL + 'expedientes/index/apigetcontratoasignado', {contrato:$('[name=contrato]').val(), cuadrilla: {{ cuadrilla }}})
 	.done(function(data) {
 		if (data.data.length) {
-			if(data.data[0].estatusAvz == 5 || data.data[0].estatusAvz == 10) {
-				$("#cobro option[value='C3']").remove();
-				$("#cobro option[value='C5']").remove();
-			}
-			if(data.data[0].estatusAvz == 7 || data.data[0].estatusAvz == 11) {
-				$("#cobro option[value='C3']").remove();
-				$("#cobro option[value='C4']").remove();
-			}
-			if(data.data[0].estatusAvz == 8 || data.data[0].estatusAvz == 9) {
-				$("#cobro option[value='C4']").remove();
-				$("#cobro option[value='C5']").remove();
-			}
+			// if(data.data[0].estatusAvz == 5 || data.data[0].estatusAvz == 10) {
+			// 	$("#cobro option[value='C3']").remove();
+			// 	$("#cobro option[value='C5']").remove();
+			// }
+			// if(data.data[0].estatusAvz == 7 || data.data[0].estatusAvz == 11) {
+			// 	$("#cobro option[value='C3']").remove();
+			// 	$("#cobro option[value='C4']").remove();
+			// }
+			// if(data.data[0].estatusAvz == 8 || data.data[0].estatusAvz == 9) {
+			// 	$("#cobro option[value='C4']").remove();
+			// 	$("#cobro option[value='C5']").remove();
+			// }
 			$('.proceso .btn-success').show();
 			$('.proceso .btn-primary').show();
 			$('.proceso .btn-danger').show();
