@@ -8,6 +8,7 @@ use \Sincco\Sfphp\Request;
 class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 	
 	public function totalReports() {
+		echo "Totales";
 		$model = $this->getModel('Aguas');
 		$empresas = $model->execute('select * from empresas;')
 		foreach ($empresas as $empresa) {
