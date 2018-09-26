@@ -22,8 +22,9 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 				where gc.estatusId = 5 and e.idEmpresa=" . $empresa['idEmpresa']);
 			if (count($data) > 0) {
 				fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', array_keys(reset($data)));
-				foreach ($data as $row) {
-					fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', $row);
+				foreach ($data as $index=>$row) {
+					var_dump($row);
+					#fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', $row);
 				}				
 			}
 		}
