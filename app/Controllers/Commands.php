@@ -8,10 +8,10 @@ use \Sincco\Sfphp\Request;
 class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 	
 	public function total() {
-		echo "Totales";
 		$model = $this->getModel('Aguas');
 		$empresas = $model->run('select * from empresas;');
 		foreach ($empresas as $empresa) {
+			echo "Empresa " . $empresa['idEmpresa'] . PHP_EOL;
 			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
 				from contratos con
 				inner join gestionContratos gc on con.contrato=gc.contrato
@@ -23,8 +23,8 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 			if (count($data) > 0) {
 				fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', array_keys(reset($data)));
 				foreach ($data as $index=>$row) {
-					var_dump($row);
-					#fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', $row);
+					#var_dump($row);
+					fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', $row);
 				}				
 			}
 		}
