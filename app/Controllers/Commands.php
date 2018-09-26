@@ -21,9 +21,9 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 				Inner join cobros co on co.cobro=con.cobro
 				where gc.estatusId = 5 and e.idEmpresa=" . $empresa['idEmpresa']);
 			if (count($data) > 0) {
-				file_put_contents("html/download/instalaciones_efectivas", implode(',', array_keys(reset($data))) . "\n", FILE_APPEND);
+				file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'], implode(',', array_keys(reset($data))) . "\n", FILE_APPEND);
 				foreach ($data as $row) {
-					file_put_contents("html/download/instalaciones_efectivas", implode(',', array_keys(reset($row))) . "\n", FILE_APPEND);
+					file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'], implode(',', $row) . "\n", FILE_APPEND);
 				}				
 			}
 		}
