@@ -10,9 +10,9 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 	public function total() {
 		echo "Totales";
 		$model = $this->getModel('Aguas');
-		$empresas = $model->execute('select * from empresas;')
+		$empresas = $model->run('select * from empresas;')
 		foreach ($empresas as $empresa) {
-			$data = $model->execute("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
+			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
 				from contratos con
 				inner join gestionContratos gc on con.contrato=gc.contrato
 				inner join cuadrillasContratos cc on gc.contrato=cc.contrato
