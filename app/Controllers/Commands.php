@@ -10,7 +10,7 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 	public function total() {
 		echo "Totales";
 		$model = $this->getModel('Aguas');
-		$empresas = $model->run('select * from empresas;')
+		$empresas = $model->run('select * from empresas;');
 		foreach ($empresas as $empresa) {
 			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
 				from contratos con
