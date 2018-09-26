@@ -117,8 +117,8 @@ google.charts.load("current", {packages:['corechart']});
 	{% endif %}
 {% endfor %}
 </script>
-
+<!--
 <script type="text/javascript">{{_self.getTemplateName() | replace( { '.html':'' } ) | lower }}.init();</script>
-
+-->
 {% include 'footer_full.html' %}
 {% endspaceless %}
