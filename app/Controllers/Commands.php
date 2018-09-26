@@ -20,7 +20,7 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 				inner join empresas e on c.idEmpresa=e.idEmpresa
 				Inner join cobros co on co.cobro=con.cobro
 				where gc.estatusId = 5 and e.idEmpresa=" . $empresa['idEmpresa']);
-			var_dump($data);
+			var_dump(array_keys(reset($data)));
 			#fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', array_keys(reset($data)));
 			#foreach ($data as $row) {
 			#	fputcsv('html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv', $row);
