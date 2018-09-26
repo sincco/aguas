@@ -24,3 +24,4 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 		
 	}
+}
