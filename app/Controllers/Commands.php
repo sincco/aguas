@@ -12,6 +12,7 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 		$empresas = $model->run('select * from empresas;');
 		foreach ($empresas as $empresa) {
 			echo "Empresa " . $empresa['idEmpresa'] . PHP_EOL;
+			unlink("html/download/instalaciones_efectivas" . $empresa['idEmpresa'] . ".csv");
 			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
 				from contratos con
 				inner join gestionContratos gc on con.contrato=gc.contrato
@@ -21,9 +22,9 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 				Inner join cobros co on co.cobro=con.cobro
 				where gc.estatusId = 5 and e.idEmpresa=" . $empresa['idEmpresa']);
 			if (count($data) > 0) {
-				file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'], implode(',', array_keys(reset($data))) . "\n", FILE_APPEND);
+				file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'] . ".csv", implode(',', array_keys(reset($data))) . "\n", FILE_APPEND);
 				foreach ($data as $row) {
-					file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'], implode(',', $row) . "\n", FILE_APPEND);
+					file_put_contents("html/download/instalaciones_efectivas" . $empresa['idEmpresa'] . ".csv", implode(',', $row) . "\n", FILE_APPEND);
 				}				
 			}
 		}
