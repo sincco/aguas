@@ -29,6 +29,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 		$this->helper('UsersAccount')->checkLogin();
 		$cuadrilla = unserialize($_SESSION['user\extra']);
+		$idEmpresa = $this->getModel('Catalogos\Cuadrillas')->getById($cuadrilla['cuadrilla']['cuadrilla']);
 		if (isset($cuadrilla['cuadrilla'])) {
 			$view = $this->newView('DashboardCuadrilla');
 		} else {
@@ -36,7 +37,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 
 		$cuadrilla = unserialize($_SESSION['user\empresa']);
-		var_dump($_SESSION);die();
+		var_dump($idEmpresa);die();
 		if (isset($cuadrilla['empresa'])) {
 			$view = $this->newView('DashboardEmpresa');
 			$metricas = New \Sincco\Sfphp\XML(PATH_CONFIG . '/dashboard_empresa_' . $cuadrilla['empresa']['idEmpresa'] . '.xml');
