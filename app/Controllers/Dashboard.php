@@ -51,7 +51,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->desde = $fechaInicio;
 		$view->hasta = $fechaFin;
-		$view->botonavance = 'html/download/instalaciones_efectivas' . $idEmpresa['idEmpresa'] . '.csv';
+		$view->botonavance = 'html/download/instalaciones_efectivas' . $idEmpresa[0]['idEmpresa'] . '.csv';
 
 		$view->render();
 	}
