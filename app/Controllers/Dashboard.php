@@ -37,7 +37,6 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 
 		$cuadrilla = unserialize($_SESSION['user\empresa']);
-		var_dump($idEmpresa);die();
 		if (isset($cuadrilla['empresa'])) {
 			$view = $this->newView('DashboardEmpresa');
 			$metricas = New \Sincco\Sfphp\XML(PATH_CONFIG . '/dashboard_empresa_' . $cuadrilla['empresa']['idEmpresa'] . '.xml');
@@ -52,7 +51,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->desde = $fechaInicio;
 		$view->hasta = $fechaFin;
-		$view->botonavance = 'html/download/instalaciones_efectivas' . $cuadrilla['empresa']['idEmpresa'] . '.csv';
+		$view->botonavance = 'html/download/instalaciones_efectivas' . $empresa['idEmpresa'] . '.csv';
 
 		$view->render();
 	}
