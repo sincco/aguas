@@ -36,6 +36,7 @@ class DashboardController extends Sincco\Sfphp\Abstracts\Controller {
 		}
 
 		$cuadrilla = unserialize($_SESSION['user\empresa']);
+		var_dump($_SESSION);die();
 		if (isset($cuadrilla['empresa'])) {
 			$view = $this->newView('DashboardEmpresa');
 			$metricas = New \Sincco\Sfphp\XML(PATH_CONFIG . '/dashboard_empresa_' . $cuadrilla['empresa']['idEmpresa'] . '.xml');
