@@ -10,6 +10,7 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 	public function total() {
 		$model = $this->getModel('Aguas');
 		$empresas = $model->run('select * from empresas;');
+		chdir("/var/www/sites");
 		foreach ($empresas as $empresa) {
 			echo "Empresa " . $empresa['idEmpresa'] . PHP_EOL;
 			unlink("./html/download/instalaciones_efectivas" . $empresa['idEmpresa'] . ".csv");
