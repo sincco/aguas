@@ -96,7 +96,7 @@ google.charts.load("current", {packages:['corechart']});
 			{% set randomColor = randomColor|merge([randomCharacter]) %}
 		{% endfor %}
 		{% set randomColor = randomColor|join %}
-		['{{dato.estatus}}|trim', {{dato.contratos}}, '#{{randomColor}}'],
+		['{{dato.estatus|trim}}', {{dato.contratos}}, '#{{randomColor}}'],
 		{% endfor %}
 	  ]);
 	  var view = new google.visualization.DataView(data);
