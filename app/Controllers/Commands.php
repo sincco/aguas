@@ -14,7 +14,7 @@ class CommandsController extends Sincco\Sfphp\Abstracts\Controller {
 		foreach ($empresas as $empresa) {
 			echo "Empresa " . $empresa['idEmpresa'] . PHP_EOL;
 			unlink("./html/download/instalaciones_efectivas" . $empresa['idEmpresa'] . ".csv");
-			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud
+			$data = $model->run("select e.descripcion Empresa , gc.contrato, con.utilizacion Clave_SIAPA, co.descripcion ,con.latitud,con.longitud, con.telemetriaMedidor as medidor_instalado
 				from contratos con
 				inner join gestionContratos gc on con.contrato=gc.contrato
 				inner join cuadrillasContratos cc on gc.contrato=cc.contrato
