@@ -7,9 +7,7 @@ class SupervisionController extends Sincco\Sfphp\Abstracts\Controller {
 		$this->helper('UsersAccount')->checkLogin();
 		$userData = $this->helper('UsersAccount')->getUserData('user\extra');
 		$view = $this->newView('Gestion\Supervision');
-		$view->cuadrilla = $userData['cuadrilla']['cuadrilla'];
-		$view->cobros = $this->getModel('Catalogos\Cobros')->getAll();
-		$view->menus = $this->helper('UsersAccount')->createMenus();
+		$view->nombreUsuario = $userData['userName'];
 		$view->render();
 	}
 
