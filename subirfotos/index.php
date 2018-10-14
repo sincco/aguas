@@ -1,12 +1,13 @@
 <?php
     if (isset($_FILES['attachments'])) {
-        $msg = "";
-        $targetFile = "uploads/" . basename($_FILES['attachments']['name'][0]);
-        if (file_exists($targetFile))
-            $msg = array("status" => 0, "msg" => "File already exists!");
-        else if (move_uploaded_file($_FILES['attachments']['tmp_name'][0], $targetFile))
-            $msg = array("status" => 1, "msg" => "File Has Been Uploaded", "path" => $targetFile);
-
+        #$msg = "";
+        #$targetFile = "uploads/" . basename($_FILES['attachments']['name'][0]);
+        #if (file_exists($targetFile))
+        #    $msg = array("status" => 0, "msg" => "File already exists!");
+        #else if (move_uploaded_file($_FILES['attachments']['tmp_name'][0], $targetFile))
+        #    $msg = array("status" => 1, "msg" => "File Has Been Uploaded", "path" => $targetFile);
+        #
+        $msg = $_FILES;
         exit(json_encode($msg));
     }
 ?>
@@ -63,10 +64,12 @@
                    var fileName = data.originalFiles[0]['name'];
                    var fileSize = data.originalFiles[0]['size'];
 
-                   if (!fileTypeAllowed.test(fileName))
+                   if (!fileTypeAllowed.test(fileName)) {
                         $("#error").html('Only images are allowed!');
-                   else if (fileSize > 50000000)
+                   }
+                   else if (fileSize > 50000000) {
                        $("#error").html('Your file is too big! Max allowed size is: 50MB');
+                   }
                    else {
                        $("#error").html("");
                        data.submit();
