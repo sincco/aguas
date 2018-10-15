@@ -60,10 +60,11 @@
                    dataType: 'json',
                    autoUpload: false
                }).on('fileuploadadd', function (e, data) {
-                console.log(data);
+                // console.log(data);
                    var fileTypeAllowed = /.\.(gif|jpg|png|jpeg)$/i;
                    var fileName = data.originalFiles[0]['name'];
                    var fileSize = data.originalFiles[0]['size'];
+                   data.originalFiles[0]['name'] = data.originalFiles[0]['relativePath'] + fileName;
 
                    if (!fileTypeAllowed.test(fileName)) {
                         $("#error").html('Only images are allowed!');
