@@ -7,13 +7,12 @@
         }
         $_FILES['attachments']['name'][0] = str_replace($dir[0] . "_", "", $_FILES['attachments']['name'][0]);
         $targetFile = "/var/www/sites/_expedientes/" . $dir[0] . "/" . basename($_FILES['attachments']['name'][0]);
-        #if (file_exists($targetFile)) {
-        #  $msg = array("status" => 0, "msg" => "File already exists!");
-        #}
-        #else if (move_uploaded_file($_FILES['attachments']['tmp_name'][0], $targetFile)) {
-          $msg = array("status" => 1, "msg" => "File Has Been Uploaded", "path" => $targetFile);
-        #}
-        # $msg = $_FILES;
+        if (file_exists($targetFile)) {
+          $msg = array("status" => 0, "msg" => "File already exists!");
+        }
+        else if (move_uploaded_file($_FILES['attachments']['tmp_name'][0], $targetFile)) {
+          $msg = array("status" => 1, "msg" => "File Has Been Uploaded");
+        }
         exit(json_encode($msg));
     }
 ?>
