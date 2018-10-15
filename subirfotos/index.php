@@ -44,7 +44,7 @@ function resize($newWidth, $targetFile, $originalFile) {
 
   function watermark($fileName, $image_create_func, $image_save_func, $text = false) {
     $im = $image_create_func($fileName);
-    $estampa = imagecreatefrompng('html/img/adp_watermark.png');
+    $estampa = imagecreatefrompng('/var/www/sites/html/img/adp_watermark.png');
 
     $margen_dcho = 10;
     $margen_inf = 10;
