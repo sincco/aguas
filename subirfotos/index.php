@@ -46,7 +46,7 @@
 			<div id="files"></div>
 		</center>
 
-		<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script src="js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
 		<script src="js/jquery.iframe-transport.js" type="text/javascript"></script>
 		<script src="js/jquery.fileupload.js" type="text/javascript"></script>
