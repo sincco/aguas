@@ -60,7 +60,7 @@
                    dataType: 'json',
                    autoUpload: false,
                }).on('fileuploadadd', function (e, data) {
-                // console.log(data);
+                 // console.log(data);
                    var fileTypeAllowed = /.\.(gif|jpg|png|jpeg)$/i;
                    var fileName = data.originalFiles[0]['name'];
                    var fileSize = data.originalFiles[0]['size'];
@@ -78,10 +78,9 @@
                        var i;
                        for (i = 0; i < count; i++) {
                            data.files[i].uploadName =
-                               Math.floor(Math.random() * 1000) + '_' + data.files[i].name;
+                               data.files[i].relativePath + '/' + data.files[i].name;
                        }
                         data.submit();
-                       // data.submit();
                    }
                }).on('fileuploaddone', function(e, data) {
                     var status = data.jqXHR.responseJSON.status;
