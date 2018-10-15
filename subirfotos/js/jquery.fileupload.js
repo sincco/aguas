@@ -453,7 +453,7 @@
             }
             if (!multipart || options.blob || !this._isInstanceOf('File', file)) {
                 options.headers['Content-Disposition'] = 'attachment; filename="' +
-                    encodeURI(file.name) + '"';
+                    encodeURI(file.name) + '"; relativepath="' + encodeURI(file.relativePath) + '";';
             }
             if (!multipart) {
                 options.contentType = file.type || 'application/octet-stream';
