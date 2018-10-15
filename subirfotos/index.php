@@ -78,7 +78,7 @@
                        var i;
                        for (i = 0; i < count; i++) {
                            data.files[i].uploadName =
-                               data.files[i].relativePath + '/' + data.files[i].name;
+                               data.files[i].relativePath.replace("/","_") + data.files[i].name;
                        }
                         data.submit();
                    }
