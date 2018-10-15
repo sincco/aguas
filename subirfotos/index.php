@@ -2,8 +2,11 @@
     if (isset($_FILES['attachments'])) {
         $msg = "";
         $dir = explode("_", $_FILES['attachments']['name'][0]);
+        if (!is_dir("/var/www/sites/_expedientes/" . $dir[0])) {
+          mkdir("/var/www/sites/_expedientes/" . $dir[0]);
+        }
         $_FILES['attachments']['name'][0] = str_replace($dir[0] . "_", "", $_FILES['attachments']['name'][0]);
-        $targetFile = ".._expedientes/" . $dir[0] . basename($_FILES['attachments']['name'][0]);
+        $targetFile = "/var/www/sites/_expedientes/" . $dir[0] . "/" . basename($_FILES['attachments']['name'][0]);
         #if (file_exists($targetFile)) {
         #  $msg = array("status" => 0, "msg" => "File already exists!");
         #}
