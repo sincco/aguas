@@ -79,7 +79,7 @@ function resize($newWidth, $targetFile, $originalFile) {
           $ext = end($ext);
           $destiny = pathinfo($targetFile, PATHINFO_DIRNAME) . '/' . str_replace("." . pathinfo($targetFile, PATHINFO_EXTENSION), "", pathinfo($targetFile, PATHINFO_BASENAME)) . '_MIN.' . pathinfo($targetFile, PATHINFO_EXTENSION);
           resize(900, $destiny, $targetFile);
-          $msg = array("status" => 1, "msg" => "File Has Been Uploaded", "path" => "../_expedientes/" . $dir[0] . "/" . $destiny);
+          $msg = array("status" => 1, "msg" => "File Has Been Uploaded", "path" => "../_expedientes/" . $dir[0] . "/" . pathinfo($destiny, PATHINFO_BASENAME));
         }
         exit(json_encode($msg));
     }
