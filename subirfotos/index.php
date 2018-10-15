@@ -1,6 +1,6 @@
 <?php
 
-private function resize($newWidth, $targetFile, $originalFile) {
+function resize($newWidth, $targetFile, $originalFile) {
     $date = date("d M Y H:i:s.", filectime($originalFile));
     $info = getimagesize($originalFile);
     $mime = $info['mime'];
@@ -39,10 +39,10 @@ private function resize($newWidth, $targetFile, $originalFile) {
       unlink($targetFile);
     }
     $image_save_func($tmp, $targetFile);
-    $this->watermark($targetFile, $image_create_func, $image_save_func, $date);
+    watermark($targetFile, $image_create_func, $image_save_func, $date);
   }
 
-  private function watermark($fileName, $image_create_func, $image_save_func, $text = false) {
+  function watermark($fileName, $image_create_func, $image_save_func, $text = false) {
     $im = $image_create_func($fileName);
     $estampa = imagecreatefrompng('html/img/adp_watermark.png');
 
