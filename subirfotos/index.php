@@ -58,13 +58,13 @@
                    url: 'index.php',
                    dropZone: '#dropZone',
                    dataType: 'json',
-                   autoUpload: false
+                   autoUpload: false,
                }).on('fileuploadadd', function (e, data) {
                 // console.log(data);
                    var fileTypeAllowed = /.\.(gif|jpg|png|jpeg)$/i;
                    var fileName = data.originalFiles[0]['name'];
                    var fileSize = data.originalFiles[0]['size'];
-                   data.originalFiles[0]['name'] = data.originalFiles[0]['relativePath'] + fileName;
+                   //data.originalFiles[0]['name'] = data.originalFiles[0]['relativePath'] + fileName;
 
                    if (!fileTypeAllowed.test(fileName)) {
                         $("#error").html('Only images are allowed!');
@@ -74,7 +74,14 @@
                    }
                    else {
                        $("#error").html("");
-                       data.submit();
+                       var count = data.files.length;
+                       var i;
+                       for (i = 0; i < count; i++) {
+                           data.files[i].uploadName =
+                               Math.floor(Math.random() * 1000) + '_' + data.files[i].name;
+                       }
+                        data.submit();
+                       // data.submit();
                    }
                }).on('fileuploaddone', function(e, data) {
                     var status = data.jqXHR.responseJSON.status;
