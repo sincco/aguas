@@ -1,0 +1,611 @@
+[
+    {
+        "name": "fbourigault/composer-mkdir",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/fbourigault/composer-mkdir.git",
+            "reference": "5e4815520c25deb4dfbe74675f64063ac9a0ffda"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/fbourigault/composer-mkdir/zipball/5e4815520c25deb4dfbe74675f64063ac9a0ffda",
+            "reference": "5e4815520c25deb4dfbe74675f64063ac9a0ffda",
+            "shasum": ""
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "phing/phing": "^2.12",
+            "phpmd/phpmd": "^2.2",
+            "phpunit/phpunit": "~4.3",
+            "squizlabs/php_codesniffer": "^2.3"
+        },
+        "time": "2015-10-07T12:48:50+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Fbourigault\\ComposerMkdir\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Bourigault",
+                "email": "bourigaultfabien@gmail.com"
+            }
+        ],
+        "description": "Composer script for easy directories creation.",
+        "homepage": "https://github.com/fbourigault/composer-mkdir"
+    },
+    {
+        "name": "sincco/singleton",
+        "version": "1.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/singleton.git",
+            "reference": "c7aeeec44a1d65ec1b8eab5b5c79834137cb8362"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/singleton/zipball/c7aeeec44a1d65ec1b8eab5b5c79834137cb8362",
+            "reference": "c7aeeec44a1d65ec1b8eab5b5c79834137cb8362",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "time": "2016-06-01T00:10:29+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Tools\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "Simplifies the use of singleton pattern on PHP",
+        "keywords": [
+            "class",
+            "sfphp",
+            "sincco",
+            "singleton"
+        ]
+    },
+    {
+        "name": "sincco/tokenizer",
+        "version": "1.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/tokenizer.git",
+            "reference": "1b24075de23a5b76c84063da8d619d48c26f4511"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/tokenizer/zipball/1b24075de23a5b76c84063da8d619d48c26f4511",
+            "reference": "1b24075de23a5b76c84063da8d619d48c26f4511",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "time": "2016-05-17T22:41:16+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Tools\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "Create and validate token for user data",
+        "keywords": [
+            "sfphp",
+            "sincco",
+            "token",
+            "tokenizer"
+        ]
+    },
+    {
+        "name": "desarrolla2/cache",
+        "version": "v2.1.1",
+        "version_normalized": "2.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/desarrolla2/Cache.git",
+            "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/desarrolla2/Cache/zipball/ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+            "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "predis/predis": "~1.0.0"
+        },
+        "suggest": {
+            "predis/predis": "Predis support"
+        },
+        "time": "2017-01-18T12:58:33+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Desarrolla2\\Cache\\": "src/",
+                "Desarrolla2\\Test\\Cache\\": "test/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniel González",
+                "homepage": "http://desarrolla2.com/"
+            }
+        ],
+        "description": "Provides an cache interface for several adapters Apc, Apcu, File, Mongo, Memcache, Memcached, Mysql, Mongo, Redis is supported. New adapters is comming!",
+        "homepage": "https://github.com/desarrolla2/Cache/",
+        "keywords": [
+            "apc",
+            "apcu",
+            "cache",
+            "file",
+            "memcache",
+            "memcached",
+            "mongo",
+            "mysql",
+            "redis"
+        ]
+    },
+    {
+        "name": "sincco/debug",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/debug.git",
+            "reference": "8d842b985700e9f631f8e0b48d6e37f13145d25d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/debug/zipball/8d842b985700e9f631f8e0b48d6e37f13145d25d",
+            "reference": "8d842b985700e9f631f8e0b48d6e37f13145d25d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "time": "2016-11-23T20:06:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Tools\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "Simple class for debug & logger on PHP",
+        "keywords": [
+            "class",
+            "debug",
+            "sfphp",
+            "sincco"
+        ]
+    },
+    {
+        "name": "seld/cli-prompt",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Seldaek/cli-prompt.git",
+            "reference": "a19a7376a4689d4d94cab66ab4f3c816019ba8dd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Seldaek/cli-prompt/zipball/a19a7376a4689d4d94cab66ab4f3c816019ba8dd",
+            "reference": "a19a7376a4689d4d94cab66ab4f3c816019ba8dd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2017-03-18T11:32:45+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Seld\\CliPrompt\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be"
+            }
+        ],
+        "description": "Allows you to prompt for user input on the command line, and optionally hide the characters they type",
+        "keywords": [
+            "cli",
+            "console",
+            "hidden",
+            "input",
+            "prompt"
+        ]
+    },
+    {
+        "name": "league/climate",
+        "version": "3.2.1",
+        "version_normalized": "3.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/climate.git",
+            "reference": "b103fc8faa3780c802cc507d5f0ff534ecc94fb5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/climate/zipball/b103fc8faa3780c802cc507d5f0ff534ecc94fb5",
+            "reference": "b103fc8faa3780c802cc507d5f0ff534ecc94fb5",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0",
+            "seld/cli-prompt": "~1.0"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "~1.4",
+            "mockery/mockery": "~0.9",
+            "phpunit/phpunit": "~4.6"
+        },
+        "time": "2016-04-04T20:24:59+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\CLImate\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Joe Tannenbaum",
+                "email": "hey@joe.codes",
+                "homepage": "http://joe.codes/",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP's best friend for the terminal. CLImate allows you to easily output colored text, special formats, and more.",
+        "keywords": [
+            "cli",
+            "colors",
+            "command",
+            "php",
+            "terminal"
+        ]
+    },
+    {
+        "name": "twig/twig",
+        "version": "v1.27.0",
+        "version_normalized": "1.27.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twigphp/Twig.git",
+            "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
+            "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.7"
+        },
+        "require-dev": {
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~2.7"
+        },
+        "time": "2016-10-25T19:17:17+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.27-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Twig_": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Armin Ronacher",
+                "email": "armin.ronacher@active-4.com",
+                "role": "Project Founder"
+            },
+            {
+                "name": "Twig Team",
+                "homepage": "http://twig.sensiolabs.org/contributors",
+                "role": "Contributors"
+            }
+        ],
+        "description": "Twig, the flexible, fast, and secure template language for PHP",
+        "homepage": "http://twig.sensiolabs.org",
+        "keywords": [
+            "templating"
+        ]
+    },
+    {
+        "name": "symfony/process",
+        "version": "v3.3.0",
+        "version_normalized": "3.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
+            "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "time": "2017-05-22T12:32:03+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "sincco/login",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/login.git",
+            "reference": "5b84b528758610887decc7b1596b56b1c87e46fe"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/login/zipball/5b84b528758610887decc7b1596b56b1c87e46fe",
+            "reference": "5b84b528758610887decc7b1596b56b1c87e46fe",
+            "shasum": ""
+        },
+        "time": "2016-11-25T23:12:48+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Tools\\": "src"
+            }
+        },
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "Login structure for users",
+        "keywords": [
+            "login",
+            "sfphp",
+            "sincco",
+            "user"
+        ],
+        "support": {
+            "source": "https://github.com/sincco/login/tree/master",
+            "issues": "https://github.com/sincco/login/issues"
+        }
+    },
+    {
+        "name": "sincco/elastic-email",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/elastic-email.git",
+            "reference": "6f852e6c1f9878ee47034b4b2989a96dcfc8bf55"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/elastic-email/zipball/6f852e6c1f9878ee47034b4b2989a96dcfc8bf55",
+            "reference": "6f852e6c1f9878ee47034b4b2989a96dcfc8bf55",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "time": "2016-11-23T20:25:31+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Tools\\": "src"
+            }
+        },
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "Implements use for elastic email api",
+        "keywords": [
+            "elastic",
+            "elastic-email",
+            "email",
+            "sfphp",
+            "sincco"
+        ],
+        "support": {
+            "source": "https://github.com/sincco/elastic-email/tree/v1.0",
+            "issues": "https://github.com/sincco/elastic-email/issues"
+        }
+    },
+    {
+        "name": "sincco/sfphp",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sincco/sfphp.git",
+            "reference": "bc6ddd2362467b4473a4434cdf36c83c32387ec9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sincco/sfphp/zipball/bc6ddd2362467b4473a4434cdf36c83c32387ec9",
+            "reference": "bc6ddd2362467b4473a4434cdf36c83c32387ec9",
+            "shasum": ""
+        },
+        "require": {
+            "desarrolla2/cache": "~2.0",
+            "fbourigault/composer-mkdir": "^2.0",
+            "league/climate": "~3.2.1",
+            "php": "^5.3.3 || ^7.0",
+            "sincco/debug": ">=1.0",
+            "sincco/singleton": ">=1.0",
+            "symfony/process": "3.*.*",
+            "twig/twig": "1.27.0"
+        },
+        "time": "2017-04-07T23:04:47+00:00",
+        "type": "library",
+        "extra": {
+            "fbourigault-composer-mkdir": [
+                "../../app/Controllers",
+                "../../app/Models",
+                "../../app/Views",
+                "../../app/Helpers",
+                "../../var/cache",
+                "../../var/session",
+                "../../var/log",
+                "../../var/tmp",
+                "../../etc/config"
+            ]
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Sincco\\Sfphp\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ivan Miranda",
+                "email": "ivan.miranda@sincco.com"
+            }
+        ],
+        "description": "SimpleFramework(for)PHP",
+        "keywords": [
+            "framework",
+            "sfphp",
+            "sincco"
+        ]
+    }
+]

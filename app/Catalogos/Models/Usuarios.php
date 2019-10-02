@@ -33,7 +33,7 @@ class UsuariosModel extends Sincco\Sfphp\Abstracts\Model {
 		return $id;
 	}
 
-	public function update( $set, $where ) {
+	public function update( $set, $where, $table = false ) {
 		$campos = [];
 		$condicion = [];
 		foreach ( $set as $campo => $valor )
